@@ -1,0 +1,4 @@
+interface:
+  display_name: "Software Idea to Project"
+  short_description: "Start, resume, and track technical project plans"
+  default_prompt: "Use $software-idea-to-project to start, report, or resume my software definition workflow; use durable artifacts when I need continuity across chats, and do not start implementation."

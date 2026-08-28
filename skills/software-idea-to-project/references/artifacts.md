@@ -1,0 +1,66 @@
+# Persistent Artifacts
+
+Read this reference when the user chooses persistent workspace, requests definition files, or resumes an existing session. Also read [session-state.md](session-state.md) whenever durable workflow state is created, queried, repaired, or updated.
+
+## Session directory
+
+Store each definition under:
+
+```text
+docs/software-design/<slug>/
+```
+
+Derive `<slug>` from an explicit project name or, if none exists, a concise topic name. Use lowercase ASCII letters, digits, and hyphens. Ask only when two plausible names would create meaningfully different session identities.
+
+Before creating the directory, inspect `docs/software-design/` for a matching or clearly related session. Treat `00-status.md` as the entry point when present. If a related session exists, summarize its workflow state and ask whether to resume it or use a distinct slug. Never overwrite or reset an existing session without explicit direction.
+
+## Artifact set
+
+Create `00-status.md` and `brainstorm.md` when persistent mode begins. The checkpoint is mandatory; numbered documents remain conditional:
+
+| Artifact | Create when |
+| --- | --- |
+| `00-status.md` | Always create for persistent mode; it is the durable workflow checkpoint. |
+| `01-concept.md` | Purpose, actors, outcomes, boundaries, or non-goals need a canonical definition. |
+| `02-requirements.md` | Workflows, scenarios, constraints, or acceptance criteria are substantive. |
+| `03-domain.md` | Domain concepts, rules, identities, ownership, or states affect behavior. |
+| `04-architecture.md` | Multiple components, dependencies, or structural choices require explanation. |
+| `05-data-model.md` | Persistence, relationships, lifecycle, querying, or migration matters. |
+| `06-api-contracts.md` | APIs, commands, events, webhooks, or integration contracts must be shared. |
+| `07-decisions.md` | Consequential alternatives and their rationale need durable records. |
+| `08-implementation-plan.md` | Gate 2 is approved and an executable delivery plan is requested. |
+
+Do not create empty files, placeholder sections, or every artifact by default. If one concise document is sufficient, use it.
+
+## Authority and evolution
+
+`00-status.md` is authoritative for workflow phase, phase status, gates, next action, and handoff context. Follow [session-state.md](session-state.md) for its schema, update ordering, recovery, and single-writer rules.
+
+`brainstorm.md` is a chronological, non-canonical decision trail. Record meaningful milestones: the seed, newly explored directions, evidence, user feedback, alternatives, reversals, approvals, and crystallized conclusions. Update it at milestones rather than after every message.
+
+The numbered documents are canonical. When thinking changes, update the relevant canonical document and record the reason in `brainstorm.md`. An abandoned idea that remains in `brainstorm.md` is not an active requirement.
+
+Avoid duplicating full content across files. Link to the canonical owner of a concept and keep a consistent traceability identifier when relationships would otherwise be ambiguous, for example `REQ-`, `RULE-`, `DEC-`, and `SLICE-` identifiers. Use identifiers only when the project is complex enough to benefit from them.
+
+## Canonical document header
+
+Begin each numbered document with:
+
+```markdown
+# <Document title>
+
+Status: Draft | Review | Approved
+Last updated: YYYY-MM-DD
+
+## Confirmed
+
+## Assumptions
+
+## Open decisions
+```
+
+Add only the sections needed after this shared status block. `Draft` means active definition, `Review` means presented for a gate, and `Approved` requires explicit user approval. A later material change returns the affected document to `Draft` or `Review` and may invalidate a downstream gate.
+
+## Chat-only mode
+
+Do not create or update files, including `00-status.md`. Warn that chat-only work cannot be reliably resumed from another chat. Preserve the same conceptual gates in conversation and summarize confirmed facts, assumptions, and open decisions at meaningful transitions. If the user later switches to persistent mode, ask for the target slug and crystallize the current state without inventing missing history.
