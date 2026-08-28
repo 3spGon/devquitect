@@ -16,15 +16,16 @@ Do not manufacture precision, paste production implementation code, or split wor
 
 Start with:
 
+- document status, last-updated date, and a positive `Plan revision` beginning at `1`;
 - goal and user-visible or system-visible outcome;
 - approved design and architecture artifacts or chat decisions being implemented;
 - relevant global constraints and non-goals;
 - confirmed stack and repository context;
 - non-blocking assumptions and deliberately deferred work.
 
-Organize delivery into thin vertical slices that produce observable behavior. Each task or slice should state, where applicable:
+Organize delivery into thin vertical slices that produce observable behavior. Give every slice a stable `SLICE-*` identifier that is unique within the plan. Each slice must state:
 
-- outcome and acceptance behavior;
+- outcome and observable acceptance criteria;
 - dependencies and prerequisites;
 - files to create or modify, distinguishing verified from proposed paths;
 - interfaces consumed and produced, with names and shapes when established;
@@ -32,6 +33,8 @@ Organize delivery into thin vertical slices that produce observable behavior. Ea
 - test cases and the verification command;
 - documentation, telemetry, migration, rollout, rollback, or compatibility work;
 - completion evidence.
+
+Use the stable identifier in requirement, decision, test, and dependency mappings. Do not renumber existing identifiers merely because ordering changes. A material plan change returns the document to `Review`, increments `Plan revision`, and identifies the affected slices so an existing delivery tracker can invalidate only impacted work.
 
 Fold setup, configuration, schema, and documentation into the slice that needs them unless they form an independently testable deliverable. Order tasks so foundations precede consumers while each completed slice leaves the project in a coherent state.
 
@@ -52,4 +55,4 @@ Before presenting the plan:
 5. Separate deferred non-goals from missing work.
 6. Summarize any residual risk that implementation must monitor but does not need to decide.
 
-In persistent mode, save the result as `08-implementation-plan.md` with status `Review`, then mark it `Approved` only after explicit user approval. End by stating that implementation requires a separate user authorization; do not begin executing the plan automatically.
+In persistent mode, save the result as `08-implementation-plan.md` with status `Review` and `Plan revision: 1`, then mark it `Approved` only after explicit user approval. End by stating that implementation requires separate authorization and a concrete authorized slice list. When granted, hand execution to `$project-plan-execution`; do not execute the plan from this skill.

@@ -29,22 +29,23 @@ Create `00-status.md` and `brainstorm.md` when persistent mode begins. The check
 | `06-api-contracts.md` | APIs, commands, events, webhooks, or integration contracts must be shared. |
 | `07-decisions.md` | Consequential alternatives and their rationale need durable records. |
 | `08-implementation-plan.md` | Gate 2 is approved and an executable delivery plan is requested. |
+| `09-delivery-status.md` | `$project-plan-execution` initializes authorized implementation from an approved plan. |
 
 Do not create empty files, placeholder sections, or every artifact by default. If one concise document is sufficient, use it.
 
 ## Authority and evolution
 
-`00-status.md` is authoritative for workflow phase, phase status, gates, next action, and handoff context. Follow [session-state.md](session-state.md) for its schema, update ordering, recovery, and single-writer rules.
+`00-status.md` is authoritative for definition workflow phase, phase status, gates, next action, and handoff context. Follow [session-state.md](session-state.md) for its schema, update ordering, recovery, and single-writer rules. When present, `09-delivery-status.md` is separately authoritative for implementation progress and evidence; it follows the `$project-plan-execution` delivery-state contract and is not a canonical design document.
 
 `brainstorm.md` is a chronological, non-canonical decision trail. Record meaningful milestones: the seed, newly explored directions, evidence, user feedback, alternatives, reversals, approvals, and crystallized conclusions. Update it at milestones rather than after every message.
 
-The numbered documents are canonical. When thinking changes, update the relevant canonical document and record the reason in `brainstorm.md`. An abandoned idea that remains in `brainstorm.md` is not an active requirement.
+The numbered definition documents from `01` through `08` are canonical. When thinking changes, update the relevant canonical document and record the reason in `brainstorm.md`. An abandoned idea that remains in `brainstorm.md` is not an active requirement.
 
 Avoid duplicating full content across files. Link to the canonical owner of a concept and keep a consistent traceability identifier when relationships would otherwise be ambiguous, for example `REQ-`, `RULE-`, `DEC-`, and `SLICE-` identifiers. Use identifiers only when the project is complex enough to benefit from them.
 
 ## Canonical document header
 
-Begin each numbered document with:
+Begin each numbered canonical definition document from `01` through `08` with:
 
 ```markdown
 # <Document title>

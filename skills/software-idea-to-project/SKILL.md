@@ -22,7 +22,7 @@ Warn that chat-only work cannot be resumed reliably from another chat. Offer per
 
 ## Report or resume durable work
 
-For a status, resume, or handoff request, search `docs/software-design/*/00-status.md` before asking for context or choosing a mode. Then read [references/session-state.md](references/session-state.md) and follow its discovery and recovery protocol.
+For a status, resume, or handoff request, search `docs/software-design/*/00-status.md` before asking for context or choosing a mode. Then read [references/session-state.md](references/session-state.md) and follow its discovery and recovery protocol. When a checkpoint declares `delivery_checkpoint`, read it for a combined definition-and-delivery status; delivery execution and repair belong to `$project-plan-execution`.
 
 - If the request identifies a session, use its checkpoint.
 - If exactly one relevant session exists, read it directly.
@@ -85,4 +85,4 @@ When user input genuinely blocks progress, ask the smallest question that resolv
 
 In persistent mode, update the durable checkpoint before deliberately ending, requesting blocking input, requesting gate approval, reporting a new blocker, or handing work to another agent.
 
-Completing the implementation plan does not authorize implementation. If the user explicitly authorizes implementation, carry forward the approved requirements, assumptions, deferred decisions, plan, and applicable repository instructions, then treat implementation as a new phase limited to the authorized scope.
+Completing the implementation plan does not authorize implementation. If the user explicitly authorizes implementation, require a concrete authorized slice list and hand the approved requirements, assumptions, deferred decisions, plan, and applicable repository instructions to `$project-plan-execution`. Keep this definition workflow complete; do not implement from this skill.

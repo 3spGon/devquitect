@@ -65,6 +65,7 @@ Required invariants:
 - `required_context` contains only relative paths within the session directory and only the minimum files needed for the active action or pending user action.
 - `blockers` and `open_decisions` are arrays, empty when none exist. Prefer stable decision identifiers when the project already uses them.
 - `artifacts` lists existing session artifacts only. Do not list hypothetical or uncreated files.
+- `delivery_checkpoint` is optional and absent until authorized execution initializes `09-delivery-status.md`. When present, its value is exactly `09-delivery-status.md`.
 - The Markdown body summarizes process context; it does not duplicate requirements, architecture, or contracts owned by canonical documents.
 
 ## Autonomy and terminal conditions
@@ -94,7 +95,7 @@ For status, resume, or handoff requests, search `docs/software-design/*/00-statu
 - With multiple plausible checkpoints, list `project`, `session`, `phase`, `phase_status`, `last_updated`, and either `next_action` or `pending_user_action`, then wait for selection.
 - With no checkpoint, look for existing `docs/software-design/<slug>/` artifacts only to offer recovery. Do not reconstruct or write state during a read-only status request.
 
-A status response reports the current phase, phase status, both gates, last completed work, blockers, open decisions, the active next action, and any pending user action. It does not mutate documents, execute the action, advance a phase, resolve a blocker, migrate schema, or repair inconsistencies.
+A status response reports the current phase, phase status, both gates, last completed work, blockers, open decisions, the active next action, and any pending user action. When `delivery_checkpoint` is present, also read it and report delivery status, authorized scope, slice counts, current slice, evidence summary, delivery blockers, and its active or pending action as a separate section. It does not mutate documents, execute either action, advance a phase, resolve a blocker, migrate schema, or repair inconsistencies.
 
 When status-only reads a schema v1 checkpoint, interpret it in memory, report that migration is pending, and leave the file unchanged.
 
@@ -106,7 +107,7 @@ Read the selected `00-status.md`, migrate schema v1 when necessary, then read on
 - `awaiting-input` — present only `pending_user_action` with the minimum context needed to answer it.
 - `awaiting-approval` — present the gate recorded in `pending_user_action` and do not advance without explicit approval.
 - `blocked` — explain the blocker and the recorded condition or authority needed to resolve it.
-- `complete` — report completion and do not reopen the workflow automatically.
+- `complete` — report definition completion and do not reopen it automatically. If `delivery_checkpoint` exists, include its separate state; use `$project-plan-execution` for delivery resume or repair.
 - Any gate marked `invalidated` — return to the earliest affected phase and update dependent artifacts before advancing again.
 
 Lead a resume response with a compact handoff summary so the user can detect a wrong session or stale state. That summary does not require confirmation when the selected session is unambiguous and active.
@@ -138,6 +139,8 @@ If an approved canonical document returns to `Draft` or `Review`, invalidate eve
 
 When the implementation plan is approved, set `phase: complete`, `phase_status: complete`, both gates to `approved`, `next_action: null`, and `pending_user_action: null`, then summarize the final handoff. This records completion of the definition workflow, not authorization to implement.
 
+After separate implementation authorization, `$project-plan-execution` may create `09-delivery-status.md` and add `delivery_checkpoint: 09-delivery-status.md` using this checkpoint's revision check. Increment the definition revision once while preserving its complete phase, approved gates, and null actions. The pointer is only an index; `09-delivery-status.md` remains authoritative for delivery and subsequent delivery updates do not rewrite `00-status.md`.
+
 ## Migrate schema v1 to v2
 
 Migrate a valid schema v1 checkpoint only when the user resumes, repairs, or otherwise updates the session. A status-only request never writes the migration.
@@ -157,7 +160,7 @@ After migrating an `active` session, continue autonomously from the migrated `ne
 
 ## Recover missing, corrupt, or stale state
 
-Canonical numbered documents remain authoritative for requirements and technical design. `00-status.md` is authoritative for workflow state. `brainstorm.md` is historical evidence.
+Canonical numbered documents through `08` remain authoritative for requirements, technical design, and the approved plan. `00-status.md` is authoritative for definition workflow state. `09-delivery-status.md`, when present, is authoritative for delivery. `brainstorm.md` is historical evidence.
 
 When resuming and the checkpoint is missing, malformed, or inconsistent:
 
