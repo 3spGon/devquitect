@@ -1,0 +1,155 @@
+{
+  "baseline": "stable-n",
+  "created_by": {
+    "package": "devquitect-quality",
+    "version": "0.1.0"
+  },
+  "expected_skills": [
+    "project-plan-execution",
+    "software-idea-to-project",
+    "targeted-refactoring"
+  ],
+  "schema_version": 1,
+  "snapshot": {
+    "content_digest": "062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef",
+    "dirty": false,
+    "files": [
+      {
+        "mode": "100644",
+        "path": "skills/project-plan-execution/SKILL.md",
+        "sha256": "c887f6254eb59b1292c010588e120d7728ae2b5c3d7a9c5aa2dc5a7f9eb6c68e",
+        "size": 4619
+      },
+      {
+        "mode": "100644",
+        "path": "skills/project-plan-execution/agents/openai.yaml",
+        "sha256": "8dfee415624cb94d746de681a19e49ac3b2f310ae24ee1f476134b01d1741a26",
+        "size": 317
+      },
+      {
+        "mode": "100644",
+        "path": "skills/project-plan-execution/references/delivery-state.md",
+        "sha256": "7a6ccf76b2db40fe359ebbb3466044ed5bbb39d4b1f8b10bc7738277d25d4921",
+        "size": 6848
+      },
+      {
+        "mode": "100644",
+        "path": "skills/project-plan-execution/references/execution.md",
+        "sha256": "a2372c148a7c58d323dea222f291e313c4ebd8701b9d39cca34700f831bc6803",
+        "size": 4091
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/SKILL.md",
+        "sha256": "c8181ea9ecc5262cbeef3c294ce783fac935aec89f2d62e5ddb6932e965d4d96",
+        "size": 10907
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/agents/openai.yaml",
+        "sha256": "a925316087d5665daf6803534c5542d92f6c083445c61bba2f27bc0b5475acec",
+        "size": 351
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/references/artifacts.md",
+        "sha256": "444e03a853e392c6bfaee231b89a6ec33d7b4349b32b2a58b8a81346acc05cc1",
+        "size": 6115
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/references/discovery.md",
+        "sha256": "5d7a7353c20903d6f05c23ba5f62ee40915785b3d7b269250c764b779c614314",
+        "size": 6083
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/references/experience-design.md",
+        "sha256": "883bd3cdf94d476068ddccab80a0773c74a7515262981e305ab8bdb40f343b2c",
+        "size": 5295
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/references/implementation-planning.md",
+        "sha256": "b61975e68a13f5e22cddb9ec6614b0ddc1a453c1ecdec81efbf72bc0b82b1d31",
+        "size": 5638
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/references/session-state.md",
+        "sha256": "a8360ababcf3d86dcc64ce0fe96643251c16ac3849adb8103496d78a8c571220",
+        "size": 16048
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/references/system-context.md",
+        "sha256": "569260e9c7226cbb0bdeab36a58d1e301b840e52c15158945e71ab87eecafdea",
+        "size": 6347
+      },
+      {
+        "mode": "100644",
+        "path": "skills/software-idea-to-project/references/technical-design.md",
+        "sha256": "b1bf363072ae3c511199c60834eb049a487e960f64fdd8e0dac52217d1b0eca2",
+        "size": 4584
+      },
+      {
+        "mode": "100644",
+        "path": "skills/targeted-refactoring/SKILL.md",
+        "sha256": "77e158fff3c06ac87f4ce97a8246b4c62db661c1b320876fc9ff8c09113b7d3e",
+        "size": 5873
+      },
+      {
+        "mode": "100644",
+        "path": "skills/targeted-refactoring/agents/openai.yaml",
+        "sha256": "218728493c8d43f2f8b2948379b053b97e21d1059340379cf606f4365cc84540",
+        "size": 316
+      }
+    ],
+    "release_eligible_source": true,
+    "resolved_commit": "264f4648ae1e699168347eb8e5945459bfbd0e27",
+    "schema_version": 1,
+    "skills": [
+      {
+        "content_digest": "d7759b729a9e3476d2495bb69f14d3a10a4c59800712cbb0bf72f6263066e20f",
+        "files": [
+          "skills/project-plan-execution/SKILL.md",
+          "skills/project-plan-execution/agents/openai.yaml",
+          "skills/project-plan-execution/references/delivery-state.md",
+          "skills/project-plan-execution/references/execution.md"
+        ],
+        "name": "project-plan-execution",
+        "path": "skills/project-plan-execution"
+      },
+      {
+        "content_digest": "11f2b94c24e1f4aa49997055f96c5034915d4cf61dea938a08a5e2590f60f127",
+        "files": [
+          "skills/software-idea-to-project/SKILL.md",
+          "skills/software-idea-to-project/agents/openai.yaml",
+          "skills/software-idea-to-project/references/artifacts.md",
+          "skills/software-idea-to-project/references/discovery.md",
+          "skills/software-idea-to-project/references/experience-design.md",
+          "skills/software-idea-to-project/references/implementation-planning.md",
+          "skills/software-idea-to-project/references/session-state.md",
+          "skills/software-idea-to-project/references/system-context.md",
+          "skills/software-idea-to-project/references/technical-design.md"
+        ],
+        "name": "software-idea-to-project",
+        "path": "skills/software-idea-to-project"
+      },
+      {
+        "content_digest": "e79f0e759ce925c4ddb5d77e1f375ea0ec633e434f33641a666710fd0b2ac673",
+        "files": [
+          "skills/targeted-refactoring/SKILL.md",
+          "skills/targeted-refactoring/agents/openai.yaml"
+        ],
+        "name": "targeted-refactoring",
+        "path": "skills/targeted-refactoring"
+      }
+    ],
+    "snapshot_id": "sha256:062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef",
+    "source_kind": "git-ref",
+    "source_selector": "264f4648ae1e699168347eb8e5945459bfbd0e27",
+    "working_tree_fingerprint": null
+  },
+  "source_commit": "264f4648ae1e699168347eb8e5945459bfbd0e27"
+}

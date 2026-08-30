@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=80,<81"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "devquitect-quality"
+version = "0.1.0"
+description = "Repository-owned quality tooling for Devquitect skills"
+requires-python = ">=3.12"
+dependencies = [
+  "jsonschema>=4.25,<5",
+  "PyYAML>=6.0,<7",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4,<9",
+  "ruff>=0.12,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
