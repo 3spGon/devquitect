@@ -6,6 +6,8 @@ Read this reference only after Gate 1 has been approved, or when the user suppli
 
 Anchor every structural choice in an approved requirement, repository constraint, or operational need. Reuse an existing stack and its established boundaries when appropriate. Do not propose unrelated modernization or replacement.
 
+For system-change and hybrid initiatives, separate **current architecture** established by the System Context and repository evidence from **proposed architecture** owned by the initiative documents. Identify unchanged components, changed components, new boundaries, compatibility constraints, migration needs, and preserved behavior. Never rewrite the current baseline to make the proposal appear implemented.
+
 Define as relevant:
 
 - components and their single responsibilities;
@@ -41,6 +43,8 @@ Do not invent endpoint paths, field names, or protocol details before the archit
 Connect each major requirement and approved experience decision to the component, domain rule, interface, or decision that satisfies it. Surface requirements or interaction constraints with no technical treatment and technical components with no approved purpose.
 
 If architecture work contradicts the approved design or requires a material change to an approved experience decision, return to discovery, update the affected canonical documents, and repeat Gate 1 for the material change.
+
+If repository evidence contradicts the System Context, reconcile or mark the context stale in persistent mode. A context correction alone does not invalidate a gate; invalidate affected gates only when the contradiction exposes a false material premise in the approved design or architecture.
 
 ## Apply Gate 2 — Architecture readiness
 

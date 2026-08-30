@@ -1,24 +1,26 @@
 ---
 name: software-idea-to-project
-description: Start, expand, resume, or report a software definition workflow that produces approved product behavior, interaction decisions when relevant, architecture, and an implementation-ready plan. Use for software ideation, requirements, UX or interaction definition, domain modeling, technical scoping, architecture, interfaces, data, delivery planning, and cross-session handoff; do not use for dedicated visual-asset production, market validation, revenue potential, ROI, or business viability.
+description: Start, expand, resume, or report a software definition workflow for a new system, a change to an existing system, or a hybrid initiative, producing approved product behavior, interaction decisions when relevant, architecture, and an implementation-ready plan. Use for software ideation, requirements, UX or interaction definition, domain modeling, technical scoping, architecture, interfaces, data, delivery planning, and cross-session handoff; do not use for dedicated visual-asset production, market validation, revenue potential, ROI, or business viability.
 ---
 
 # Software Idea to Project
 
-Turn an incomplete software idea into a coherent, traceable technical project definition. Keep decisions reversible until evidence supports committing to them, and scale the process to the idea rather than forcing every project through every artifact.
+Turn an incomplete software idea or change request into a coherent, traceable technical project definition. Keep decisions reversible until evidence supports committing to them, and scale the process to the initiative rather than forcing every project through every artifact.
 
 ## Establish context and mode
 
 Before asking questions or proposing a direction:
 
 1. Locate and follow every applicable `AGENTS.md` from the workspace root to the files in scope.
-2. When a repository exists, inspect only enough documentation, configuration, code, tests, and recent project evidence to ground the discussion. Preserve established conventions unless a technical reason justifies changing them.
-3. Classify the request as **start**, **status**, **resume**, or **handoff**, and classify its workflow entry point as **idea**, **definition**, **experience design**, **architecture**, or **planning**.
+2. When a repository exists, look for `docs/software-design/system-context.md`. Read it when present, then inspect only enough documentation, configuration, code, tests, and recent project evidence to verify the context needed for the initiative. Preserve established conventions unless a technical reason justifies changing them.
+3. Classify the request as **start**, **status**, **resume**, or **handoff**; classify the initiative as **new-system**, **system-change**, or **hybrid**; and classify its workflow entry point as **idea**, **definition**, **experience design**, **architecture**, or **planning**.
 4. For a new workflow, ask the user to choose one working mode unless their request already makes it clear:
    - **Chat-only** — develop the definition in conversation without writing artifacts.
    - **Persistent workspace** — maintain the project definition under `docs/software-design/<slug>/`. Recommend this for work expected to span multiple rounds, but require confirmation before writing.
 
 Warn that chat-only work cannot be resumed reliably from another chat. Offer persistent mode when cross-session continuity matters, but do not create a checkpoint after the user chooses chat-only.
+
+An existing System Context may be read in either working mode. Creating or updating it is a persistent-workspace action: never write `system-context.md` in chat-only mode. Read [references/system-context.md](references/system-context.md) when a context exists, must be established, or may need a material refresh.
 
 ## Report or resume durable work
 
@@ -29,7 +31,7 @@ For a status, resume, or handoff request, search `docs/software-design/*/00-stat
 - If several plausible sessions exist, show their project, phase, phase status, last update, and next action, then ask the user to choose.
 - If no checkpoint exists, say that no durable state was found. Offer to reconstruct it from existing definition artifacts or start a new persistent session; do not claim to remember another chat.
 
-Read `00-status.md` first, then only the files listed in `required_context`. Read the complete `brainstorm.md` only for recovery, audit, or historical traceability. A status-only request is read-only and must not repair or advance the workflow.
+Read `00-status.md` first, then the referenced System Context only when it is relevant, followed by only the files listed in `required_context`. Read the complete `brainstorm.md` only for recovery, audit, or historical traceability. A status-only request is read-only and must not repair, refresh context, or advance the workflow.
 
 When resuming an active session, execute the recorded `next_action` and continue autonomously rather than restarting discovery or asking for confirmation. For a waiting session, present its `pending_user_action`. Never overwrite an existing session silently.
 
@@ -77,7 +79,7 @@ After Gate 2, read [references/implementation-planning.md](references/implementa
 
 ## Maintain artifacts deliberately
 
-In persistent mode, read [references/artifacts.md](references/artifacts.md) and [references/session-state.md](references/session-state.md) before creating or updating files. Create `00-status.md` and `brainstorm.md` when the session begins. Maintain the checkpoint after meaningful transitions and create canonical definition documents only when their content is useful. Do not create empty placeholders or all documents by default.
+In persistent mode, read [references/artifacts.md](references/artifacts.md) and [references/session-state.md](references/session-state.md) before creating or updating files. Also read [references/system-context.md](references/system-context.md) before creating or updating the shared system baseline. Create `00-status.md` and `brainstorm.md` when the session begins. Maintain the checkpoint after meaningful transitions and create canonical definition documents only when their content is useful. Do not create empty placeholders or all documents by default.
 
 Keep traceability from the original need to requirements, applicable experience decisions, domain rules, technical decisions, interfaces, and implementation slices. Mark each canonical document `Draft`, `Review`, or `Approved`, and distinguish confirmed facts, assumptions, and open decisions.
 

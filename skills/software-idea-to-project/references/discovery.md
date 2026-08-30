@@ -2,6 +2,18 @@
 
 Read this reference when the input is an early idea, incomplete definition, conflicting requirements, or a request to clarify what the software should do. Stop using it once Gate 1 is approved unless later work exposes a contradiction.
 
+## Establish initiative context and baseline
+
+Classify the initiative before framing it:
+
+- **new-system** — the initiative defines a new maintained system;
+- **system-change** — the initiative changes an implemented system;
+- **hybrid** — it introduces a new component or boundary that must integrate with an implemented system.
+
+For system-change and hybrid work, read the System Context when present and establish a sufficiently verified baseline for the affected area before defining the requested delta. If the context is missing or stale, inspect only the relevant documentation, code, configuration, tests, and recent evidence. In persistent mode, create or refresh `docs/software-design/system-context.md` according to [system-context.md](system-context.md); in chat-only mode, keep the reconstructed baseline in conversation and do not write it.
+
+For new-system work, do not create an empty System Context. In persistent mode, create it only after the emerging definition contains useful confirmed purpose, boundary, lifecycle, or constraints. Keep proposed facts visibly distinct from an implemented baseline.
+
 ## Frame
 
 Establish the smallest useful shared understanding:
@@ -11,6 +23,8 @@ Establish the smallest useful shared understanding:
 - the primary observable outcome;
 - hard constraints already supplied by the user or repository;
 - the boundary between this system and its environment.
+
+For system-change and hybrid initiatives, state the observable current behavior, the requested delta, and the behavior that must remain unchanged. Do not treat a feature list as a sufficient baseline or acceptance definition.
 
 Distinguish an actor who determines system behavior from a buyer or market segment. The former is in scope; commercial evaluation is not.
 

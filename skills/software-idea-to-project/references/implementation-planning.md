@@ -8,6 +8,7 @@ The plan must be executable without leaving implementation-blocking decisions to
 
 - In an existing repository, inspect relevant source, tests, configuration, build commands, and conventions. Use only verified paths, symbols, and commands.
 - In greenfield work, derive a proposed structure from the approved architecture. Mark proposed paths as proposed until implementation creates them.
+- Use the System Context as baseline orientation when present, but verify implementation-critical facts against repository evidence. Do not update the current baseline during planning.
 - If an exact path, interface, dependency, or command cannot be established, resolve it before finalizing the plan or identify it as a blocker and stop at Gate 2.
 
 Do not manufacture precision, paste production implementation code, or split work into arbitrary two-to-five-minute steps. A task boundary should represent a coherent, independently reviewable and testable result.
@@ -34,7 +35,10 @@ Organize delivery into thin vertical slices that produce observable behavior. Gi
 - applicable interaction behavior, responsive rules, accessibility expectations, and design-system constraints implemented;
 - test cases and the verification command;
 - documentation, telemetry, migration, rollout, rollback, or compatibility work;
+- a System Context refresh when the slice will materially change the implemented baseline;
 - completion evidence.
+
+Place a required System Context refresh inside the slice that changes the baseline, after its implementation and verification steps. Specify the affected sections and expected new baseline reference. Do not create a standalone speculative documentation slice or describe planned behavior as current before delivery succeeds.
 
 Use the stable identifier in requirement, decision, test, and dependency mappings. Do not renumber existing identifiers merely because ordering changes. A material plan change returns the document to `Review`, increments `Plan revision`, and identifies the affected slices so an existing delivery tracker can invalidate only impacted work.
 
@@ -57,5 +61,6 @@ Before presenting the plan:
 5. Confirm the sequence handles migrations, compatibility, rollout, and rollback where required.
 6. Separate deferred non-goals from missing work.
 7. Summarize any residual risk that implementation must monitor but does not need to decide.
+8. Confirm every material baseline change schedules a proportional System Context refresh after verification, and that unchanged or merely planned behavior does not rewrite it.
 
 In persistent mode, save the result as `08-implementation-plan.md` with status `Review` and `Plan revision: 1`, then mark it `Approved` only after explicit user approval. End by stating that implementation requires separate authorization and a concrete authorized slice list. When granted, hand execution to `$project-plan-execution`; do not execute the plan from this skill.

@@ -1,4 +1,4 @@
 interface:
   display_name: "Software Idea to Project"
-  short_description: "Define product experience and technical plans"
-  default_prompt: "Use $software-idea-to-project to define my software behavior, applicable experience decisions, architecture, and implementation plan without starting implementation."
+  short_description: "Define new systems and software changes"
+  default_prompt: "Use $software-idea-to-project to define a new system or a change to existing software, including behavior, applicable experience decisions, architecture, and an implementation plan without starting implementation."

@@ -15,6 +15,8 @@ skill: software-idea-to-project
 project: Document Intake
 session: document-intake
 workflow_mode: persistent
+initiative_context: new-system
+system_context: null
 revision: 1
 phase: frame
 phase_status: active
@@ -51,10 +53,13 @@ Use these exact values:
 - `phase_status`: `active`, `awaiting-input`, `awaiting-approval`, `blocked`, or `complete`.
 - `gate_1` and `gate_2`: `not-ready`, `pending`, `approved`, or `invalidated`.
 - Existing artifact status: `active`, `draft`, `review`, or `approved`.
+- `initiative_context`, when present: `new-system`, `system-change`, or `hybrid`.
 
 Required invariants:
 
 - `schema_version` is `2`, `skill` is `software-idea-to-project`, and `workflow_mode` is `persistent`.
+- New checkpoints include `initiative_context` and `system_context`. Both fields are optional in existing schema v2 checkpoints, which remain valid without migration.
+- `system_context` is `null` until a System Context exists. Otherwise it is a normalized path relative to the checkpoint, such as `../system-context.md`, whose resolved target exists within `docs/software-design/`. It is not included in `required_context` or `artifacts`.
 - `session` equals the containing directory slug.
 - `revision` is a positive integer and increases by one for every completed checkpoint update.
 - `last_updated` is an ISO 8601 timestamp with an explicit UTC offset.
@@ -96,13 +101,13 @@ For status, resume, or handoff requests, search `docs/software-design/*/00-statu
 - With multiple plausible checkpoints, list `project`, `session`, `phase`, `phase_status`, `last_updated`, and either `next_action` or `pending_user_action`, then wait for selection.
 - With no checkpoint, look for existing `docs/software-design/<slug>/` artifacts only to offer recovery. Do not reconstruct or write state during a read-only status request.
 
-A status response reports the current phase, phase status, both gates, last completed work, blockers, open decisions, the active next action, and any pending user action. When `delivery_checkpoint` is present, also read it and report delivery status, authorized scope, slice counts, current slice, evidence summary, delivery blockers, and its active or pending action as a separate section. It does not mutate documents, execute either action, advance a phase, resolve a blocker, migrate schema, or repair inconsistencies.
+A status response reports the current phase, phase status, both gates, initiative context and referenced System Context when recorded, last completed work, blockers, open decisions, the active next action, and any pending user action. Read only the System Context header for freshness unless the status depends on its body. When `delivery_checkpoint` is present, also read it and report delivery status, authorized scope, slice counts, current slice, evidence summary, delivery blockers, and its active or pending action as a separate section. It does not mutate documents, refresh context, execute either action, advance a phase, resolve a blocker, migrate schema, or repair inconsistencies.
 
 When status-only reads a schema v1 checkpoint, interpret it in memory, report that migration is pending, and leave the file unchanged.
 
 ## Resume by state
 
-Read the selected `00-status.md`, migrate schema v1 when necessary, then read only `required_context`. Verify the schema and compare the checkpoint with declared artifact statuses before continuing.
+Read the selected `00-status.md`, migrate schema v1 when necessary, then read the referenced System Context when it affects the active or pending action, followed by only `required_context`. Verify the schema and compare the checkpoint with declared artifact statuses before continuing. If an older schema v2 checkpoint omits the optional context fields, discover and populate them only during a normal state-changing resume when relevant; a status-only request leaves it unchanged.
 
 - `active` — execute `next_action` without confirmation, then continue through additional safe actions until a genuine terminal condition.
 - `awaiting-input` — present only `pending_user_action` with the minimum context needed to answer it.
@@ -137,6 +142,8 @@ Before requesting Gate 1 approval, set `phase: crystallize`, `phase_status: awai
 Before requesting Gate 2 approval, set `phase: technical-design`, `phase_status: awaiting-approval`, `gate_2: pending`, `next_action: null`, and make `pending_user_action` request architecture approval. After explicit approval, mark the relevant technical documents `Approved`, set `gate_2: approved`, move to `implementation-planning`, set `phase_status: active`, clear `pending_user_action`, record an agent-executable `next_action`, and continue planning in the same turn.
 
 If an approved canonical document, including `experience-design.md`, returns to `Draft` or `Review`, invalidate every dependent gate. A material change to approved interaction flows, navigation, state behavior, accessibility expectations, or design-system decisions invalidates Gate 1 and therefore Gate 2. Return to the earliest phase needed to restore consistency.
+
+Updating or correcting the System Context does not invalidate a gate by itself. If the correction proves that an approved requirement or technical decision relied on a false material premise, invalidate only that gate and its dependents, then return to the earliest affected phase.
 
 When the implementation plan is approved, set `phase: complete`, `phase_status: complete`, both gates to `approved`, `next_action: null`, and `pending_user_action: null`, then summarize the final handoff. This records completion of the definition workflow, not authorization to implement.
 

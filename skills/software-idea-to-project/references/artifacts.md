@@ -14,6 +14,12 @@ Derive `<slug>` from an explicit project name or, if none exists, a concise topi
 
 Before creating the directory, inspect `docs/software-design/` for a matching or clearly related session. Treat `00-status.md` as the entry point when present. If a related session exists, summarize its workflow state and ask whether to resume it or use a distinct slug. Never overwrite or reset an existing session without explicit direction.
 
+## Shared system context
+
+`docs/software-design/system-context.md` is the optional shared orientation and current-baseline document for the repository's primary system. Read [system-context.md](system-context.md) before creating, refreshing, or relying on it.
+
+It belongs to the system rather than a definition session. Do not place it inside a session directory, assign it a numbered artifact slot, list it in a session's `artifacts` map, or apply the canonical `Draft | Review | Approved` header. Its own lifecycle, freshness, revision, and authority contract are defined in the reference above. It does not participate directly in Gate 1 or Gate 2.
+
 ## Artifact set
 
 Create `00-status.md` and `brainstorm.md` when persistent mode begins. The checkpoint is mandatory; canonical definition documents remain conditional:
@@ -42,6 +48,8 @@ Do not create empty files, placeholder sections, or every artifact by default. I
 
 The numbered definition documents from `01` through `08` are canonical. `experience-design.md`, when created, is an additional canonical definition document without changing the numbered contract. When thinking changes, update the relevant canonical document and record the reason in `brainstorm.md`. An abandoned idea that remains in `brainstorm.md` is not an active requirement.
 
+The System Context is the authoritative orientation entry point, not the authoritative owner of every fact it summarizes. Current implementation evidence and approved detailed documents retain the authority described in [system-context.md](system-context.md). Keep current baseline facts out of initiative documents when they are useful across multiple initiatives, and keep proposed initiative behavior out of the current baseline until delivery verifies it.
+
 Avoid duplicating full content across files. Link to the canonical owner of a concept and keep a consistent traceability identifier when relationships would otherwise be ambiguous, for example `REQ-`, `RULE-`, `DEC-`, and `SLICE-` identifiers. Use identifiers only when the project is complex enough to benefit from them.
 
 ## Canonical document header
@@ -65,4 +73,4 @@ Add only the sections needed after this shared status block. `Draft` means activ
 
 ## Chat-only mode
 
-Do not create or update files, including `00-status.md`. Warn that chat-only work cannot be reliably resumed from another chat. Preserve the same conceptual gates in conversation and summarize confirmed facts, assumptions, and open decisions at meaningful transitions. If the user later switches to persistent mode, ask for the target slug and crystallize the current state without inventing missing history.
+Do not create or update files, including `00-status.md` or `system-context.md`. An existing System Context may be read as evidence. Warn that chat-only work cannot be reliably resumed from another chat. Preserve the same conceptual gates in conversation and summarize confirmed facts, assumptions, and open decisions at meaningful transitions. If the user later switches to persistent mode, ask for the target slug and crystallize the current state without inventing missing history.
