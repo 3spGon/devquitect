@@ -12,6 +12,9 @@ dependencies = [
   "PyYAML>=6.0,<7",
 ]
 
+[project.scripts]
+devquitect = "devquitect_quality.cli:main"
+
 [dependency-groups]
 dev = [
   "pytest>=8.4,<9",
@@ -31,4 +34,3 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
-

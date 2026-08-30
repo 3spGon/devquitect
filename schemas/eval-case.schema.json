@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devquitect.local/schemas/eval-case.schema.json",
+  "x-devquitect-schema-version": 1,
+  "title": "Devquitect evaluation case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "target_skill",
+    "activation",
+    "fixture",
+    "sandbox",
+    "turns",
+    "assertions",
+    "forbidden_effects",
+    "repetitions",
+    "tags"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "target_skill": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "activation": {
+      "enum": ["explicit", "implicit-positive", "implicit-negative", "cross-skill"]
+    },
+    "fixture": {"type": "string", "minLength": 1},
+    "sandbox": {"enum": ["read-only", "workspace-write"]},
+    "turns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {"type": {"type": "string", "minLength": 1}}
+      }
+    },
+    "forbidden_effects": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "semantic_rubric": {"type": ["string", "null"]},
+    "repetitions": {"type": "integer", "minimum": 1},
+    "tags": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  }
+}

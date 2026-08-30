@@ -5,7 +5,7 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 2
+revision: 3
 last_updated: 2026-08-30
 baseline_reference: working-tree@264f4648ae1e699168347eb8e5945459bfbd0e27
 ---
@@ -14,7 +14,7 @@ baseline_reference: working-tree@264f4648ae1e699168347eb8e5945459bfbd0e27
 
 ## Quick orientation
 
-Devquitect is a Git repository containing three related Codex skills that cover software definition, approved plan execution, and targeted behavior-preserving refactoring. It now also contains the verified Python foundation for freezing those skills from Git or a working tree into isolated, content-addressed snapshots and an immutable stable N baseline record.
+Devquitect is a Git repository containing three related Codex skills that cover software definition, approved plan execution, and targeted behavior-preserving refactoring. Repository-owned Python tooling now freezes those skills into isolated snapshots and validates their structure, metadata, schemas, references, and plugin inputs offline.
 
 ## Purpose
 
@@ -33,11 +33,12 @@ Inside the current system:
 - optional Codex presentation and invocation metadata under `agents/openai.yaml`.
 - Python source-snapshot records and materialization under `src/devquitect_quality/`;
 - the stable N provenance manifest under `baselines/stable-n.json`;
-- the Python toolchain and focused snapshot tests declared by `pyproject.toml` and `uv.lock`.
+- the Python toolchain and focused snapshot tests declared by `pyproject.toml` and `uv.lock`;
+- the `devquitect` plugin definition under `.codex-plugin/plugin.json`;
+- versioned validation schemas under `schemas/` and contributor guidance under `docs/`.
 
 Outside the current implemented baseline:
 
-- automated structural validation;
 - behavioral evaluation infrastructure and isolated fixtures;
 - continuous integration;
 - plugin packaging and public distribution;
@@ -62,10 +63,12 @@ No Git remote or CI provider is configured in the represented baseline.
 - Stable N is identified by commit `264f4648ae1e699168347eb8e5945459bfbd0e27` and aggregate snapshot digest `sha256:062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef`.
 - Git refs and working-tree skill sources can be copied into separate read-only snapshots with normalized file, skill, and aggregate SHA-256 identities.
 - Git-ref snapshots are eligible stable sources; working-tree snapshots are always diagnostic-only, even when their skill files are clean.
+- `devquitect validate --source <selector>` checks frontmatter, name consistency and uniqueness, local references, presentation metadata, schema compatibility, plugin membership, and package allowlists without credentials or network access.
+- Validation emits the approved JSON report envelope, an equivalent text presentation, normalized relative paths, atomic report files, and stable exit codes `0`, `1`, and `2`.
 
 ## Technical landscape
 
-The maintained skills remain declarative Markdown and YAML. Repository quality tooling now uses Python 3.12 with a `src/` package layout, setuptools build metadata, a `uv.lock` dependency lock, pytest, and Ruff. The first implemented component owns source selection, safe Git/worktree enumeration, symlink/path validation, read-only materialization, and content manifests. No plugin manifest, behavioral runner, structural-validator command, or release pipeline exists yet.
+The maintained skills remain declarative Markdown and YAML. Repository quality tooling uses Python 3.12 with a `src/` package layout, setuptools build metadata, a `uv.lock` dependency lock, PyYAML, jsonschema, pytest, and Ruff. Implemented components own source selection, read-only snapshots, structural validation, canonical reporting, and the `devquitect` plugin definition. No behavioral runner, comparison engine, reproducible package builder, or release pipeline exists yet.
 
 ## Development and verification
 
@@ -73,12 +76,13 @@ The stable baseline and source-snapshot component are verified with:
 
 ```text
 uv sync --all-groups
-uv run pytest tests/unit/test_sources.py tests/integration/test_stable_baseline.py
+uv run pytest
+uv run devquitect validate --source working-tree --format json
 uv run ruff check src tests
 git diff --exit-code -- skills
 ```
 
-The focused suite verifies immutable reconstruction from the recorded commit, stable-versus-working-tree eligibility, post-freeze isolation, unsafe symlink rejection, invalid source handling, and the exact three-skill baseline. Structural skill validation, routing and behavioral invariants, and packaging checks remain future slices.
+The suite verifies immutable reconstruction from the recorded commit; stable-versus-working-tree eligibility; post-freeze isolation; invalid source and unsafe path handling; valid current skill/plugin inputs; specific malformed metadata, duplicate-name, missing-reference, unsupported-schema, and unexpected-file records; report-path normalization; and atomic report replacement. Routing, behavioral invariants, comparisons, and reproducible packaging remain future slices.
 
 ## Preserved behavior
 
@@ -86,11 +90,11 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 
 ## Known limitations and context gaps
 
-- There is no contributor-facing project documentation or definition of done.
-- Structural and behavioral skill regressions are not yet automatically detected.
+- Contributor guidance currently covers structural authoring and validation only; the integrated definition of done remains a later slice.
+- Structural regressions are detected locally, but behavioral skill regressions are not yet automatically detected.
 - Release artifacts are not built reproducibly from a verified commit.
 - Compatibility across model or Codex runtime changes is not measured.
-- A distribution mechanism for the three-skill bundle has not been implemented.
+- The plugin is defined but no reproducible archive, marketplace entry, installation, or publication mechanism has been implemented.
 - The current source-snapshot implementation is verified in the working tree but has not been committed or promoted as a release.
 
 ## Authoritative references
@@ -100,4 +104,6 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 - [`targeted-refactoring`](../../skills/targeted-refactoring/SKILL.md)
 - [Stable N manifest](../../baselines/stable-n.json)
 - [Source snapshot implementation](../../src/devquitect_quality/sources.py)
+- [Structural validator](../../src/devquitect_quality/validate.py)
+- [Contributor guidance](../../docs/contributing-skills.md)
 - [Snapshot tests](../../tests/integration/test_stable_baseline.py)

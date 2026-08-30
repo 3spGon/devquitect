@@ -1,0 +1,21 @@
+{
+  "name": "devquitect",
+  "version": "0.1.0",
+  "description": "Define, execute, and improve software work through bounded, verifiable workflows.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Devquitect",
+    "shortDescription": "Design and deliver software with explicit boundaries",
+    "longDescription": "Reusable workflows for software definition, approved-plan execution, and targeted behavior-preserving refactoring.",
+    "developerName": "Devquitect",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use Devquitect to define a software change before implementation.",
+      "Use Devquitect to execute an authorized implementation slice and retain verification evidence."
+    ]
+  }
+}
