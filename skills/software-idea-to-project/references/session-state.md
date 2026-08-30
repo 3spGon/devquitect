@@ -65,6 +65,7 @@ Required invariants:
 - `required_context` contains only relative paths within the session directory and only the minimum files needed for the active action or pending user action.
 - `blockers` and `open_decisions` are arrays, empty when none exist. Prefer stable decision identifiers when the project already uses them.
 - `artifacts` lists existing session artifacts only. Do not list hypothetical or uncreated files.
+- `experience-design.md` is an optional canonical artifact and does not change `schema_version`; list it only after creation and use the same artifact statuses as numbered definition documents.
 - `delivery_checkpoint` is optional and absent until authorized execution initializes `09-delivery-status.md`. When present, its value is exactly `09-delivery-status.md`.
 - The Markdown body summarizes process context; it does not duplicate requirements, architecture, or contracts owned by canonical documents.
 
@@ -131,11 +132,11 @@ Before deliberately yielding for input or approval, becoming blocked, completing
 
 ## Gates and invalidation
 
-Before requesting Gate 1 approval, set `phase: crystallize`, `phase_status: awaiting-approval`, `gate_1: pending`, `next_action: null`, and make `pending_user_action` request approval or revision of the design. After explicit approval, mark the relevant canonical documents `Approved`, set `gate_1: approved`, move to `technical-design`, set `phase_status: active`, clear `pending_user_action`, record an agent-executable `next_action`, and continue technical design in the same turn.
+Before requesting Gate 1 approval, set `phase: crystallize`, `phase_status: awaiting-approval`, `gate_1: pending`, `next_action: null`, and make `pending_user_action` request approval or revision of the design. When human interaction is significant or minimal, include applicable experience documents in `required_context`; when it is not applicable, include the justification in the approval summary without creating an artifact. After explicit approval, mark the relevant canonical documents `Approved`, set `gate_1: approved`, move to `technical-design`, set `phase_status: active`, clear `pending_user_action`, record an agent-executable `next_action`, and continue technical design in the same turn.
 
 Before requesting Gate 2 approval, set `phase: technical-design`, `phase_status: awaiting-approval`, `gate_2: pending`, `next_action: null`, and make `pending_user_action` request architecture approval. After explicit approval, mark the relevant technical documents `Approved`, set `gate_2: approved`, move to `implementation-planning`, set `phase_status: active`, clear `pending_user_action`, record an agent-executable `next_action`, and continue planning in the same turn.
 
-If an approved canonical document returns to `Draft` or `Review`, invalidate every dependent gate. Gate 1 invalidation also invalidates Gate 2. Return to the earliest phase needed to restore consistency.
+If an approved canonical document, including `experience-design.md`, returns to `Draft` or `Review`, invalidate every dependent gate. A material change to approved interaction flows, navigation, state behavior, accessibility expectations, or design-system decisions invalidates Gate 1 and therefore Gate 2. Return to the earliest phase needed to restore consistency.
 
 When the implementation plan is approved, set `phase: complete`, `phase_status: complete`, both gates to `approved`, `next_action: null`, and `pending_user_action: null`, then summarize the final handoff. This records completion of the definition workflow, not authorization to implement.
 
@@ -160,7 +161,7 @@ After migrating an `active` session, continue autonomously from the migrated `ne
 
 ## Recover missing, corrupt, or stale state
 
-Canonical numbered documents through `08` remain authoritative for requirements, technical design, and the approved plan. `00-status.md` is authoritative for definition workflow state. `09-delivery-status.md`, when present, is authoritative for delivery. `brainstorm.md` is historical evidence.
+Canonical numbered documents through `08`, plus `experience-design.md` when present, remain authoritative for requirements, experience decisions, technical design, and the approved plan. `00-status.md` is authoritative for definition workflow state. `09-delivery-status.md`, when present, is authoritative for delivery. `brainstorm.md` is historical evidence.
 
 When resuming and the checkpoint is missing, malformed, or inconsistent:
 

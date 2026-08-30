@@ -21,6 +21,7 @@ If the request contains multiple independently deployable subsystems, surface th
 Explore only dimensions that can change requirements or architecture:
 
 - primary and alternate workflows;
+- human interaction surfaces, navigation, feedback, and accessibility expectations when they affect observable behavior;
 - inputs, outputs, triggers, and observable completion;
 - important scenarios and failure paths;
 - business-domain rules expressed as system behavior;
@@ -70,7 +71,8 @@ The design is ready for review when it contains, at the depth the project needs:
 - first-release scope, non-goals, and testable acceptance behavior;
 - domain concepts, important rules, ownership, and major failure behavior;
 - constraints and non-functional requirements that affect the design;
+- the interaction-surface classification and, when applicable, the experience-readiness criteria from [experience-design.md](experience-design.md);
 - confirmed facts, assumptions, and open decisions;
 - a recommended technical direction at a conceptual level, without premature file-level planning.
 
-Present a concise design summary and any open decisions. Ask for explicit approval. In persistent mode, update the applicable concept, requirements, and domain documents to `Review`; mark them `Approved` only after the user approves. Detailed architecture begins only after this gate passes.
+Present a concise design summary and any open decisions. Ask for explicit approval. In persistent mode, update the applicable concept, requirements, domain, and experience documents to `Review`; mark them `Approved` only after the user approves. Detailed architecture begins only after this gate passes.

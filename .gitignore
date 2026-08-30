@@ -1,2 +1,9 @@
 .DS_Store
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.gz
+*.bz2
+*.xz
     

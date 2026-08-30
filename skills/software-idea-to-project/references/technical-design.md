@@ -38,9 +38,9 @@ Do not invent endpoint paths, field names, or protocol details before the archit
 
 ## Preserve traceability
 
-Connect each major requirement to the component, domain rule, interface, or decision that satisfies it. Surface requirements with no technical treatment and technical components with no approved purpose.
+Connect each major requirement and approved experience decision to the component, domain rule, interface, or decision that satisfies it. Surface requirements or interaction constraints with no technical treatment and technical components with no approved purpose.
 
-If architecture work contradicts the approved design, return to discovery, update the affected canonical documents, and repeat Gate 1 for the material change.
+If architecture work contradicts the approved design or requires a material change to an approved experience decision, return to discovery, update the affected canonical documents, and repeat Gate 1 for the material change.
 
 ## Apply Gate 2 — Architecture readiness
 
@@ -55,5 +55,6 @@ Architecture is ready for planning only when:
 - acceptance and validation strategy are known;
 - confirmed facts, assumptions, non-blocking deferred decisions, and risks are explicit;
 - requirements trace to technical design elements.
+- approved experience decisions trace to technical design elements when applicable.
 
 Present the readiness summary and request explicit approval. In persistent mode, move relevant technical documents to `Review`, then `Approved` after user approval. Do not create `08-implementation-plan.md` until this gate passes.

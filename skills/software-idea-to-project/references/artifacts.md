@@ -16,7 +16,7 @@ Before creating the directory, inspect `docs/software-design/` for a matching or
 
 ## Artifact set
 
-Create `00-status.md` and `brainstorm.md` when persistent mode begins. The checkpoint is mandatory; numbered documents remain conditional:
+Create `00-status.md` and `brainstorm.md` when persistent mode begins. The checkpoint is mandatory; canonical definition documents remain conditional:
 
 | Artifact | Create when |
 | --- | --- |
@@ -24,6 +24,7 @@ Create `00-status.md` and `brainstorm.md` when persistent mode begins. The check
 | `01-concept.md` | Purpose, actors, outcomes, boundaries, or non-goals need a canonical definition. |
 | `02-requirements.md` | Workflows, scenarios, constraints, or acceptance criteria are substantive. |
 | `03-domain.md` | Domain concepts, rules, identities, ownership, or states affect behavior. |
+| `experience-design.md` | Human tasks, flows, views, states, navigation, accessibility, responsive behavior, or design-system decisions need a canonical owner. |
 | `04-architecture.md` | Multiple components, dependencies, or structural choices require explanation. |
 | `05-data-model.md` | Persistence, relationships, lifecycle, querying, or migration matters. |
 | `06-api-contracts.md` | APIs, commands, events, webhooks, or integration contracts must be shared. |
@@ -39,13 +40,13 @@ Do not create empty files, placeholder sections, or every artifact by default. I
 
 `brainstorm.md` is a chronological, non-canonical decision trail. Record meaningful milestones: the seed, newly explored directions, evidence, user feedback, alternatives, reversals, approvals, and crystallized conclusions. Update it at milestones rather than after every message.
 
-The numbered definition documents from `01` through `08` are canonical. When thinking changes, update the relevant canonical document and record the reason in `brainstorm.md`. An abandoned idea that remains in `brainstorm.md` is not an active requirement.
+The numbered definition documents from `01` through `08` are canonical. `experience-design.md`, when created, is an additional canonical definition document without changing the numbered contract. When thinking changes, update the relevant canonical document and record the reason in `brainstorm.md`. An abandoned idea that remains in `brainstorm.md` is not an active requirement.
 
 Avoid duplicating full content across files. Link to the canonical owner of a concept and keep a consistent traceability identifier when relationships would otherwise be ambiguous, for example `REQ-`, `RULE-`, `DEC-`, and `SLICE-` identifiers. Use identifiers only when the project is complex enough to benefit from them.
 
 ## Canonical document header
 
-Begin each numbered canonical definition document from `01` through `08` with:
+Begin each numbered canonical definition document from `01` through `08`, and `experience-design.md` when present, with:
 
 ```markdown
 # <Document title>

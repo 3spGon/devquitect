@@ -1,6 +1,6 @@
 ---
 name: software-idea-to-project
-description: Start, expand, resume, or report the status of a software idea workflow that produces an approved technical definition, architecture, and implementation-ready plan. Use for software ideation, requirements, domain modeling, technical scoping, architecture, interfaces, data, delivery planning, and cross-session handoff; do not use for market validation, revenue potential, ROI, or business viability.
+description: Start, expand, resume, or report a software definition workflow that produces approved product behavior, interaction decisions when relevant, architecture, and an implementation-ready plan. Use for software ideation, requirements, UX or interaction definition, domain modeling, technical scoping, architecture, interfaces, data, delivery planning, and cross-session handoff; do not use for dedicated visual-asset production, market validation, revenue potential, ROI, or business viability.
 ---
 
 # Software Idea to Project
@@ -13,7 +13,7 @@ Before asking questions or proposing a direction:
 
 1. Locate and follow every applicable `AGENTS.md` from the workspace root to the files in scope.
 2. When a repository exists, inspect only enough documentation, configuration, code, tests, and recent project evidence to ground the discussion. Preserve established conventions unless a technical reason justifies changing them.
-3. Classify the request as **start**, **status**, **resume**, or **handoff**, and classify its workflow entry point as **idea**, **definition**, **architecture**, or **planning**.
+3. Classify the request as **start**, **status**, **resume**, or **handoff**, and classify its workflow entry point as **idea**, **definition**, **experience design**, **architecture**, or **planning**.
 4. For a new workflow, ask the user to choose one working mode unless their request already makes it clear:
    - **Chat-only** — develop the definition in conversation without writing artifacts.
    - **Persistent workspace** — maintain the project definition under `docs/software-design/<slug>/`. Recommend this for work expected to span multiple rounds, but require confirmation before writing.
@@ -47,6 +47,8 @@ This is also a definition workflow, not implementation authorization. Until the 
 
 Definition artifacts are allowed only after the user chooses persistent workspace or otherwise explicitly requests them.
 
+Defining interaction behavior and the experience needed to approve the product is in scope. Producing polished visual assets, high-fidelity mockups, or interactive prototypes is not implied by this workflow; use a suitable specialized capability only when the user requests those deliverables or they are necessary evidence. Its output informs this workflow but does not approve a gate or become canonical until it is reconciled with the definition.
+
 ## Run the workflow progressively
 
 For an early or incomplete idea, read [references/discovery.md](references/discovery.md) and move through:
@@ -63,7 +65,9 @@ Use these uncertainty labels whenever ambiguity affects the result:
 - **Assumption** — a reversible default used to maintain progress.
 - **Open decision** — a choice that materially affects scope, architecture, risk, or irreversible work.
 
-When the concept, scope, essential behaviors, and domain boundaries are coherent, apply **Gate 1 — Design approval**. Present the proposed design and its remaining open decisions. Do not begin detailed architecture until the user explicitly approves it in chat or approves the relevant persistent documents.
+Classify the product's human interaction surface as **significant**, **minimal**, or **not applicable**. Read [references/experience-design.md](references/experience-design.md) when human interaction affects workflows, acceptance behavior, accessibility, navigation, responsive behavior, or other consequential decisions. Do not create experience artifacts for a justified not-applicable classification.
+
+When the concept, scope, essential behaviors, domain boundaries, and applicable experience decisions are coherent, apply **Gate 1 — Design approval**. Present the proposed design and its remaining open decisions. For a significant or minimal interaction surface, include the applicable experience-readiness result; for a not-applicable surface, state the reason briefly. Do not begin detailed architecture until the user explicitly approves it in chat or approves the relevant persistent documents.
 
 After Gate 1, read [references/technical-design.md](references/technical-design.md). Define only the architecture, data, interfaces, decisions, and operational qualities the project actually needs. Move backward if this work exposes a contradiction in the approved design.
 
@@ -73,9 +77,9 @@ After Gate 2, read [references/implementation-planning.md](references/implementa
 
 ## Maintain artifacts deliberately
 
-In persistent mode, read [references/artifacts.md](references/artifacts.md) and [references/session-state.md](references/session-state.md) before creating or updating files. Create `00-status.md` and `brainstorm.md` when the session begins. Maintain the checkpoint after meaningful transitions and create numbered canonical documents only when their content is useful. Do not create empty placeholders or all documents by default.
+In persistent mode, read [references/artifacts.md](references/artifacts.md) and [references/session-state.md](references/session-state.md) before creating or updating files. Create `00-status.md` and `brainstorm.md` when the session begins. Maintain the checkpoint after meaningful transitions and create canonical definition documents only when their content is useful. Do not create empty placeholders or all documents by default.
 
-Keep traceability from the original need to requirements, domain rules, technical decisions, interfaces, and implementation slices. Mark each canonical document `Draft`, `Review`, or `Approved`, and distinguish confirmed facts, assumptions, and open decisions.
+Keep traceability from the original need to requirements, applicable experience decisions, domain rules, technical decisions, interfaces, and implementation slices. Mark each canonical document `Draft`, `Review`, or `Approved`, and distinguish confirmed facts, assumptions, and open decisions.
 
 ## Finish at the correct boundary
 
