@@ -1,0 +1,5 @@
+schema_version: 1
+id: meaningful-response
+dimensions:
+  - id: addresses-request
+    description: The response meaningfully addresses the requested decision without overriding deterministic policy.

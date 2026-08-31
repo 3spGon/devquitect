@@ -19,7 +19,7 @@
   "properties": {
     "schema_version": {"const": 1},
     "report_type": {
-      "enum": ["validation", "evaluation", "comparison", "package", "release-check"]
+      "enum": ["validation", "evaluation", "comparison", "package", "release-check", "check"]
     },
     "generated_at": {"type": "string", "format": "date-time"},
     "toolchain": {"type": "object"},

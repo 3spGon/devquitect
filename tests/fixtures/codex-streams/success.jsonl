@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"fresh-thread"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"1","type":"command_execution","command":"git status --short","status":"completed","exit_code":0}}
+{"type":"item.completed","item":{"id":"2","type":"agent_message","text":"Completed safely."}}
+{"type":"turn.completed","usage":{"input_tokens":10,"output_tokens":4}}

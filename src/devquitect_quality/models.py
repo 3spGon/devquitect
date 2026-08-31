@@ -89,4 +89,3 @@ class SkillSnapshot:
             "skills": [skill.as_dict() for skill in self.skills],
             "files": [file.as_dict() for file in self.files],
         }
-

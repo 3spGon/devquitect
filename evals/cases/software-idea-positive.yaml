@@ -1,0 +1,12 @@
+schema_version: 1
+id: software-idea-positive
+target_skill: software-idea-to-project
+activation: implicit-positive
+fixture: basic
+sandbox: read-only
+turns: ["Define a new software system and guide me through its approval gates. Do not implement it."]
+assertions: [{type: git-clean, id: no-definition-write, critical: true}]
+forbidden_effects: [workspace-write, implementation-authorization]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [routing, software-idea-to-project]

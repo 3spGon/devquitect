@@ -5,16 +5,16 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 3
+revision: 6
 last_updated: 2026-08-30
-baseline_reference: working-tree@264f4648ae1e699168347eb8e5945459bfbd0e27
+baseline_reference: candidate@5f258930bfada1702906fcc367d14a473168ee80
 ---
 
 # Devquitect system context
 
 ## Quick orientation
 
-Devquitect is a Git repository containing three related Codex skills that cover software definition, approved plan execution, and targeted behavior-preserving refactoring. Repository-owned Python tooling now freezes those skills into isolated snapshots and validates their structure, metadata, schemas, references, and plugin inputs offline.
+Devquitect is a Git repository containing three related Codex skills that cover software definition, approved plan execution, and targeted behavior-preserving refactoring. Repository-owned Python tooling freezes skills into isolated snapshots, validates their structure offline, and runs versioned behavioral cases through an isolated Codex CLI adapter.
 
 ## Purpose
 
@@ -22,7 +22,7 @@ The current system provides reusable agent workflows for moving from a software 
 
 ## Current lifecycle
 
-The repository is in development. A preliminary `v0.1.0` tag exists, while the skill set and its shared workflow contracts continue to evolve.
+The repository is in development. A preliminary `v0.1.0` tag exists, and exact commit `5f258930bfada1702906fcc367d14a473168ee80` carries the unpromoted `0.2.0` plugin manifest. The skill set and its shared workflow contracts continue to evolve.
 
 ## System boundaries
 
@@ -39,10 +39,9 @@ Inside the current system:
 
 Outside the current implemented baseline:
 
-- behavioral evaluation infrastructure and isolated fixtures;
 - continuous integration;
-- plugin packaging and public distribution;
-- automated release production;
+- public plugin distribution;
+- automated release publication;
 - MCP servers, connectors, applications, or graphical interfaces.
 
 ## Actors and external systems
@@ -65,10 +64,17 @@ No Git remote or CI provider is configured in the represented baseline.
 - Git-ref snapshots are eligible stable sources; working-tree snapshots are always diagnostic-only, even when their skill files are clean.
 - `devquitect validate --source <selector>` checks frontmatter, name consistency and uniqueness, local references, presentation metadata, schema compatibility, plugin membership, and package allowlists without credentials or network access.
 - Validation emits the approved JSON report envelope, an equivalent text presentation, normalized relative paths, atomic report files, and stable exit codes `0`, `1`, and `2`.
+- `devquitect eval` loads schema-valid YAML cases, creates a fresh Git workspace, conversation, Codex home, skill root, and evidence namespace per attempt, and emits canonical evaluation reports.
+- Deterministic assertions dominate optional semantic grades; critical failures cannot be overridden and infrastructure failures remain inconclusive with exit `3`.
+- Trusted local evaluation can scope an existing ChatGPT login cache to one isolated subprocess without retaining credentials in fixtures, reports, or repository files.
+- `devquitect compare` freezes stable and candidate sources before execution, runs them independently, and classifies equivalent behavior, improvement, regression, reviewed contract change, variability, or inconclusive infrastructure.
+- `devquitect package` reads an exact Git commit, enforces the committed semantic version and package allowlist, and emits a normalized plugin ZIP with entry and artifact SHA-256 identities.
+- `devquitect release-check` rebuilds in two fresh roots, binds passing behavioral evidence to the same snapshot, applies compatibility and migration policy, and emits an explicitly unapproved promotion proposal.
+- `devquitect check` composes structural validation with the credential-free unit, integration, and CLI contract suite; `--behavioral` explicitly adds trusted critical evaluation and clean-ref self-hosting comparison.
 
 ## Technical landscape
 
-The maintained skills remain declarative Markdown and YAML. Repository quality tooling uses Python 3.12 with a `src/` package layout, setuptools build metadata, a `uv.lock` dependency lock, PyYAML, jsonschema, pytest, and Ruff. Implemented components own source selection, read-only snapshots, structural validation, canonical reporting, and the `devquitect` plugin definition. No behavioral runner, comparison engine, reproducible package builder, or release pipeline exists yet.
+The maintained skills remain declarative Markdown and YAML. Repository quality tooling uses Python 3.12 with a `src/` package layout, setuptools build metadata, a `uv.lock` dependency lock, PyYAML, jsonschema, pytest, and Ruff. Implemented components own source selection, read-only snapshots, structural validation, isolated Codex execution, normalized observations, deterministic assertions, behavioral cases, stable/candidate comparison, deterministic packaging, release-eligibility policy, canonical reporting, and the `devquitect` plugin definition. Publication remains manual and outside the tooling.
 
 ## Development and verification
 
@@ -82,7 +88,7 @@ uv run ruff check src tests
 git diff --exit-code -- skills
 ```
 
-The suite verifies immutable reconstruction from the recorded commit; stable-versus-working-tree eligibility; post-freeze isolation; invalid source and unsafe path handling; valid current skill/plugin inputs; specific malformed metadata, duplicate-name, missing-reference, unsupported-schema, and unexpected-file records; report-path normalization; and atomic report replacement. Routing, behavioral invariants, comparisons, and reproducible packaging remain future slices.
+The 56-test fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, package allowlists, normalized rebuilds, release evidence blocking, and integrated check exit/report behavior. A trusted critical run passed seven isolated stable cases, and a trusted self-hosting comparison classified stable and clean candidate commit `5f25893` as equivalent and release-eligible. The full behavioral `check` passed against that exact snapshot. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
 
 ## Preserved behavior
 
@@ -90,11 +96,10 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 
 ## Known limitations and context gaps
 
-- Contributor guidance currently covers structural authoring and validation only; the integrated definition of done remains a later slice.
-- Structural regressions are detected locally, but behavioral skill regressions are not yet automatically detected.
-- Release artifacts are not built reproducibly from a verified commit.
+- Contributor checks remain local because no hosted CI provider is configured.
+- Behavioral checks require an explicit trusted run with ChatGPT or API authentication; ordinary fast checks remain credential-free.
 - Compatibility across model or Codex runtime changes is not measured.
-- The plugin is defined but no reproducible archive, marketplace entry, installation, or publication mechanism has been implemented.
+- No marketplace entry, installation automation, hosted CI, or publication mechanism has been implemented.
 - The current source-snapshot implementation is verified in the working tree but has not been committed or promoted as a release.
 
 ## Authoritative references
@@ -105,5 +110,11 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 - [Stable N manifest](../../baselines/stable-n.json)
 - [Source snapshot implementation](../../src/devquitect_quality/sources.py)
 - [Structural validator](../../src/devquitect_quality/validate.py)
+- [Behavioral adapter](../../src/devquitect_quality/codex_adapter.py)
+- [Behavioral cases](../../evals/cases)
+- [Comparison engine](../../src/devquitect_quality/comparison.py)
+- [Plugin packager](../../src/devquitect_quality/packaging.py)
+- [Promotion policy](../../src/devquitect_quality/promotion.py)
 - [Contributor guidance](../../docs/contributing-skills.md)
+- [Repository README](../../README.md)
 - [Snapshot tests](../../tests/integration/test_stable_baseline.py)

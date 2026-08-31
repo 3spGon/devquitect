@@ -140,7 +140,7 @@ Every canonical report uses this envelope:
 ```json
 {
   "schema_version": 1,
-  "report_type": "validation|evaluation|comparison|package|release-check",
+  "report_type": "validation|evaluation|comparison|package|release-check|check",
   "generated_at": "RFC3339 timestamp",
   "toolchain": {},
   "inputs": {},

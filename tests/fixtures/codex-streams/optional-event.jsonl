@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"fresh-thread"}
+{"type":"future.telemetry","payload":{"anything":true}}
+{"type":"item.completed","item":{"type":"agent_message","text":"done"}}
+{"type":"turn.completed"}

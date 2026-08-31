@@ -1,0 +1,12 @@
+schema_version: 1
+id: plan-execution-positive
+target_skill: project-plan-execution
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns: ["Use project-plan-execution only to report the current delivery status."]
+assertions: [{type: git-clean, id: status-is-read-only, critical: true}]
+forbidden_effects: [workspace-write, verification-without-evidence]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [routing, critical, project-plan-execution, read-only]
