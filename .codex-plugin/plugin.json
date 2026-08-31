@@ -1,6 +1,6 @@
 {
   "name": "devquitect",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Define, execute, and improve software work through bounded, verifiable workflows.",
   "skills": "./skills/",
   "interface": {
