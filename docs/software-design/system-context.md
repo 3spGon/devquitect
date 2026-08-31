@@ -5,7 +5,7 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 6
+revision: 7
 last_updated: 2026-08-30
 baseline_reference: candidate@5f258930bfada1702906fcc367d14a473168ee80
 ---
@@ -71,6 +71,7 @@ No Git remote or CI provider is configured in the represented baseline.
 - `devquitect package` reads an exact Git commit, enforces the committed semantic version and package allowlist, and emits a normalized plugin ZIP with entry and artifact SHA-256 identities.
 - `devquitect release-check` rebuilds in two fresh roots, binds passing behavioral evidence to the same snapshot, applies compatibility and migration policy, and emits an explicitly unapproved promotion proposal.
 - `devquitect check` composes structural validation with the credential-free unit, integration, and CLI contract suite; `--behavioral` explicitly adds trusted critical evaluation and clean-ref self-hosting comparison.
+- Real behavioral commands default to the efficient `gpt-5.6-luna` model at `low` reasoning effort, retain that identity in evidence, and allow explicit calibration overrides; fast checks invoke no model.
 
 ## Technical landscape
 
@@ -88,7 +89,7 @@ uv run ruff check src tests
 git diff --exit-code -- skills
 ```
 
-The 56-test fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, package allowlists, normalized rebuilds, release evidence blocking, and integrated check exit/report behavior. A trusted critical run passed seven isolated stable cases, and a trusted self-hosting comparison classified stable and clean candidate commit `5f25893` as equivalent and release-eligible. The full behavioral `check` passed against that exact snapshot. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
+The 58-test fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, lightweight behavioral defaults, package allowlists, normalized rebuilds, release evidence blocking, and integrated check exit/report behavior. A trusted critical run passed seven isolated stable cases, and a trusted self-hosting comparison classified stable and clean candidate commit `5f25893` as equivalent and release-eligible. The full behavioral `check` passed against that exact snapshot. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
 
 ## Preserved behavior
 

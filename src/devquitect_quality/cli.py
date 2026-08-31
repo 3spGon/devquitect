@@ -10,7 +10,11 @@ import tempfile
 from pathlib import Path
 
 from .cases import CaseError, load_cases, select_cases
-from .codex_adapter import discover_auth_cache
+from .codex_adapter import (
+    DEFAULT_TEST_MODEL,
+    DEFAULT_TEST_REASONING_EFFORT,
+    discover_auth_cache,
+)
 from .comparison import freeze_pair, pair_records
 from .evaluation import run_case
 from .models import SkillSource
@@ -59,8 +63,12 @@ def _parser() -> argparse.ArgumentParser:
     selection = evaluate.add_mutually_exclusive_group()
     selection.add_argument("--suite")
     selection.add_argument("--case")
-    evaluate.add_argument("--model")
-    evaluate.add_argument("--reasoning-effort")
+    evaluate.add_argument("--model", default=DEFAULT_TEST_MODEL)
+    evaluate.add_argument(
+        "--reasoning-effort",
+        choices=("low", "medium", "high", "xhigh", "max"),
+        default=DEFAULT_TEST_REASONING_EFFORT,
+    )
     evaluate.add_argument("--report", type=Path)
     compare = commands.add_parser("compare", help="compare stable and candidate behavior")
     compare.add_argument("--stable", required=True)
@@ -69,6 +77,12 @@ def _parser() -> argparse.ArgumentParser:
     comparison_selection.add_argument("--suite")
     comparison_selection.add_argument("--case")
     compare.add_argument("--report", type=Path)
+    compare.add_argument("--model", default=DEFAULT_TEST_MODEL)
+    compare.add_argument(
+        "--reasoning-effort",
+        choices=("low", "medium", "high", "xhigh", "max"),
+        default=DEFAULT_TEST_REASONING_EFFORT,
+    )
     package = commands.add_parser("package", help="build a deterministic plugin archive")
     package.add_argument("--source", required=True)
     package.add_argument("--version", required=True)
@@ -83,6 +97,12 @@ def _parser() -> argparse.ArgumentParser:
     check = commands.add_parser("check", help="run the integrated contributor definition of done")
     check.add_argument("--source", default="working-tree")
     check.add_argument("--behavioral", action="store_true")
+    check.add_argument("--model", default=DEFAULT_TEST_MODEL)
+    check.add_argument(
+        "--reasoning-effort",
+        choices=("low", "medium", "high", "xhigh", "max"),
+        default=DEFAULT_TEST_REASONING_EFFORT,
+    )
     check.add_argument("--report", type=Path)
     return parser
 
@@ -197,12 +217,26 @@ def _run_compare(args: argparse.Namespace) -> int:
             stable_records = [
                 record
                 for case in cases
-                for record in run_case(case, pair.stable, repository, auth_cache=auth_cache)
+                for record in run_case(
+                    case,
+                    pair.stable,
+                    repository,
+                    model=args.model,
+                    reasoning_effort=args.reasoning_effort,
+                    auth_cache=auth_cache,
+                )
             ]
             candidate_records = [
                 record
                 for case in cases
-                for record in run_case(case, pair.candidate, repository, auth_cache=auth_cache)
+                for record in run_case(
+                    case,
+                    pair.candidate,
+                    repository,
+                    model=args.model,
+                    reasoning_effort=args.reasoning_effort,
+                    auth_cache=auth_cache,
+                )
             ]
         records = pair_records(stable_records, candidate_records)
         report = build_comparison_report(
@@ -376,7 +410,18 @@ def _run_check(args: argparse.Namespace) -> int:
 
         if exit_code == 0 and args.behavioral:
             evaluation = _nested_command(
-                repository, ["eval", "--source", args.source, "--suite", "critical"]
+                repository,
+                [
+                    "eval",
+                    "--source",
+                    args.source,
+                    "--suite",
+                    "critical",
+                    "--model",
+                    args.model,
+                    "--reasoning-effort",
+                    args.reasoning_effort,
+                ],
             )
             if evaluation.returncode != 0:
                 result = "inconclusive" if evaluation.returncode == 3 else "fail"
@@ -420,6 +465,10 @@ def _run_check(args: argparse.Namespace) -> int:
                         args.source,
                         "--suite",
                         "self-hosting",
+                        "--model",
+                        args.model,
+                        "--reasoning-effort",
+                        args.reasoning_effort,
                     ],
                 )
                 if comparison.returncode != 0:
@@ -459,7 +508,12 @@ def _run_check(args: argparse.Namespace) -> int:
 
     report = build_artifact_report(
         report_type="check",
-        inputs={"source": args.source, "behavioral": args.behavioral},
+        inputs={
+            "source": args.source,
+            "behavioral": args.behavioral,
+            "model": args.model,
+            "reasoning_effort": args.reasoning_effort,
+        },
         records=records,
         evidence_manifest=evidence,
         result=result,

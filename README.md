@@ -27,6 +27,11 @@ Exit codes are `0` for pass, `1` for a quality or policy failure, `2` for invali
 and `3` for inconclusive infrastructure. Ordinary checks use fake runtime evidence and need no API
 key or ChatGPT subscription. Real behavioral checks require explicitly trusted local authentication.
 
+Behavioral commands default to `gpt-5.6-luna` with reasoning effort `low` to limit subscription
+usage during repeated tests. A deliberate calibration run can override both with `--model` and
+`--reasoning-effort`; the selected values are retained in reports. The credential-free check never
+invokes a model.
+
 See [the contributor workflow](docs/contributing-skills.md) for authoring, negative activation
 boundaries, evidence review, packaging, promotion proposals, and recovery. Local commands never
 install, tag, push, publish, or deploy the plugin.

@@ -83,6 +83,11 @@ Trusted maintainers can explicitly execute real behavior with either ChatGPT sub
 uv run devquitect eval --source <selector> --suite critical --report .devquitect-reports/critical.json
 ```
 
+Real behavioral commands default to the lightweight `gpt-5.6-luna` model with reasoning effort
+`low`, including both sides of comparisons and `check --behavioral`. This is the normal configuration
+for repeated tests. Use `--model` and `--reasoning-effort` only for an intentional calibration or
+quality investigation, and review the retained model identity before comparing results.
+
 Exit `3` and `result: inconclusive` identify authentication, service, adapter, or missing-event failures and must be diagnosed rather than retried until pass. Review the source and snapshot identities, case digests, deterministic checks, runtime classification, and redaction labels in the report. A working-tree run remains diagnostic-only. Structural success alone does not publish, install, or make a candidate release-eligible.
 
 ## Compare stable N with candidate N+1

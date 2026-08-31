@@ -56,6 +56,7 @@ Freezes the source, executes selected cases independently, and emits `EvalRun` p
 ```text
 devquitect compare --stable <selector> --candidate <selector>
                     [--suite <name> | --case <id>]
+                    [--model <id>] [--reasoning-effort <level>]
                     [--report <path>]
 ```
 
@@ -64,12 +65,18 @@ Freezes both inputs before execution, runs compatible matrices in distinct works
 ### `devquitect check`
 
 ```text
-devquitect check [--source <selector>] [--behavioral] [--report <path>]
+devquitect check [--source <selector>] [--behavioral]
+                  [--model <id>] [--reasoning-effort <level>]
+                  [--report <path>]
 ```
 
 Contributor entry point. Without `--behavioral`, it runs the fast credential-free suite: structural validation and development-system unit/integration tests. With `--behavioral`, it additionally runs the configured local behavioral suite.
 
 This command delegates to the same underlying engines as the narrower commands; it does not redefine their policies.
+
+Behavioral execution defaults to `gpt-5.6-luna` with reasoning effort `low`. Explicit model and
+effort flags are calibration overrides and must be retained in the resulting evidence. The default
+credential-free check does not invoke either model configuration.
 
 ### `devquitect package`
 

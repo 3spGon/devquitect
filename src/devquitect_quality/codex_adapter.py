@@ -21,6 +21,8 @@ from .observations import (
 from .redaction import redact_text
 
 SUPPORTED_CODEX_VERSION = "0.139.0"
+DEFAULT_TEST_MODEL = "gpt-5.6-luna"
+DEFAULT_TEST_REASONING_EFFORT = "low"
 REQUIRED_FLAGS = (
     "--ephemeral",
     "--json",
@@ -117,10 +119,10 @@ def build_command(
     ]
     for feature in DISABLED_DISCOVERY_FEATURES:
         command.extend(["--disable", feature])
-    if model:
-        command.extend(["--model", model])
-    if reasoning_effort:
-        command.extend(["--config", f'model_reasoning_effort="{reasoning_effort}"'])
+    selected_model = model or DEFAULT_TEST_MODEL
+    selected_effort = reasoning_effort or DEFAULT_TEST_REASONING_EFFORT
+    command.extend(["--model", selected_model])
+    command.extend(["--config", f'model_reasoning_effort="{selected_effort}"'])
     command.append("\n\n".join(turns))
     return command
 
