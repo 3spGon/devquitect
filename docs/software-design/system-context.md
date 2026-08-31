@@ -5,9 +5,9 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 8
-last_updated: 2026-08-30
-baseline_reference: candidate@5f258930bfada1702906fcc367d14a473168ee80
+revision: 9
+last_updated: 2026-08-31
+baseline_reference: candidate@1e3f576b8b45cd4591c2b44cf883b6926cba4e55
 ---
 
 # Devquitect system context
@@ -22,7 +22,7 @@ The current system provides reusable agent workflows for moving from a software 
 
 ## Current lifecycle
 
-The repository is in development. A preliminary `v0.1.0` tag exists, and exact commit `5f258930bfada1702906fcc367d14a473168ee80` carries the unpromoted `0.2.0` plugin manifest. The skill set and its shared workflow contracts continue to evolve.
+The repository is in development. A preliminary `v0.1.0` tag exists, and exact candidate commit `1e3f576b8b45cd4591c2b44cf883b6926cba4e55` carries the unpromoted `0.2.0` plugin manifest plus the verified local quality workflow. The skill set and its shared workflow contracts continue to evolve.
 
 ## System boundaries
 
@@ -89,7 +89,7 @@ uv run ruff check src tests
 git diff --exit-code -- skills
 ```
 
-The 58-test fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, lightweight behavioral defaults, package allowlists, normalized rebuilds, release evidence blocking, and integrated check exit/report behavior. A trusted critical run passed seven isolated stable cases, and a trusted self-hosting comparison classified stable and clean candidate commit `5f25893` as equivalent and release-eligible. The full behavioral `check` passed against that exact snapshot. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
+The 58-test fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, lightweight behavioral defaults, package allowlists, normalized rebuilds, release evidence blocking, and integrated check exit/report behavior. Candidate commit `1e3f576b8b45cd4591c2b44cf883b6926cba4e55` passed the full trusted `check` with `gpt-5.4-mini`, reasoning effort `low`, eight critical runs, and clean-ref comparison `5e4a0da7-df75-48ad-b901-8fb769871533` against snapshot `sha256:062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef`. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
 
 ## Preserved behavior
 
