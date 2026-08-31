@@ -34,7 +34,7 @@ def test_check_runs_fast_composed_definition_of_done_and_writes_atomic_report(
     assert payload == json.loads(report.read_text(encoding="utf-8"))
     assert payload["report_type"] == "check"
     assert payload["result"] == "pass"
-    assert payload["inputs"]["model"] == "gpt-5.6-luna"
+    assert payload["inputs"]["model"] == "gpt-5.4-mini"
     assert payload["inputs"]["reasoning_effort"] == "low"
     assert {record["code"] for record in payload["records"]} == {
         "check.validation",

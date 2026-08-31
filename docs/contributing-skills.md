@@ -83,7 +83,7 @@ Trusted maintainers can explicitly execute real behavior with either ChatGPT sub
 uv run devquitect eval --source <selector> --suite critical --report .devquitect-reports/critical.json
 ```
 
-Real behavioral commands default to the lightweight `gpt-5.6-luna` model with reasoning effort
+Real behavioral commands default to the lightweight `gpt-5.4-mini` model with reasoning effort
 `low`, including both sides of comparisons and `check --behavioral`. This is the normal configuration
 for repeated tests. Use `--model` and `--reasoning-effort` only for an intentional calibration or
 quality investigation, and review the retained model identity before comparing results.

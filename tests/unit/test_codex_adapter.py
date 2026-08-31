@@ -14,7 +14,7 @@ def test_behavioral_command_uses_lightweight_defaults(tmp_path) -> None:
 
     command = build_command(attempt, ["inspect"])
 
-    assert command[command.index("--model") + 1] == DEFAULT_TEST_MODEL == "gpt-5.6-luna"
+    assert command[command.index("--model") + 1] == DEFAULT_TEST_MODEL == "gpt-5.4-mini"
     assert f'model_reasoning_effort="{DEFAULT_TEST_REASONING_EFFORT}"' in command
     assert DEFAULT_TEST_REASONING_EFFORT == "low"
 
