@@ -1,0 +1,12 @@
+schema_version: 1
+id: software-idea-negative
+target_skill: software-idea-to-project
+activation: implicit-negative
+fixture: basic
+sandbox: read-only
+turns: ["Review this existing implementation status without defining a new system."]
+assertions: [{type: git-clean, id: negative-route-read-only, critical: true}]
+forbidden_effects: [workspace-write]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [routing, software-idea-to-project]

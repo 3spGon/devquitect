@@ -1,0 +1,12 @@
+schema_version: 1
+id: refactoring-positive
+target_skill: targeted-refactoring
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns: ["Use targeted-refactoring to review possible cleanup only; do not edit files."]
+assertions: [{type: git-clean, id: refactor-review-read-only, critical: true}]
+forbidden_effects: [workspace-write, hidden-behavior-change]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [routing, critical, targeted-refactoring, read-only]

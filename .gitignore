@@ -1,0 +1,16 @@
+.DS_Store
+*.py[cod]
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+.devquitect-reports/
+dist/
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.gz
+*.bz2
+*.xz

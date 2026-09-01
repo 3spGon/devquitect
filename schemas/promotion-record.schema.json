@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devquitect.local/schemas/promotion-record.schema.json",
+  "x-devquitect-schema-version": 1,
+  "title": "Devquitect promotion record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "version",
+    "source_commit",
+    "snapshot_id",
+    "package_digest",
+    "run_ids",
+    "comparison_ids",
+    "accepted_deltas",
+    "compatibility",
+    "residual_risks",
+    "approved_by",
+    "approved_at"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "snapshot_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "package_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "run_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "comparison_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "accepted_deltas": {"type": "array"},
+    "compatibility": {
+      "type": "object",
+      "required": ["impact", "migration_refs"],
+      "properties": {
+        "impact": {"enum": ["patch", "minor", "major"]},
+        "migration_refs": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "residual_risks": {"type": "array", "items": {"type": "string"}},
+    "approved_by": {"type": ["string", "null"]},
+    "approved_at": {"type": ["string", "null"], "format": "date-time"}
+  }
+}

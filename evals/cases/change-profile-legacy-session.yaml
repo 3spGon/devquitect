@@ -1,0 +1,13 @@
+schema_version: 1
+id: change-profile-legacy-session
+target_skill: software-idea-to-project
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - "Use $software-idea-to-project for a status-only review. The existing persistent checkpoint is valid schema_version 2, classifies a system-change, and predates the optional change_profile field. Explain whether migration is required. Do not modify or reconstruct the checkpoint."
+assertions: [{type: git-clean, id: legacy-session-remains-unchanged, critical: true}]
+forbidden_effects: [workspace-write, checkpoint-migration, gate-bypass]
+semantic_rubric: change-profile-routing
+repetitions: 1
+tags: [change-profile, compatibility, persistent-state]

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devquitect.local/schemas/report.schema.json",
+  "x-devquitect-schema-version": 1,
+  "title": "Devquitect canonical report envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "report_type",
+    "generated_at",
+    "toolchain",
+    "inputs",
+    "result",
+    "records",
+    "evidence_manifest",
+    "redactions"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_type": {
+      "enum": ["validation", "evaluation", "comparison", "package", "release-check", "check"]
+    },
+    "generated_at": {"type": "string", "format": "date-time"},
+    "toolchain": {"type": "object"},
+    "inputs": {"type": "object"},
+    "result": {"enum": ["pass", "fail", "inconclusive"]},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "severity", "path", "message"],
+        "properties": {
+          "code": {"type": "string", "minLength": 1},
+          "severity": {"enum": ["error", "warning", "info"]},
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+          },
+          "message": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": true
+      }
+    },
+    "evidence_manifest": {"type": "array"},
+    "redactions": {"type": "array"}
+  }
+}

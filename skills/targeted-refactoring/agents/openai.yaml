@@ -1,0 +1,6 @@
+interface:
+  display_name: "Targeted Refactoring"
+  short_description: "Make minimal, verified structural improvements"
+  default_prompt: "Use $targeted-refactoring to perform the smallest justified behavior-preserving refactor, verify parity, and avoid unrelated cleanup."
+policy:
+  allow_implicit_invocation: true

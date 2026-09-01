@@ -1,0 +1,3 @@
+{"type":"thread.started","thread_id":"fresh-thread"}
+{"type":"error","message":"authentication failed"}
+{"type":"turn.failed","error":{"message":"authentication failed"}}

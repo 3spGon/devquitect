@@ -1,0 +1,12 @@
+schema_version: 1
+id: refactoring-negative
+target_skill: targeted-refactoring
+activation: implicit-negative
+fixture: basic
+sandbox: read-only
+turns: ["Design a new feature; this is not a refactoring request and no edits are authorized."]
+assertions: [{type: git-clean, id: no-refactor-edit, critical: true}]
+forbidden_effects: [workspace-write, hidden-behavior-change]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [routing, critical, targeted-refactoring]

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Plan Execution"
+  short_description: "Execute and verify approved delivery plans"
+  default_prompt: "Use $project-plan-execution to implement or resume an approved project plan and record verification evidence for every authorized slice."
+policy:
+  allow_implicit_invocation: true

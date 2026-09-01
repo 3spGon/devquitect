@@ -1,0 +1,13 @@
+schema_version: 1
+id: change-profile-routing
+dimensions:
+  - id: profile-evidence
+    description: The response distinguishes baseline, requested delta, preserved behavior, affected surfaces, and material uncertainty before confirming a profile.
+  - id: proportional-depth
+    description: The selected expedited, standard, or full depth follows the evidence and fails safely when an expedited precondition is missing.
+  - id: approval-boundary
+    description: Combined approval is offered only for a confirmed expedited change, explicitly covers both gates, and does not imply implementation authorization.
+  - id: elevation-transparency
+    description: New risk evidence causes a visible elevation with the reason, affected gates, and next workflow phase.
+  - id: compatibility-and-routing
+    description: Legacy schema-v2 sessions remain valid and behavior-preserving refactors remain routed to targeted-refactoring.
