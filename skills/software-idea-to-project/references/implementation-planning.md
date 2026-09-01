@@ -25,6 +25,8 @@ Start with:
 - confirmed stack and repository context;
 - non-blocking assumptions and deliberately deferred work.
 
+For a `system-change` or `hybrid` initiative, also include the confirmed Change Profile or link to its canonical rationale. Preserve its affected surfaces, compatibility constraints, elevation reasons, and verification expectations in the slices that treat them; do not copy the full checkpoint mechanically.
+
 Organize delivery into thin vertical slices that produce observable behavior. Give every slice a stable `SLICE-*` identifier that is unique within the plan. Each slice must state:
 
 - outcome and observable acceptance criteria;
@@ -41,6 +43,8 @@ Organize delivery into thin vertical slices that produce observable behavior. Gi
 Place a required System Context refresh inside the slice that changes the baseline, after its implementation and verification steps. Specify the affected sections and expected new baseline reference. Do not create a standalone speculative documentation slice or describe planned behavior as current before delivery succeeds.
 
 Use the stable identifier in requirement, decision, test, and dependency mappings. Do not renumber existing identifiers merely because ordering changes. A material plan change returns the document to `Review`, increments `Plan revision`, and identifies the affected slices so an existing delivery tracker can invalidate only impacted work.
+
+If planning exposes wider impact or a new disqualifier, stop treating the existing depth as authoritative. Elevate the Change Profile according to [change-profile.md](change-profile.md), invalidate the affected gates, and return to the earliest required phase before finalizing the plan.
 
 Fold setup, configuration, schema, and documentation into the slice that needs them unless they form an independently testable deliverable. Order tasks so foundations precede consumers while each completed slice leaves the project in a coherent state.
 

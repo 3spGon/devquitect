@@ -12,6 +12,8 @@ Classify the project using repository and user evidence:
 
 Reclassify when later evidence changes the product boundary. Scale the depth to the consequences of a wrong decision rather than to the number of screens.
 
+For `system-change` and `hybrid` initiatives, record `experience` as an affected Change Profile surface when observable interaction behavior changes. A significant experience change disqualifies expedited routing. A minimal change may remain expedited only when all interaction states, acceptance behavior, accessibility effects, and recovery behavior are known and no other disqualifier in [change-profile.md](change-profile.md) applies.
+
 ## Define the consequential experience
 
 For significant or minimal surfaces, define only what applies:
@@ -62,3 +64,5 @@ The experience portion of Gate 1 is ready when, at the depth the project needs:
 - confirmed facts, assumptions, and non-blocking open decisions are visible.
 
 Wireframes and prototypes are evidence, not universal gate requirements. Move applicable experience documents to `Review` before requesting Gate 1 approval and to `Approved` only after explicit user approval. A later material change to an approved flow, navigation model, state behavior, accessibility contract, or design-system decision invalidates Gate 1 and therefore Gate 2.
+
+When later experience evidence widens impact or reveals an expedited disqualifier, elevate the Change Profile visibly and apply its gate invalidation rules. Do not keep expedited depth merely because the implementation surface is visually small.

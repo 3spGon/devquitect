@@ -47,6 +47,20 @@ Summarize the last coherent milestone, decision, or artifact update.
 Record only context another agent needs before taking the next action.
 ```
 
+For new `system-change` and `hybrid` checkpoints, include the operational profile defined by [change-profile.md](change-profile.md):
+
+```yaml
+change_profile:
+  status: provisional
+  kinds: []
+  impact: null
+  workflow_depth: standard
+  affected_surfaces: []
+  elevation_reasons: []
+```
+
+Omit `change_profile` for `new-system` initiatives. It is optional in existing schema v2 checkpoints.
+
 Use these exact values:
 
 - `phase`: `frame`, `expand`, `explore`, `research`, `refine`, `crystallize`, `technical-design`, `implementation-planning`, or `complete`.
@@ -60,6 +74,7 @@ Required invariants:
 - `schema_version` is `2`, `skill` is `software-idea-to-project`, and `workflow_mode` is `persistent`.
 - New checkpoints include `initiative_context` and `system_context`. Both fields are optional in existing schema v2 checkpoints, which remain valid without migration.
 - `system_context` is `null` until a System Context exists. Otherwise it is a normalized path relative to the checkpoint, such as `../system-context.md`, whose resolved target exists within `docs/software-design/`. It is not included in `required_context` or `artifacts`.
+- A `change_profile`, when present, is allowed only for `system-change` or `hybrid`. Its status, kinds, impact, depth, surfaces, and elevation reasons follow [change-profile.md](change-profile.md). A confirmed profile has non-empty kinds and surfaces plus non-null impact; expedited requires confirmed localized impact and every expedited precondition; cross-cutting impact requires full depth.
 - `session` equals the containing directory slug.
 - `revision` is a positive integer and increases by one for every completed checkpoint update.
 - `last_updated` is an ISO 8601 timestamp with an explicit UTC offset.
@@ -101,7 +116,7 @@ For status, resume, or handoff requests, search `docs/software-design/*/00-statu
 - With multiple plausible checkpoints, list `project`, `session`, `phase`, `phase_status`, `last_updated`, and either `next_action` or `pending_user_action`, then wait for selection.
 - With no checkpoint, look for existing `docs/software-design/<slug>/` artifacts only to offer recovery. Do not reconstruct or write state during a read-only status request.
 
-A status response reports the current phase, phase status, both gates, initiative context and referenced System Context when recorded, last completed work, blockers, open decisions, the active next action, and any pending user action. Read only the System Context header for freshness unless the status depends on its body. When `delivery_checkpoint` is present, also read it and report delivery status, authorized scope, slice counts, current slice, evidence summary, delivery blockers, and its active or pending action as a separate section. It does not mutate documents, refresh context, execute either action, advance a phase, resolve a blocker, migrate schema, or repair inconsistencies.
+A status response reports the current phase, phase status, both gates, initiative context, Change Profile when present, referenced System Context when recorded, last completed work, blockers, open decisions, the active next action, and any pending user action. Read only the System Context header for freshness unless the status depends on its body. When `delivery_checkpoint` is present, also read it and report delivery status, authorized scope, slice counts, current slice, evidence summary, delivery blockers, and its active or pending action as a separate section. It does not mutate documents, refresh context, execute either action, advance a phase, resolve a blocker, migrate schema, or repair inconsistencies.
 
 When status-only reads a schema v1 checkpoint, interpret it in memory, report that migration is pending, and leave the file unchanged.
 
@@ -115,6 +130,8 @@ Read the selected `00-status.md`, migrate schema v1 when necessary, then read th
 - `blocked` — explain the blocker and the recorded condition or authority needed to resolve it.
 - `complete` — report definition completion and do not reopen it automatically. If `delivery_checkpoint` exists, include its separate state; use `$project-plan-execution` for delivery resume or repair.
 - Any gate marked `invalidated` — return to the earliest affected phase and update dependent artifacts before advancing again.
+
+If an existing schema v2 `system-change` or `hybrid` checkpoint has no `change_profile`, keep it valid. Populate a profile only during a relevant state-changing resume after enough baseline evidence exists; a status-only request reports the absence without writing or requiring migration.
 
 Lead a resume response with a compact handoff summary so the user can detect a wrong session or stale state. That summary does not require confirmation when the selected session is unambiguous and active.
 
@@ -141,9 +158,13 @@ Before requesting Gate 1 approval, set `phase: crystallize`, `phase_status: awai
 
 Before requesting Gate 2 approval, set `phase: technical-design`, `phase_status: awaiting-approval`, `gate_2: pending`, `next_action: null`, and make `pending_user_action` request architecture approval. After explicit approval, mark the relevant technical documents `Approved`, set `gate_2: approved`, move to `implementation-planning`, set `phase_status: active`, clear `pending_user_action`, record an agent-executable `next_action`, and continue planning in the same turn.
 
+For a confirmed expedited profile only, use the combined transition in [change-profile.md](change-profile.md). Before requesting approval, remain in `phase: crystallize`, set `phase_status: awaiting-approval`, set both gates to `pending`, set `next_action: null`, and make `pending_user_action` state explicitly that approval covers Gate 1 and Gate 2 but not implementation. After explicit approval, mark applicable design documents and both gates approved, move directly to active `implementation-planning`, clear the pending action, and continue planning. If the bounded no-change architecture assessment finds material technical work, elevate the profile and use the sequential transitions instead.
+
 If an approved canonical document, including `experience-design.md`, returns to `Draft` or `Review`, invalidate every dependent gate. A material change to approved interaction flows, navigation, state behavior, accessibility expectations, or design-system decisions invalidates Gate 1 and therefore Gate 2. Return to the earliest phase needed to restore consistency.
 
 Updating or correcting the System Context does not invalidate a gate by itself. If the correction proves that an approved requirement or technical decision relied on a false material premise, invalidate only that gate and its dependents, then return to the earliest affected phase.
+
+Apply Change Profile elevation visibly. A newly discovered technical-impact change invalidates Gate 2 while preserving Gate 1 when the approved behavior remains valid. A material scope, behavior, domain, or experience change invalidates Gate 1 and Gate 2. After plan approval, a material profile change returns the plan to `Review`, increments its plan revision, and identifies affected slices. Never silently lower depth or restore invalidated approval.
 
 When the implementation plan is approved, set `phase: complete`, `phase_status: complete`, both gates to `approved`, `next_action: null`, and `pending_user_action: null`, then summarize the final handoff. This records completion of the definition workflow, not authorization to implement.
 

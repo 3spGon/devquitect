@@ -1,6 +1,12 @@
 # Technical Design
 
-Read this reference only after Gate 1 has been approved, or when the user supplies an already approved definition. Produce the minimum technical design needed to make implementation safe and predictable.
+Read this reference after Gate 1 has been approved, when the user supplies an already approved definition, or only for the bounded expedited assessment described below. Produce the minimum technical design needed to make implementation safe and predictable.
+
+## Assess an expedited no-change path
+
+Before combined Gate 1 and Gate 2 approval, a confirmed expedited initiative may assess whether the current architecture can absorb the delta without material change. Limit this assessment to existing component ownership, data and state, interfaces, trust boundaries, operational behavior, compatibility, acceptance, verification, and rollback. Do not create detailed proposed architecture or begin ordinary technical design before Gate 1.
+
+If any material architecture treatment, migration, trust-boundary change, incompatible contract, consequential integration, or complex operational behavior is needed, the initiative is not expedited. Elevate it according to [change-profile.md](change-profile.md) and return to the sequential Gate 1 flow.
 
 ## Derive the architecture
 
@@ -46,6 +52,8 @@ If architecture work contradicts the approved design or requires a material chan
 
 If repository evidence contradicts the System Context, reconcile or mark the context stale in persistent mode. A context correction alone does not invalidate a gate; invalidate affected gates only when the contradiction exposes a false material premise in the approved design or architecture.
 
+For system-change and hybrid work, update the Change Profile when technical evidence changes impact or affected surfaces. A purely technical contradiction after approval preserves Gate 1 and invalidates Gate 2; a contradiction that changes approved behavior returns to the earliest affected design phase.
+
 ## Apply Gate 2 — Architecture readiness
 
 Architecture is ready for planning only when:
@@ -62,3 +70,5 @@ Architecture is ready for planning only when:
 - approved experience decisions trace to technical design elements when applicable.
 
 Present the readiness summary and request explicit approval. In persistent mode, move relevant technical documents to `Review`, then `Approved` after user approval. Do not create `08-implementation-plan.md` until this gate passes.
+
+For a confirmed expedited initiative, the bounded no-change assessment satisfies the architecture-readiness portion only through the explicit combined approval contract in [change-profile.md](change-profile.md). It never self-approves Gate 2 and never authorizes implementation.

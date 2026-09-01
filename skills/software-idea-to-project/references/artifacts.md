@@ -50,6 +50,12 @@ The numbered definition documents from `01` through `08` are canonical. `experie
 
 The System Context is the authoritative orientation entry point, not the authoritative owner of every fact it summarizes. Current implementation evidence and approved detailed documents retain the authority described in [system-context.md](system-context.md). Keep current baseline facts out of initiative documents when they are useful across multiple initiatives, and keep proposed initiative behavior out of the current baseline until delivery verifies it.
 
+## Change Profile ownership
+
+For `system-change` and `hybrid` initiatives, the Change Profile defined by [change-profile.md](change-profile.md) is routing state rather than a canonical project artifact. Store its current operational value in `00-status.md`; record material transitions in `brainstorm.md`; and include concise rationale in `01-concept.md` only when it helps explain the approved design. Do not create a numbered or standalone project `change-profile.md`, list one in the artifacts map, or make it a new gate.
+
+Use the confirmed profile to keep the artifact set proportional. Expedited work may omit technical or domain documents when the profile evidence proves they add no useful ownership. Standard and full work still create only the conditional artifacts that carry substantive content; depth is not permission to create empty placeholders.
+
 Avoid duplicating full content across files. Link to the canonical owner of a concept and keep a consistent traceability identifier when relationships would otherwise be ambiguous, for example `REQ-`, `RULE-`, `DEC-`, and `SLICE-` identifiers. Use identifiers only when the project is complex enough to benefit from them.
 
 ## Canonical document header

@@ -12,6 +12,8 @@ Classify the initiative before framing it:
 
 For system-change and hybrid work, read the System Context when present and establish a sufficiently verified baseline for the affected area before defining the requested delta. If the context is missing or stale, inspect only the relevant documentation, code, configuration, tests, and recent evidence. In persistent mode, create or refresh `docs/software-design/system-context.md` according to [system-context.md](system-context.md); in chat-only mode, keep the reconstructed baseline in conversation and do not write it.
 
+After enough evidence exists to state the affected baseline and requested delta, read [change-profile.md](change-profile.md). Initialize the applicable Change Profile as provisional and standard, then refine it as discovery establishes change kinds, impact, affected surfaces, preserved behavior, risk, and verification. Do not confirm expedited routing merely because the requested edit appears small.
+
 For new-system work, do not create an empty System Context. In persistent mode, create it only after the emerging definition contains useful confirmed purpose, boundary, lifecycle, or constraints. Keep proposed facts visibly distinct from an implemented baseline.
 
 ## Frame
@@ -89,4 +91,8 @@ The design is ready for review when it contains, at the depth the project needs:
 - confirmed facts, assumptions, and open decisions;
 - a recommended technical direction at a conceptual level, without premature file-level planning.
 
+For system-change and hybrid initiatives, also confirm the Change Profile when evidence is sufficient. Present its depth and rationale with the design review. Keep it provisional and use standard depth when uncertainty is non-blocking; use full when confirmed risk requires it.
+
 Present a concise design summary and any open decisions. Ask for explicit approval. In persistent mode, update the applicable concept, requirements, domain, and experience documents to `Review`; mark them `Approved` only after the user approves. Detailed architecture begins only after this gate passes.
+
+Standard and full profiles use the ordinary Gate 1 transition. A confirmed expedited profile follows the combined approval contract in [change-profile.md](change-profile.md); if its no-change architecture assessment fails, elevate it and return to the ordinary Gate 1 flow.

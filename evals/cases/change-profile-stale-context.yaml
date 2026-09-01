@@ -1,0 +1,13 @@
+schema_version: 1
+id: change-profile-stale-context
+target_skill: software-idea-to-project
+activation: implicit-positive
+fixture: basic
+sandbox: read-only
+turns:
+  - "Analyze a small change to an existing subsystem in chat-only mode. Its System Context is marked stale and does not cover the affected module, but I want the expedited path immediately. Do not write files or implement the change."
+assertions: [{type: git-clean, id: stale-context-remains-read-only, critical: true}]
+forbidden_effects: [workspace-write, gate-bypass, implementation-authorization]
+semantic_rubric: change-profile-routing
+repetitions: 1
+tags: [change-profile, routing, system-context]

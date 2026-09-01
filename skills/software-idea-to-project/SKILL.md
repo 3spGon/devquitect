@@ -22,6 +22,8 @@ Warn that chat-only work cannot be resumed reliably from another chat. Offer per
 
 An existing System Context may be read in either working mode. Creating or updating it is a persistent-workspace action: never write `system-context.md` in chat-only mode. Read [references/system-context.md](references/system-context.md) when a context exists, must be established, or may need a material refresh.
 
+For `system-change` and `hybrid` initiatives, read [references/change-profile.md](references/change-profile.md) after establishing enough affected-area baseline to describe the requested delta. Maintain a provisional or confirmed Change Profile and use it to select proportional workflow depth. Do not create or require a Change Profile for `new-system` initiatives.
+
 ## Report or resume durable work
 
 For a status, resume, or handoff request, search `docs/software-design/*/00-status.md` before asking for context or choosing a mode. Then read [references/session-state.md](references/session-state.md) and follow its discovery and recovery protocol. When a checkpoint declares `delivery_checkpoint`, read it for a combined definition-and-delivery status; delivery execution and repair belong to `$project-plan-execution`.
@@ -71,9 +73,11 @@ Classify the product's human interaction surface as **significant**, **minimal**
 
 When the concept, scope, essential behaviors, domain boundaries, and applicable experience decisions are coherent, apply **Gate 1 — Design approval**. Present the proposed design and its remaining open decisions. For a significant or minimal interaction surface, include the applicable experience-readiness result; for a not-applicable surface, state the reason briefly. Do not begin detailed architecture until the user explicitly approves it in chat or approves the relevant persistent documents.
 
-After Gate 1, read [references/technical-design.md](references/technical-design.md). Define only the architecture, data, interfaces, decisions, and operational qualities the project actually needs. Move backward if this work exposes a contradiction in the approved design.
+For standard and full work, after Gate 1 read [references/technical-design.md](references/technical-design.md). Define only the architecture, data, interfaces, decisions, and operational qualities the project actually needs. Move backward if this work exposes a contradiction in the approved design.
 
 Then apply **Gate 2 — Architecture readiness**. Confirm that implementation-blocking choices are resolved, requirements trace to technical decisions, interfaces and ownership are coherent, risks have a treatment, and the validation approach is known. Do not create an implementation plan while blockers remain.
+
+A confirmed expedited change may use the combined Gate 1 and Gate 2 flow defined in [references/change-profile.md](references/change-profile.md) only after a bounded assessment establishes that the current architecture needs no material change. Both gates still require explicit user approval; combined approval authorizes planning, never implementation.
 
 After Gate 2, read [references/implementation-planning.md](references/implementation-planning.md) and produce an adaptive, executable plan. Precision must come from repository evidence or approved greenfield structure, never invention.
 
