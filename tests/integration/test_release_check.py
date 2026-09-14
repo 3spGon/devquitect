@@ -11,6 +11,13 @@ from devquitect_quality.packaging import build_package
 from devquitect_quality.promotion import PromotionError, release_check
 
 SKILLS = ("project-plan-execution", "software-idea-to-project", "targeted-refactoring")
+SCHEMAS = (
+    "eval-case.schema.json",
+    "report.schema.json",
+    "promotion-record.schema.json",
+    "authority-map.schema.json",
+    "calibration-report.schema.json",
+)
 
 
 def git(repository: Path, *args: str) -> str:
@@ -23,6 +30,11 @@ def git(repository: Path, *args: str) -> str:
 def package_repository(tmp_path: Path) -> Path:
     repository = tmp_path / "repository"
     (repository / ".codex-plugin").mkdir(parents=True)
+    schemas = repository / "schemas"
+    schemas.mkdir()
+    source_schemas = Path(__file__).parents[2] / "schemas"
+    for name in SCHEMAS:
+        (schemas / name).write_bytes((source_schemas / name).read_bytes())
     (repository / ".codex-plugin/plugin.json").write_text(
         '{"name":"devquitect","version":"0.1.0","skills":"./skills/"}\n',
         encoding="utf-8",
@@ -51,41 +63,49 @@ def package_repository(tmp_path: Path) -> Path:
 def write_evidence(
     root: Path,
     snapshot_id: str,
+    source_commit: str,
     *,
-    candidate_kind: str = "git-ref",
-    evaluation_result: str = "pass",
-    critical_failures: list[str] | None = None,
+    source_kind: str = "git-ref",
+    result: str = "pass",
+    report_type: str = "check",
 ) -> None:
     root.mkdir()
-    evaluation = {
+    report = {
         "schema_version": 1,
-        "report_type": "evaluation",
-        "result": evaluation_result,
-        "inputs": {"source": {"kind": "git-ref", "snapshot_id": snapshot_id}},
+        "report_type": report_type,
+        "generated_at": "2026-09-14T00:00:00+00:00",
+        "toolchain": {"package": "devquitect-quality", "version": "0.1.0"},
+        "result": result,
+        "inputs": {"behavioral": False},
         "records": [
             {
-                "classification": evaluation_result,
-                "critical_failures": critical_failures or [],
-                "eligibility": "release-eligible",
-                "run_id": "run-1",
-            }
-        ],
-    }
-    comparison = {
-        "schema_version": 1,
-        "report_type": "comparison",
-        "result": "pass",
-        "inputs": {"candidate": {"kind": candidate_kind, "snapshot_id": snapshot_id}},
-        "records": [
+                "code": "check.validation",
+                "severity": "info",
+                "path": "skills",
+                "message": "structural validation passed",
+            },
             {
-                "case_id": "self-hosting",
-                "classification": "equivalent",
-                "comparison_id": "comparison-1",
-            }
+                "code": "check.tests",
+                "severity": "info",
+                "path": "tests",
+                "message": "fast tests passed",
+            },
         ],
+        "evidence_manifest": [
+            {
+                "report_type": "validation",
+                "result": "pass",
+                "source": {
+                    "kind": source_kind,
+                    "snapshot_id": snapshot_id,
+                    "source_commit": source_commit,
+                },
+            },
+            {"suite": "fast", "exit_code": 0},
+        ],
+        "redactions": [],
     }
-    (root / "evaluation.json").write_text(json.dumps(evaluation), encoding="utf-8")
-    (root / "comparison.json").write_text(json.dumps(comparison), encoding="utf-8")
+    (root / "check.json").write_text(json.dumps(report), encoding="utf-8")
 
 
 def test_release_check_rebuilds_and_emits_unapproved_schema_valid_proposal(
@@ -94,7 +114,7 @@ def test_release_check_rebuilds_and_emits_unapproved_schema_valid_proposal(
     repository = package_repository(tmp_path)
     package = build_package(repository, "HEAD", "0.2.0", tmp_path / "probe")
     evidence = tmp_path / "evidence"
-    write_evidence(evidence, package.snapshot_id)
+    write_evidence(evidence, package.snapshot_id, package.source_commit)
 
     artifact, proposal = release_check(repository, "HEAD", "0.2.0", evidence, tmp_path / "release")
 
@@ -109,18 +129,16 @@ def test_release_check_rebuilds_and_emits_unapproved_schema_valid_proposal(
 
 
 @pytest.mark.parametrize(
-    ("candidate_kind", "evaluation_result", "critical_failures", "message"),
+    ("source_kind", "result", "message"),
     [
-        ("working-tree", "pass", [], "clean-candidate comparison"),
-        ("git-ref", "inconclusive", [], "not passing"),
-        ("git-ref", "pass", ["write"], "critical or unresolved"),
+        ("working-tree", "pass", "credential-free check"),
+        ("git-ref", "fail", "not passing"),
     ],
 )
 def test_release_check_blocks_ineligible_evidence(
     tmp_path: Path,
-    candidate_kind: str,
-    evaluation_result: str,
-    critical_failures: list[str],
+    source_kind: str,
+    result: str,
     message: str,
 ) -> None:
     repository = package_repository(tmp_path)
@@ -129,9 +147,67 @@ def test_release_check_blocks_ineligible_evidence(
     write_evidence(
         evidence,
         package.snapshot_id,
-        candidate_kind=candidate_kind,
-        evaluation_result=evaluation_result,
-        critical_failures=critical_failures,
+        package.source_commit,
+        source_kind=source_kind,
+        result=result,
     )
     with pytest.raises(PromotionError, match=message):
+        release_check(repository, "HEAD", "0.2.0", evidence, tmp_path / "release")
+
+
+def test_release_check_ignores_calibration_evidence(tmp_path: Path) -> None:
+    repository = package_repository(tmp_path)
+    package = build_package(repository, "HEAD", "0.2.0", tmp_path / "probe")
+    evidence = tmp_path / "evidence"
+    write_evidence(evidence, package.snapshot_id, package.source_commit)
+    (evidence / "calibration.json").write_text(
+        json.dumps({"report_type": "behavior-calibration"}), encoding="utf-8"
+    )
+
+    release_check(repository, "HEAD", "0.2.0", evidence, tmp_path / "release")
+
+
+@pytest.mark.parametrize("missing", ["records", "suite"])
+def test_release_check_blocks_incomplete_credential_free_check(
+    tmp_path: Path, missing: str
+) -> None:
+    repository = package_repository(tmp_path)
+    package = build_package(repository, "HEAD", "0.2.0", tmp_path / "probe")
+    evidence = tmp_path / "evidence"
+    write_evidence(evidence, package.snapshot_id, package.source_commit)
+    report_path = evidence / "check.json"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    if missing == "records":
+        report["records"] = report["records"][:1]
+    else:
+        report["evidence_manifest"] = report["evidence_manifest"][:1]
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    with pytest.raises(PromotionError, match="incomplete"):
+        release_check(repository, "HEAD", "0.2.0", evidence, tmp_path / "release")
+
+
+def test_release_check_blocks_evidence_from_a_different_commit_with_same_snapshot(
+    tmp_path: Path,
+) -> None:
+    repository = package_repository(tmp_path)
+    package = build_package(repository, "HEAD", "0.2.0", tmp_path / "probe")
+    evidence = tmp_path / "evidence"
+    write_evidence(evidence, package.snapshot_id, git(repository, "rev-parse", "HEAD^"))
+
+    with pytest.raises(PromotionError, match="matches the source snapshot"):
+        release_check(repository, "HEAD", "0.2.0", evidence, tmp_path / "release")
+
+
+def test_release_check_blocks_noncanonical_check_evidence(tmp_path: Path) -> None:
+    repository = package_repository(tmp_path)
+    package = build_package(repository, "HEAD", "0.2.0", tmp_path / "probe")
+    evidence = tmp_path / "evidence"
+    write_evidence(evidence, package.snapshot_id, package.source_commit)
+    report_path = evidence / "check.json"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    del report["generated_at"]
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    with pytest.raises(PromotionError, match="not canonical"):
         release_check(repository, "HEAD", "0.2.0", evidence, tmp_path / "release")

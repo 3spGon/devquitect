@@ -55,13 +55,13 @@ JSON output and atomic report files use the versioned canonical envelope in `sch
 
 ## Runtime isolation and evidence safety
 
-Every behavioral attempt uses a fresh temporary Git workspace, Codex conversation, `CODEX_HOME`, installed-skill root, and evidence namespace. The supported adapter is pinned to Codex CLI `0.139.0` and invokes `codex exec --ephemeral --json` with an explicit working directory, `read-only` or `workspace-write` sandbox, `--ignore-user-config`, and `--ignore-rules`. `danger-full-access` is never release-eligible.
+Every behavioral attempt uses a fresh temporary Git workspace, Codex conversation, `CODEX_HOME`, installed-skill root, and evidence namespace. The supported adapter is pinned to Codex CLI `0.154.0` and invokes `codex exec --ephemeral --json` with an explicit working directory, `read-only` or `workspace-write` sandbox, `--ignore-user-config`, and `--ignore-rules`. `danger-full-access` is never release-eligible.
 
 The isolated `CODEX_HOME` contains no user configuration. For trusted local execution, the runner may stage the existing file-backed ChatGPT login cache with permissions `0600` only for the lifetime of the subprocess, then removes it immediately. The cache never enters the fixture workspace, evidence namespace, repository, or report. Environment-provided authentication follows the same subprocess-only boundary. Known credential values and common secret patterns are masked before normalized evidence is retained.
 
 Raw JSONL is treated as untrusted data. Normalized evidence bounds event count and records process status, messages, commands, tools, searches, file manifests, Git status/diff, and declared checkpoint transitions. Local raw streams should be retained only long enough to diagnose a run and must not be committed. Add `.devquitect-reports/` or another caller-selected evidence directory to local ignore policy when retaining reports.
 
-Adapter, authentication, service, invalid-JSONL, truncated-stream, and missing-terminal-event failures are inconclusive and exit `3`; they never pass and are not automatically retried. Start troubleshooting with `codex --version` and `codex exec --help`, then verify that CLI `0.139.0` exposes the required isolation flags and that model authentication is available only to the trusted subprocess.
+Adapter, authentication, service, invalid-JSONL, truncated-stream, and missing-terminal-event failures are inconclusive and exit `3`; they never pass and are not automatically retried. Start troubleshooting with `codex --version` and `codex exec --help`, then verify that CLI `0.154.0` exposes the required isolation flags and that model authentication is available only to the trusted subprocess.
 
 ## Author behavioral cases
 
@@ -125,14 +125,13 @@ manifest and artifact digest.
 
 Semantic-version policy treats compatible corrections as patch releases, backward-compatible
 behavior or coverage additions as minor releases, and incompatible contract changes as major
-releases. Persistent-state schema changes require an explicit migration or recovery case. Reviewed
-behavioral deltas need declaration references; critical failures, inconclusive evidence, unsupported
-schemas, diagnostic working-tree comparisons, and mismatched snapshot identities remain blockers.
+releases. Persistent-state schema changes require an explicit migration or recovery case. A
+credential-free check and its snapshot identity are promotion-blocking; calibration and other
+model-backed reports remain review-only.
 
 ## Propose promotion and recover
 
-After retaining a passing release-eligible evaluation and a clean-commit comparison for the same
-snapshot, run:
+After retaining a passing credential-free `check` report for the same immutable snapshot, run:
 
 ```text
 uv run devquitect release-check \
@@ -142,8 +141,8 @@ uv run devquitect release-check \
   --output dist
 ```
 
-The release check builds in two fresh roots, requires identical artifacts, validates evidence and
-compatibility policy, and emits `devquitect-0.2.0.promotion.json`. Its `approved_by` and
+The release check builds in two fresh roots, requires identical artifacts, ignores calibration,
+evaluation, and comparison reports for promotion eligibility, and emits `devquitect-0.2.0.promotion.json`. Its `approved_by` and
 `approved_at` fields remain null: the file is a proposal until a maintainer explicitly approves
 promotion. Neither `package` nor `release-check` installs, tags, pushes, publishes, or deploys.
 

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devquitect.local/schemas/authority-map.schema.json",
+  "x-devquitect-schema-version": 1,
+  "title": "Devquitect authority map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contracts"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "owner_path", "secondary_paths"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "owner_path": {"type": "string", "minLength": 1},
+          "secondary_paths": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "role"],
+              "properties": {
+                "path": {"type": "string", "minLength": 1},
+                "role": {"enum": ["routes", "explains", "tests", "presents"]}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

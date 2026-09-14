@@ -20,7 +20,7 @@ from .observations import (
 )
 from .redaction import redact_text
 
-SUPPORTED_CODEX_VERSION = "0.139.0"
+SUPPORTED_CODEX_VERSION = "0.154.0"
 DEFAULT_TEST_MODEL = "gpt-5.4-mini"
 DEFAULT_TEST_REASONING_EFFORT = "low"
 REQUIRED_FLAGS = (

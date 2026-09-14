@@ -8,7 +8,15 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+from .models import SkillSource
 from .packaging import SEMVER, PackageArtifact, PackageError, build_package
+from .sources import SourceError
+from .validate import (
+    ValidationConfigurationError,
+    ValidationInputs,
+    load_validation_inputs,
+    validate_report_schema,
+)
 
 
 class PromotionError(ValueError):
@@ -50,67 +58,57 @@ def _load_reports(evidence: Path) -> list[dict[str, Any]]:
     return reports
 
 
-def _evidence_ids(
-    reports: list[dict[str, Any]], artifact: PackageArtifact
-) -> tuple[list[str], list[str], list[dict[str, Any]]]:
-    run_ids: set[str] = set()
-    comparison_ids: set[str] = set()
-    accepted: list[dict[str, Any]] = []
-    has_evaluation = False
-    has_comparison = False
+def _deterministic_evidence(
+    reports: list[dict[str, Any]], artifact: PackageArtifact, inputs: ValidationInputs
+) -> None:
+    """Require a passing credential-free check for the packaged snapshot only."""
+
+    has_check = False
     for report in reports:
+        report_type = report.get("report_type")
+        if report_type in {"evaluation", "comparison", "behavior-calibration"}:
+            continue
         if report.get("schema_version") != 1:
             raise PromotionError("evidence uses an unsupported report schema")
         if report.get("result") != "pass":
             raise PromotionError(f"{report.get('report_type')} evidence is not passing")
-        report_type = report.get("report_type")
-        inputs = report.get("inputs", {})
-        if report_type == "evaluation":
-            source = inputs.get("source", {})
-            if source.get("kind") != "git-ref" or source.get("snapshot_id") != artifact.snapshot_id:
-                continue
-            has_evaluation = True
-            for record in report.get("records", []):
-                if (
-                    record.get("classification") != "pass"
-                    or record.get("critical_failures")
-                    or record.get("eligibility") != "release-eligible"
-                ):
-                    raise PromotionError(
-                        "critical or unresolved evaluation evidence blocks release"
-                    )
-                if record.get("run_id"):
-                    run_ids.add(record["run_id"])
-        elif report_type == "comparison":
-            candidate = inputs.get("candidate", {})
+        if report_type != "check":
+            continue
+        try:
+            validate_report_schema(report, inputs)
+        except ValidationConfigurationError as error:
+            raise PromotionError(f"check evidence is not canonical: {error.message}") from error
+        if report.get("inputs", {}).get("behavioral") is not False:
+            raise PromotionError("promotion requires a credential-free check")
+        records = {
+            record.get("code"): record
+            for record in report.get("records", [])
+            if isinstance(record, dict)
+        }
+        complete_check = (
+            all(
+                records.get(code, {}).get("severity") == "info"
+                for code in ("check.validation", "check.tests")
+            )
+            and any(
+                item.get("suite") == "fast" and item.get("exit_code") == 0
+                for item in report.get("evidence_manifest", [])
+            )
+        )
+        for item in report.get("evidence_manifest", []):
+            source = item.get("source", {})
             if (
-                candidate.get("kind") != "git-ref"
-                or candidate.get("snapshot_id") != artifact.snapshot_id
+                item.get("report_type") == "validation"
+                and item.get("result") == "pass"
+                and source.get("kind") == "git-ref"
+                and source.get("snapshot_id") == artifact.snapshot_id
+                and source.get("source_commit") == artifact.source_commit
             ):
-                continue
-            has_comparison = True
-            for record in report.get("records", []):
-                classification = record.get("classification")
-                if classification in {"regression", "inconclusive", "variable"}:
-                    raise PromotionError(f"unresolved comparison classification: {classification}")
-                if classification not in {"equivalent", "improvement"}:
-                    declaration = record.get("declaration_ref")
-                    if not declaration:
-                        raise PromotionError("behavioral deltas require a reviewed declaration")
-                    accepted.append(
-                        {
-                            "case_id": record.get("case_id"),
-                            "classification": classification,
-                            "declaration_ref": declaration,
-                        }
-                    )
-                if record.get("comparison_id"):
-                    comparison_ids.add(record["comparison_id"])
-    if not has_evaluation:
-        raise PromotionError("no passing release-eligible evaluation matches the source snapshot")
-    if not has_comparison:
-        raise PromotionError("no passing clean-candidate comparison matches the source snapshot")
-    return sorted(run_ids), sorted(comparison_ids), accepted
+                if not complete_check:
+                    raise PromotionError("credential-free check is incomplete")
+                has_check = True
+    if not has_check:
+        raise PromotionError("no passing credential-free check matches the source snapshot")
 
 
 def release_check(
@@ -125,7 +123,13 @@ def release_check(
             if first.artifact_digest != second.artifact_digest or first.entries != second.entries:
                 raise PromotionError("independent package rebuilds are not identical")
             reports = _load_reports(evidence)
-            run_ids, comparison_ids, accepted = _evidence_ids(reports, first)
+            try:
+                inputs = load_validation_inputs(
+                    SkillSource.from_selector(first.source_commit, repository)
+                )
+            except (SourceError, ValidationConfigurationError) as error:
+                raise PromotionError(f"cannot load release evidence schema: {error}") from error
+            _deterministic_evidence(reports, first, inputs)
             previous_manifest = json.loads(
                 subprocess_manifest(repository, f"{first.source_commit}^").decode("utf-8")
             )
@@ -151,9 +155,9 @@ def release_check(
         "source_commit": artifact.source_commit,
         "snapshot_id": artifact.snapshot_id,
         "package_digest": artifact.artifact_digest,
-        "run_ids": run_ids,
-        "comparison_ids": comparison_ids,
-        "accepted_deltas": accepted,
+        "run_ids": [],
+        "comparison_ids": [],
+        "accepted_deltas": [],
         "compatibility": {"impact": impact, "migration_refs": []},
         "residual_risks": [],
         "approved_by": None,

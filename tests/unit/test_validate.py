@@ -58,6 +58,12 @@ def test_valid_structural_fixture_passes(tmp_path: Path) -> None:
         ("unsafe-reference", "reference.unsafe-path"),
         ("invalid-presentation", "presentation.invalid"),
         ("invalid-membership", "plugin.invalid-membership"),
+        ("missing-authority-map", "authority-map.missing"),
+        ("malformed-authority-map", "authority-map.invalid"),
+        ("duplicate-authority-id", "authority-map.duplicate-id"),
+        ("unsafe-authority-owner", "authority-map.unsafe-owner-path"),
+        ("missing-authority-secondary", "authority-map.missing-secondary-path"),
+        ("invalid-authority-role", "authority-map.invalid"),
     ],
 )
 def test_quality_failures_have_specific_machine_records(
@@ -95,6 +101,44 @@ def test_quality_failures_have_specific_machine_records(
         value = json.loads(manifest.read_text(encoding="utf-8"))
         value["skills"] = "skills"
         manifest.write_text(json.dumps(value), encoding="utf-8")
+    elif mutation == "missing-authority-map":
+        (root / "authority-map.yaml").unlink()
+    elif mutation == "malformed-authority-map":
+        (root / "authority-map.yaml").write_text("contracts: [\n", encoding="utf-8")
+    elif mutation == "duplicate-authority-id":
+        map_path = root / "authority-map.yaml"
+        duplicate = (
+            "  - id: fixture-contract\n"
+            "    owner_path: skills/example-skill/SKILL.md\n"
+            "    secondary_paths: []\n"
+        )
+        authority_map = map_path.read_text(encoding="utf-8")
+        map_path.write_text(
+            authority_map.replace("contracts:\n", f"contracts:\n{duplicate}"),
+            encoding="utf-8",
+        )
+    elif mutation == "unsafe-authority-owner":
+        map_path = root / "authority-map.yaml"
+        map_path.write_text(
+            map_path.read_text(encoding="utf-8").replace(
+                "skills/example-skill/SKILL.md", "../outside.md", 1
+            ),
+            encoding="utf-8",
+        )
+    elif mutation == "missing-authority-secondary":
+        map_path = root / "authority-map.yaml"
+        map_path.write_text(
+            map_path.read_text(encoding="utf-8").replace(
+                "skills/example-skill/references/guide.md", "skills/example-skill/missing.md"
+            ),
+            encoding="utf-8",
+        )
+    elif mutation == "invalid-authority-role":
+        map_path = root / "authority-map.yaml"
+        map_path.write_text(
+            map_path.read_text(encoding="utf-8").replace("role: explains", "role: redefines"),
+            encoding="utf-8",
+        )
 
     records = _validate(root)
 

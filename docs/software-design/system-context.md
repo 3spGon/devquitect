@@ -5,8 +5,8 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 11
-last_updated: 2026-09-01
+revision: 12
+last_updated: 2026-09-10
 baseline_reference: candidate@devquitec-architecture-definition
 ---
 
@@ -22,7 +22,7 @@ The current system provides reusable agent workflows for moving from a software 
 
 ## Current lifecycle
 
-The repository is in development. A preliminary `v0.1.0` tag exists, and the `devquitec-architecture-definition` candidate carries the `0.3.0` plugin manifest, the verified local quality workflow, and the credential-free-verified proportional Change Profile workflow. The candidate is not promoted, tagged, published, or installed by this repository workflow. The skill set and its shared workflow contracts continue to evolve.
+The repository is in development. A preliminary `v0.1.0` tag exists, and the `devquitec-architecture-definition` candidate carries the `0.4.0` plugin manifest, the verified local quality workflow, and the credential-free-verified proportional Change Profile workflow. The candidate is not promoted, tagged, published, or installed by this repository workflow. The skill set and its shared workflow contracts continue to evolve.
 
 ## System boundaries
 
@@ -63,15 +63,17 @@ No Git remote or CI provider is configured in the represented baseline.
 - Git refs and working-tree skill sources can be copied into separate read-only snapshots with normalized file, skill, and aggregate SHA-256 identities.
 - Git-ref snapshots are eligible stable sources; working-tree snapshots are always diagnostic-only, even when their skill files are clean.
 - `devquitect validate --source <selector>` checks frontmatter, name consistency and uniqueness, local references, presentation metadata, schema compatibility, plugin membership, and package allowlists without credentials or network access.
+- Validation also checks the external authority map for unique critical-contract IDs, safe existing owners, and permitted secondary roles.
 - Validation emits the approved JSON report envelope, an equivalent text presentation, normalized relative paths, atomic report files, and stable exit codes `0`, `1`, and `2`.
 - `devquitect eval` loads schema-valid YAML cases, creates a fresh Git workspace, conversation, Codex home, skill root, and evidence namespace per attempt, and emits canonical evaluation reports.
 - Deterministic assertions dominate optional semantic grades; critical failures cannot be overridden and infrastructure failures remain inconclusive with exit `3`.
 - Trusted local evaluation can scope an existing ChatGPT login cache to one isolated subprocess without retaining credentials in fixtures, reports, or repository files.
 - `devquitect compare` freezes stable and candidate sources before execution, runs them independently, and classifies equivalent behavior, improvement, regression, reviewed contract change, variability, or inconclusive infrastructure.
+- `devquitect calibrate` writes bounded, redacted, versioned behavior-calibration evidence for review; absent reports are unknown and only matching model, runtime, suite, and repetition configurations are comparable.
 - `devquitect package` reads an exact Git commit, enforces the committed semantic version and package allowlist, and emits a normalized plugin ZIP with entry and artifact SHA-256 identities.
-- `devquitect release-check` rebuilds in two fresh roots, binds passing behavioral evidence to the same snapshot, applies compatibility and migration policy, and emits an explicitly unapproved promotion proposal.
+- `devquitect release-check` rebuilds in two fresh roots, requires a passing credential-free check bound to the same snapshot, ignores model-backed evidence for promotion eligibility, applies compatibility and migration policy, and emits an explicitly unapproved promotion proposal.
 - `devquitect check` composes structural validation with the credential-free unit, integration, and CLI contract suite; `--behavioral` explicitly adds trusted critical evaluation and clean-ref self-hosting comparison.
-- Real behavioral commands default to the efficient, Codex CLI `0.139.0`-compatible `gpt-5.4-mini` model at `low` reasoning effort, retain that identity in evidence, and allow explicit calibration overrides; fast checks invoke no model.
+- Real behavioral commands default to the efficient, Codex CLI `0.154.0`-compatible `gpt-5.4-mini` model at `low` reasoning effort, retain that identity in evidence, and allow explicit calibration overrides; fast checks invoke no model.
 
 ## Technical landscape
 
@@ -89,7 +91,7 @@ uv run ruff check src tests
 git diff --exit-code -- skills
 ```
 
-The proportional Change Profile candidate passed the skill-specific `quick_validate.py` check plus `tests/unit/test_cases.py` and `tests/integration/test_eval_command.py` with three focused tests passing. Five versioned Change Profile cases cover expedited routing, trust-sensitive elevation, stale context, legacy schema-v2 compatibility, and behavior-preserving refactor routing. Promotion requires separate model-backed evidence bound to the exact candidate; working-tree checks do not substitute for it.
+The proportional Change Profile candidate passed the skill-specific `quick_validate.py` check plus `tests/unit/test_cases.py` and `tests/integration/test_eval_command.py` with three focused tests passing. Five versioned Change Profile cases cover expedited routing, trust-sensitive elevation, stale context, legacy schema-v2 compatibility, and behavior-preserving refactor routing. Promotion requires a credential-free check bound to the exact candidate; working-tree checks do not substitute for it.
 
 The 58-test fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, lightweight behavioral defaults, package allowlists, normalized rebuilds, release evidence blocking, and integrated check exit/report behavior. Candidate commit `1e3f576b8b45cd4591c2b44cf883b6926cba4e55` passed the full trusted `check` with `gpt-5.4-mini`, reasoning effort `low`, eight critical runs, and clean-ref comparison `5e4a0da7-df75-48ad-b901-8fb769871533` against snapshot `sha256:062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef`. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
 
@@ -102,9 +104,9 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 - Contributor checks remain local because no hosted CI provider is configured.
 - Behavioral checks require an explicit trusted run with ChatGPT or API authentication; ordinary fast checks remain credential-free.
 - Compatibility across model or Codex runtime changes is not measured.
-- Model-backed evidence is candidate-specific and retained in local reports rather than this source baseline; inspect the applicable promotion proposal before treating it as current.
+- Model-backed evidence is candidate-specific and retained in local reports rather than this source baseline; it is review-only and cannot change promotion eligibility.
 - No marketplace entry, installation automation, hosted CI, or publication mechanism has been implemented.
-- The `0.3.0` Change Profile candidate is not promoted until exact-commit evidence passes and a maintainer explicitly approves the resulting promotion proposal.
+- The `0.4.0` candidate is not promoted until exact-commit evidence passes and a maintainer explicitly approves the resulting promotion proposal.
 
 ## Authoritative references
 

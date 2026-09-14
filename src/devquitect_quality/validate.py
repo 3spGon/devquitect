@@ -25,6 +25,9 @@ SCHEMA_PREFIX = "schemas/"
 CASE_PREFIX = "evals/cases/"
 FIXTURE_PREFIX = "evals/fixtures/"
 RUBRIC_PREFIX = "evals/rubrics/"
+AUTHORITY_MAP_PATH = "authority-map.yaml"
+AUTHORITY_MAP_SCHEMA_PATH = "schemas/authority-map.schema.json"
+CALIBRATION_REPORT_SCHEMA_PATH = "schemas/calibration-report.schema.json"
 NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SEMVER_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 MARKDOWN_LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
@@ -83,6 +86,7 @@ def load_validation_inputs(source: SkillSource) -> ValidationInputs:
         CASE_PREFIX,
         FIXTURE_PREFIX,
         RUBRIC_PREFIX,
+        AUTHORITY_MAP_PATH,
     )
     files: dict[str, bytes] = {}
     if source.kind == "working-tree":
@@ -99,6 +103,9 @@ def load_validation_inputs(source: SkillSource) -> ValidationInputs:
             root = repository / root_name
             if root.exists():
                 candidates.extend(path for path in root.rglob("*") if path.is_file())
+        authority_map = repository / AUTHORITY_MAP_PATH
+        if authority_map.is_file():
+            candidates.append(authority_map)
         for path in candidates:
             if not path.exists():
                 continue
@@ -123,6 +130,7 @@ def load_validation_inputs(source: SkillSource) -> ValidationInputs:
             CASE_PREFIX.rstrip("/"),
             FIXTURE_PREFIX.rstrip("/"),
             RUBRIC_PREFIX.rstrip("/"),
+            AUTHORITY_MAP_PATH,
         )
         for raw_path in raw_paths.split(b"\x00"):
             if not raw_path:
@@ -202,6 +210,8 @@ def _validate_schemas(files: Mapping[str, bytes]) -> dict[str, Any]:
         "schemas/eval-case.schema.json",
         "schemas/report.schema.json",
         "schemas/promotion-record.schema.json",
+        AUTHORITY_MAP_SCHEMA_PATH,
+        CALIBRATION_REPORT_SCHEMA_PATH,
     }
     missing = sorted(required - files.keys())
     if missing:
@@ -229,6 +239,93 @@ def _validate_schemas(files: Mapping[str, bytes]) -> dict[str, Any]:
             ) from error
         schemas[path] = schema
     return schemas
+
+
+def _authority_path(
+    root: Path, path: str, map_path: str, kind: str
+) -> dict[str, str] | None:
+    try:
+        relative = _safe_path(path)
+        target = root.joinpath(*relative.parts)
+        target.resolve().relative_to(root.resolve())
+    except ValueError:
+        return validation_record(
+            f"authority-map.unsafe-{kind}-path",
+            map_path,
+            f"{kind} path {path!r} is unsafe",
+        )
+    if target.is_symlink():
+        return validation_record(
+            f"authority-map.unsafe-{kind}-path",
+            map_path,
+            f"{kind} path {path!r} may not be a symlink",
+        )
+    if not target.is_file():
+        return validation_record(
+            f"authority-map.missing-{kind}-path",
+            map_path,
+            f"{kind} path {path!r} does not resolve to a regular file",
+        )
+    return None
+
+
+def _validate_authority_map(
+    files: Mapping[str, bytes], schemas: Mapping[str, Any], root: Path
+) -> list[dict[str, str]]:
+    try:
+        value = yaml.safe_load(files[AUTHORITY_MAP_PATH])
+    except KeyError:
+        return [
+            validation_record(
+                "authority-map.missing", AUTHORITY_MAP_PATH, "authority map is missing"
+            )
+        ]
+    except (UnicodeDecodeError, yaml.YAMLError) as error:
+        return [
+            validation_record(
+                "authority-map.invalid", AUTHORITY_MAP_PATH, f"invalid authority map: {error}"
+            )
+        ]
+
+    errors = sorted(
+        Draft202012Validator(schemas[AUTHORITY_MAP_SCHEMA_PATH]).iter_errors(value),
+        key=lambda error: list(error.path),
+    )
+    if errors:
+        return [
+            validation_record(
+                "authority-map.invalid", AUTHORITY_MAP_PATH, error.message
+            )
+            for error in errors
+        ]
+
+    assert isinstance(value, dict)
+    contracts = value["contracts"]
+    assert isinstance(contracts, list)
+    records: list[dict[str, str]] = []
+    identifiers = Counter(contract["id"] for contract in contracts)
+    for contract in contracts:
+        identifier = contract["id"]
+        if identifiers[identifier] > 1:
+            records.append(
+                validation_record(
+                    "authority-map.duplicate-id",
+                    AUTHORITY_MAP_PATH,
+                    f"contract id {identifier!r} must be unique",
+                )
+            )
+        owner_record = _authority_path(
+            root, contract["owner_path"], AUTHORITY_MAP_PATH, "owner"
+        )
+        if owner_record:
+            records.append(owner_record)
+        for secondary in contract["secondary_paths"]:
+            secondary_record = _authority_path(
+                root, secondary["path"], AUTHORITY_MAP_PATH, "secondary"
+            )
+            if secondary_record:
+                records.append(secondary_record)
+    return records
 
 
 def _validate_cases(
@@ -546,6 +643,7 @@ def validate_structure(
             )
 
     records.extend(_validate_cases(files, schemas))
+    records.extend(_validate_authority_map(files, schemas, root.parent))
     return sorted(records, key=lambda record: (record["path"], record["code"], record["message"]))
 
 
@@ -564,4 +662,16 @@ def validate_report_schema(report: Mapping[str, Any], inputs: ValidationInputs) 
     except ValidationError as error:
         raise ValidationConfigurationError(
             "report.schema-invalid", "schemas/report.schema.json", error.message
+        ) from error
+
+
+def validate_calibration_report(report: Mapping[str, Any], inputs: ValidationInputs) -> None:
+    """Ensure optional behavior-calibration evidence has the versioned contract."""
+
+    schemas = _validate_schemas(inputs.files)
+    try:
+        Draft202012Validator(schemas[CALIBRATION_REPORT_SCHEMA_PATH]).validate(report)
+    except ValidationError as error:
+        raise ValidationConfigurationError(
+            "calibration.schema-invalid", CALIBRATION_REPORT_SCHEMA_PATH, error.message
         ) from error

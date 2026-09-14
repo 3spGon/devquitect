@@ -17,8 +17,44 @@ These instructions apply to the entire repository.
 - When behavioral testing is authorized and the user does not request another calibration, use `gpt-5.4-mini` with `--reasoning-effort low`.
 - Credential-free checks are the default after changes.
 
+## Evolving Devquitect skills
+
+- This repository develops and refines Devquitect's skills and their quality tooling. Treat a
+  change under `skills/` as a product-contract change, not as incidental documentation cleanup.
+- Keep skill entrypoints concise, place detailed workflow rules with their designated reference,
+  and use external deterministic cases to protect critical observable contracts.
+- Do not optimize a skill from one end-to-end model miss alone. Compare changed behavior against
+  the same stable model/runtime baseline; distinguish a reproducible candidate regression from
+  shared model limitations, ordinary variance, and infrastructure failure.
+- A safety property that needs certainty must be enforced by a deterministic guardrail, not only
+  by an instruction to the model.
+
+For a change to a critical skill rule:
+
+1. Identify the affected contract in `authority-map.yaml` and edit the file at its `owner_path`.
+2. Update that map when the owner or secondary paths change.
+3. Add relevant positive and negative deterministic cases.
+4. Run `uv run devquitect check --source working-tree`.
+5. Before release eligibility, run the check against the candidate commit and use that report for
+   `release-check`.
+
+See `docs/contributing-skills.md` for the complete evidence and promotion workflow.
+
 ## Repository boundaries
 
 - Preserve existing user changes and leave unrelated files untouched.
 - Do not create commits, tags, pushes, installations, publications, deployments, or promotion approvals unless the user explicitly authorizes them.
 - Changes under `skills/` require relevant positive and negative cases. Run credential-free checks first, then obtain or confirm authorization before any behavioral comparison.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- Dirty graphify-out/ files are expected after hooks or incremental updates; dirty graph files are not a reason to skip graphify. Only skip graphify if the task is about stale or incorrect graph output, or the user explicitly says not to use it.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
 import tempfile
+import uuid
+from collections import Counter
 from pathlib import Path
 
 from .cases import CaseError, load_cases, select_cases
@@ -14,6 +17,7 @@ from .codex_adapter import (
     DEFAULT_TEST_MODEL,
     DEFAULT_TEST_REASONING_EFFORT,
     discover_auth_cache,
+    preflight_codex,
 )
 from .comparison import freeze_pair, pair_records
 from .evaluation import run_case
@@ -22,6 +26,7 @@ from .packaging import PackageError, build_package
 from .promotion import PromotionError, release_check
 from .reporting import (
     build_artifact_report,
+    build_calibration_report,
     build_comparison_report,
     build_evaluation_report,
     build_validation_report,
@@ -34,6 +39,7 @@ from .sources import SourceError, freeze_source, remove_snapshot
 from .validate import (
     ValidationConfigurationError,
     load_validation_inputs,
+    validate_calibration_report,
     validate_report_schema,
     validate_snapshot,
 )
@@ -77,6 +83,20 @@ def _parser() -> argparse.ArgumentParser:
     comparison_selection.add_argument("--suite")
     comparison_selection.add_argument("--case")
     compare.add_argument("--report", type=Path)
+    calibrate = commands.add_parser(
+        "calibrate", help="write optional behavior-calibration evidence"
+    )
+    calibrate.add_argument("--source", required=True)
+    calibration_selection = calibrate.add_mutually_exclusive_group(required=True)
+    calibration_selection.add_argument("--suite")
+    calibration_selection.add_argument("--case")
+    calibrate.add_argument("--model", default=DEFAULT_TEST_MODEL)
+    calibrate.add_argument(
+        "--reasoning-effort",
+        choices=("low", "medium", "high", "xhigh", "max"),
+        default=DEFAULT_TEST_REASONING_EFFORT,
+    )
+    calibrate.add_argument("--report", required=True, type=Path)
     compare.add_argument("--model", default=DEFAULT_TEST_MODEL)
     compare.add_argument(
         "--reasoning-effort",
@@ -107,10 +127,16 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _source_identity(source: SkillSource, snapshot_id: str | None = None) -> dict[str, object]:
+def _source_identity(
+    source: SkillSource,
+    snapshot_id: str | None = None,
+    source_commit: str | None = None,
+) -> dict[str, object]:
     identity: dict[str, object] = {"kind": source.kind, "selector": source.selector}
     if snapshot_id:
         identity["snapshot_id"] = snapshot_id
+    if source_commit:
+        identity["source_commit"] = source_commit
     return identity
 
 
@@ -151,7 +177,10 @@ def _run_validate(args: argparse.Namespace) -> int:
             snapshot = freeze_source(source, snapshot_root)
             records = validate_snapshot(snapshot, inputs)
             report = build_validation_report(
-                source=_source_identity(source, snapshot.snapshot_id), records=records
+                source=_source_identity(
+                    source, snapshot.snapshot_id, snapshot.resolved_commit
+                ),
+                records=records,
             )
             validate_report_schema(report, inputs)
     except (SourceError, ValidationConfigurationError) as error:
@@ -251,6 +280,78 @@ def _run_compare(args: argparse.Namespace) -> int:
         write_report_atomic(args.report, report)
     sys.stdout.write(serialize_json(report))
     return {"pass": 0, "fail": 1, "inconclusive": 3}[report["result"]]
+
+
+def _calibration_dimensions(records: list[dict[str, object]]) -> dict[str, object]:
+    outcomes = Counter(str(record["classification"]) for record in records)
+    by_case: dict[str, dict[str, int]] = {}
+    for record in records:
+        case_id = str(record["case_id"])
+        outcome = str(record["classification"])
+        case_outcomes = by_case.setdefault(case_id, {})
+        case_outcomes[outcome] = case_outcomes.get(outcome, 0) + 1
+    return {"outcomes": dict(sorted(outcomes.items())), "cases": dict(sorted(by_case.items()))}
+
+
+def _calibration_evidence(records: list[dict[str, object]]) -> list[dict[str, object]]:
+    return [
+        {
+            "run_id": record["run_id"],
+            "case_id": record["case_id"],
+            "classification": record["classification"],
+            "runtime_errors": [str(error)[:500] for error in record["runtime_errors"][:10]],
+            "redactions": record["redactions"][:50],
+        }
+        for record in records[:100]
+    ]
+
+
+def _run_calibrate(args: argparse.Namespace) -> int:
+    try:
+        repository = _repository_root()
+        source = SkillSource.from_selector(args.source, repository)
+        inputs = load_validation_inputs(source)
+        cases = select_cases(
+            load_cases(repository / "evals/cases", repository / "schemas/eval-case.schema.json"),
+            suite=args.suite,
+            case_id=args.case,
+        )
+        with tempfile.TemporaryDirectory(prefix="devquitect-calibrate-") as temporary:
+            snapshot = freeze_source(source, Path(temporary) / "snapshot")
+            records = [
+                record
+                for case in cases
+                for record in run_case(
+                    case,
+                    snapshot,
+                    repository,
+                    model=args.model,
+                    reasoning_effort=args.reasoning_effort,
+                    auth_cache=discover_auth_cache(),
+                )
+            ]
+            suite_digest = hashlib.sha256(
+                "".join(case.digest for case in cases).encode("ascii")
+            ).hexdigest()
+            report = build_calibration_report(
+                run_id=str(uuid.uuid4()),
+                skill_snapshot_id=snapshot.snapshot_id,
+                skill_version=snapshot.resolved_commit,
+                model=args.model,
+                runtime={"codex_cli": preflight_codex().version},
+                suite_id=args.suite or str(args.case),
+                suite_digest=suite_digest,
+                repetitions=len(records),
+                dimensions=_calibration_dimensions(records),
+                evidence_references=_calibration_evidence(records),
+            )
+        validate_calibration_report(report, inputs)
+    except (SourceError, CaseError, ValidationConfigurationError, ValueError) as error:
+        sys.stderr.write(f"calibration configuration error: {error}\n")
+        return 2
+    write_report_atomic(args.report, report)
+    sys.stdout.write(serialize_json(report))
+    return 0
 
 
 def _run_package(args: argparse.Namespace) -> int:
@@ -534,6 +635,8 @@ def main(argv: list[str] | None = None) -> int:
         return _run_eval(args)
     if args.command == "compare":
         return _run_compare(args)
+    if args.command == "calibrate":
+        return _run_calibrate(args)
     if args.command == "package":
         return _run_package(args)
     if args.command == "release-check":

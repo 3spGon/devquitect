@@ -37,7 +37,7 @@ def fake_codex(path: Path) -> Path:
         """#!/usr/bin/env python3
 import json, os, pathlib, sys
 if '--version' in sys.argv:
-    print('codex-cli 0.139.0')
+    print('codex-cli 0.154.0')
 elif '--help' in sys.argv:
     print('--ephemeral --json --cd --sandbox --ignore-user-config --ignore-rules')
 else:

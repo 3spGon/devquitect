@@ -96,6 +96,62 @@ def build_evaluation_report(
     }
 
 
+def build_calibration_report(
+    *,
+    run_id: str,
+    skill_snapshot_id: str,
+    skill_version: str,
+    model: str,
+    runtime: Mapping[str, Any],
+    suite_id: str,
+    suite_digest: str,
+    repetitions: int,
+    dimensions: Mapping[str, Any],
+    evidence_references: Sequence[Mapping[str, Any]],
+    summary_score: float | None = None,
+    generated_at: str | None = None,
+) -> dict[str, Any]:
+    """Build bounded, review-only model calibration evidence."""
+
+    if len(evidence_references) > 100:
+        raise ValueError("calibration evidence is limited to 100 references")
+    report: dict[str, Any] = {
+        "schema_version": REPORT_SCHEMA_VERSION,
+        "report_type": "behavior-calibration",
+        "run_id": run_id,
+        "skill_snapshot_id": skill_snapshot_id,
+        "skill_version": skill_version,
+        "model": model,
+        "runtime": dict(runtime),
+        "suite_id": suite_id,
+        "suite_digest": suite_digest,
+        "repetitions": repetitions,
+        "dimensions": dict(dimensions),
+        "generated_at": generated_at or datetime.now(UTC).isoformat(),
+        "evidence_references": [dict(item) for item in evidence_references],
+    }
+    if summary_score is not None:
+        report["summary_score"] = summary_score
+    return report
+
+
+def calibration_comparability(
+    left: Mapping[str, Any] | None, right: Mapping[str, Any] | None
+) -> str:
+    """Return whether two optional calibration reports share a configuration."""
+
+    if left is None or right is None:
+        return "unknown"
+    fields = ("model", "runtime", "suite_digest", "repetitions")
+    if any(left.get(field) is None or right.get(field) is None for field in fields):
+        return "unknown"
+    return (
+        "comparable"
+        if all(left.get(field) == right.get(field) for field in fields)
+        else "not-comparable"
+    )
+
+
 def build_comparison_report(
     *,
     stable: Mapping[str, Any],

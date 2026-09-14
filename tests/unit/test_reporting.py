@@ -6,13 +6,38 @@ from pathlib import Path
 import pytest
 
 from devquitect_quality.reporting import (
+    build_calibration_report,
     build_validation_report,
+    calibration_comparability,
     normalize_relative_path,
     render_text,
     serialize_json,
     validation_record,
     write_report_atomic,
 )
+
+
+def test_calibration_report_preserves_configuration_and_unknown_comparisons() -> None:
+    report = build_calibration_report(
+        run_id="run-1",
+        skill_snapshot_id="sha256:snapshot",
+        skill_version="abc123",
+        model="gpt-5.4-mini",
+        runtime={"codex_cli": "0.153.4"},
+        suite_id="critical",
+        suite_digest="suite-digest",
+        repetitions=2,
+        dimensions={"outcomes": {"pass": 2}},
+        evidence_references=[{"run_id": "run-1"}],
+        generated_at="2026-09-10T08:00:00+00:00",
+    )
+
+    assert report["report_type"] == "behavior-calibration"
+    assert "summary_score" not in report
+    assert calibration_comparability(report, report) == "comparable"
+    assert calibration_comparability(report, None) == "unknown"
+    assert calibration_comparability({}, {}) == "unknown"
+    assert calibration_comparability(report, {**report, "model": "other"}) == "not-comparable"
 
 
 def test_json_and_text_present_the_same_verdict() -> None:

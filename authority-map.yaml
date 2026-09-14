@@ -1,0 +1,12 @@
+schema_version: 1
+contracts:
+  - id: project-plan-execution.delivery-state
+    owner_path: skills/project-plan-execution/references/delivery-state.md
+    secondary_paths:
+      - path: skills/project-plan-execution/SKILL.md
+        role: routes
+  - id: project-plan-execution.execution
+    owner_path: skills/project-plan-execution/references/execution.md
+    secondary_paths:
+      - path: skills/project-plan-execution/SKILL.md
+        role: routes

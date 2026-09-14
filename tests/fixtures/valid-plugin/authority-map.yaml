@@ -1,0 +1,7 @@
+schema_version: 1
+contracts:
+  - id: fixture-contract
+    owner_path: skills/example-skill/SKILL.md
+    secondary_paths:
+      - path: skills/example-skill/references/guide.md
+        role: explains
