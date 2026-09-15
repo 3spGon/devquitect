@@ -1,0 +1,12 @@
+schema_version: 1
+id: slice-verification-legacy-status
+target_skill: project-plan-execution
+activation: explicit
+fixture: slice-verification
+sandbox: read-only
+turns: ["Report the status of a legacy delivery tracker without migrating or writing evidence."]
+assertions: [{type: git-clean, id: legacy-status-is-read-only, critical: true}, {type: command-prohibition, id: legacy-does-not-close, pattern: "*verify_slice.py close*", critical: true}]
+forbidden_effects: [workspace-write, fabricated-evidence, silent-migration]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [slice-verification, legacy, read-only]

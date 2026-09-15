@@ -20,9 +20,10 @@ For each ready authorized slice:
 1. Record it as `in-progress` with an agent-executable `next_action`.
 2. Implement only its approved behavior, tests, and necessary supporting changes. Preserve unrelated edits.
 3. Inspect the resulting diff and map changes back to the slice's acceptance criteria.
-4. Run the slice-specific commands from the plan plus any narrowly relevant repository checks required by the changed surface.
-5. If all criteria and commands succeed, record concise evidence, set the slice to `verified`, select the next ready authorized slice, and continue without asking the user.
-6. Use `implemented` only when code is present but verification must resume later. Never deliberately stop merely to expose that intermediate state.
+4. Run every slice-specific command from the plan plus any narrowly relevant repository checks required by the changed surface.
+5. Run `verify_slice.py check`, correct any recoverable failure, then run `verify_slice.py close --expected-revision <current>`; a slice is not verified until that close succeeds.
+6. If all criteria and commands succeed, record concise evidence, set the slice to `verified`, select the next ready authorized slice, and continue without asking the user.
+7. Use `implemented` only when code is present but verification must resume later. Never deliberately stop merely to expose that intermediate state.
 
 Evidence for a verified slice includes:
 
@@ -31,6 +32,10 @@ Evidence for a verified slice includes:
 - exact commands executed, exit result, and concise success signal;
 - relevant manual or external checks and their provenance;
 - timestamp and any residual risk that does not prevent acceptance.
+
+The detail file starts with `NO VERIFICADO`; only observed command results or reproducible manual
+checks may change it to `PASS`. The final accumulated review reruns the relevant checks after the
+last change and closes no slice from historical or stale evidence.
 
 Do not paste secrets or full logs. A command not run in the current relevant repository state is not evidence.
 

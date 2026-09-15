@@ -1,0 +1,12 @@
+schema_version: 1
+id: slice-verification-positive
+target_skill: project-plan-execution
+activation: explicit
+fixture: slice-verification
+sandbox: workspace-write
+turns: ["Execute the authorized slice, run its declared checks, and close it only after evidence passes."]
+assertions: [{type: command-occurrence, id: runs-check, pattern: "*verify_slice.py check*", critical: true}, {type: command-occurrence, id: runs-close, pattern: "*verify_slice.py close*", critical: true}, {type: checkpoint-transition, id: closes-after-check, before: {slice: SLICE-001, status: in-progress}, after: {slice: SLICE-001, status: verified}, critical: true}]
+forbidden_effects: [verification-without-evidence, close-before-check]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, slice-verification, project-plan-execution]

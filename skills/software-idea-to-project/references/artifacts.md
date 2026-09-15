@@ -44,6 +44,10 @@ Do not create empty files, placeholder sections, or every artifact by default. I
 
 `00-status.md` is authoritative for definition workflow phase, phase status, gates, next action, and handoff context. Follow [session-state.md](session-state.md) for its schema, update ordering, recovery, and single-writer rules. When present, `09-delivery-status.md` is separately authoritative for implementation progress and evidence; it follows the `$project-plan-execution` delivery-state contract and is not a canonical design document.
 
+Each verified delivery slice may link one `slices/<SLICE-ID>.md` detail from the delivery
+checkpoint. That detail records observed criteria and checks; it never replaces the approved plan
+or the checkpoint's authority, and a legacy status query remains read-only.
+
 `brainstorm.md` is a chronological, non-canonical decision trail. Record meaningful milestones: the seed, newly explored directions, evidence, user feedback, alternatives, reversals, approvals, and crystallized conclusions. Update it at milestones rather than after every message.
 
 The numbered definition documents from `01` through `08` are canonical. `experience-design.md`, when created, is an additional canonical definition document without changing the numbered contract. When thinking changes, update the relevant canonical document and record the reason in `brainstorm.md`. An abandoned idea that remains in `brainstorm.md` is not an active requirement.

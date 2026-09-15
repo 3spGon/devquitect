@@ -54,6 +54,7 @@ No Git remote or CI provider is configured in the represented baseline.
 
 ## Current capabilities
 
+- `project-plan-execution` distributes a deterministic `snapshot`/`check`/`close` guard that fingerprints approved inputs, validates slice evidence, and atomically protects the supported transition to `verified` without executing evidence commands; its execution loop now requires this verification before advancing or completing an authorized slice.
 - `software-idea-to-project` defines new systems and software changes through approval gates and can preserve cross-session state in a target repository. Existing-system and hybrid initiatives use an optional Change Profile to select expedited, standard, or full depth from baseline evidence, with fail-safe elevation and backward-compatible schema-v2 persistence.
 - `project-plan-execution` executes authorized slices from an approved persistent plan and records current verification evidence.
 - `targeted-refactoring` assesses, plans, executes, or reviews bounded behavior-preserving refactors.

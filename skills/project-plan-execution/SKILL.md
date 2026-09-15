@@ -5,6 +5,11 @@ description: Execute, resume, or report the status of an explicitly authorized i
 
 # Project Plan Execution
 
+Read [the slice verification contract](references/slice-verification.md) and use
+[`verify_slice.py`](scripts/verify_slice.py) for the supported evidence check and close path.
+Before running it, confirm Python 3.12+ and PyYAML are available in the consumer runtime; report
+missing support and do not install or use a manual equivalent.
+
 Implement an approved plan without confusing code written with delivery verified. Preserve traceability from authorized slices to repository changes, acceptance behavior, commands, and observed evidence.
 
 ## Establish the execution context

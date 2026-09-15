@@ -25,6 +25,11 @@ def test_cases_are_schema_valid_unique_and_cover_each_skill_routing() -> None:
         "change-profile-legacy-session",
         "change-profile-refactor-routing",
     } <= identifiers
+    assert {
+        "slice-verification-positive",
+        "slice-verification-negative",
+        "slice-verification-legacy-status",
+    } <= identifiers
     assert {case.id for case in select_cases(cases, suite="change-profile")} == {
         "change-profile-expedited",
         "change-profile-elevation",
@@ -40,3 +45,23 @@ def test_empty_selection_and_conflicting_selectors_fail() -> None:
         select_cases(cases, suite="missing")
     with pytest.raises(CaseError):
         select_cases(cases, suite="critical", case_id=cases[0].id)
+
+
+def test_slice_verification_cases_pin_the_supported_flow() -> None:
+    cases = load_cases(ROOT / "evals/cases", ROOT / "schemas/eval-case.schema.json")
+    selected = {case.id: case.data for case in cases if case.id.startswith("slice-verification-")}
+    positive = selected["slice-verification-positive"]["assertions"]
+    negative = selected["slice-verification-negative"]["assertions"]
+    assert {item["pattern"] for item in positive if item["type"] == "command-occurrence"} == {
+        "*verify_slice.py check*",
+        "*verify_slice.py close*",
+    }
+    assert any(
+        item["type"] == "checkpoint-transition"
+        and item["before"] == {"slice": "SLICE-001", "status": "in-progress"}
+        and item["after"] == {"slice": "SLICE-001", "status": "verified"}
+        for item in positive
+    )
+    assert {item["pattern"] for item in negative if item["type"] == "command-prohibition"} == {
+        "*verify_slice.py close*"
+    }

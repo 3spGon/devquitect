@@ -10,3 +10,12 @@ contracts:
     secondary_paths:
       - path: skills/project-plan-execution/SKILL.md
         role: routes
+  - id: project-plan-execution.slice-close-guard
+    owner_path: skills/project-plan-execution/scripts/verify_slice.py
+    secondary_paths:
+      - path: skills/project-plan-execution/references/slice-verification.md
+        role: explains
+      - path: skills/project-plan-execution/SKILL.md
+        role: routes
+      - path: skills/project-plan-execution/references/slice-verification.md
+        role: tests

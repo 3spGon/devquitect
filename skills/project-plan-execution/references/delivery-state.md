@@ -70,7 +70,7 @@ Required invariants:
 - `implemented` never implies verification. `verified` requires current evidence that every acceptance criterion and required command succeeded.
 - `deferred` requires explicit authorization and a reason in the evidence body.
 
-The Markdown body owns concise execution evidence and handoff context. Do not duplicate the full implementation plan or large command logs.
+The Markdown body owns concise execution evidence and handoff context. Do not duplicate the full implementation plan or large command logs. A verified slice may link one `slices/<SLICE-ID>.md` detail; that file is the sole structured evidence record, while legacy status reads remain read-only.
 
 ## Link the definition checkpoint
 
@@ -126,3 +126,8 @@ On every resume, compare the approved plan's `Plan revision` and status with the
 - If the change alters approved requirements, domain rules, architecture, interfaces, or ownership, stop implementation and return to `$software-idea-to-project` for the relevant gate invalidation and redesign.
 
 If the tracker is missing or malformed during resume, recover conservatively from the approved plan, repository evidence, and recorded verification. Never infer `verified`, `deferred`, acceptance, or authorization without evidence. Present discrepancies before writing a repaired tracker. Status-only remains read-only.
+
+Recovery distinguishes plan or input invalidation, a recoverable verification failure, unavailable runtime
+support, and a genuine blocker. Missing support is reported without installing dependencies; a manual
+equivalent is not a supported close path. Legacy status reads remain read-only, and adopting the structured
+evidence format requires an approved plan revision while preserving unaffected verified slices.

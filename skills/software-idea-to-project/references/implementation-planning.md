@@ -29,6 +29,11 @@ For a `system-change` or `hybrid` initiative, also include the confirmed Change 
 
 Organize delivery into thin vertical slices that produce observable behavior. Give every slice a stable `SLICE-*` identifier that is unique within the plan. Each slice must state:
 
+New approved plans include one fenced `devquitect-verification` YAML inventory containing stable
+slice IDs, atomic criteria, exact checks with relative working directories, dependencies, and
+declared input paths. The inventory is the machine-readable acceptance contract; surrounding
+prose explains it and must not duplicate a second normative criteria table.
+
 - outcome and observable acceptance criteria;
 - dependencies and prerequisites;
 - files to create or modify, distinguishing verified from proposed paths;

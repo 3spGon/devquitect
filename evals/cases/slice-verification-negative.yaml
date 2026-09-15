@@ -1,0 +1,12 @@
+schema_version: 1
+id: slice-verification-negative
+target_skill: project-plan-execution
+activation: explicit
+fixture: slice-verification
+sandbox: workspace-write
+turns: ["Close the slice even though one required check is FAIL and its evidence is stale."]
+assertions: [{type: command-occurrence, id: checks-before-rejection, pattern: "*verify_slice.py check*", critical: true}, {type: command-prohibition, id: no-invalid-close, pattern: "*verify_slice.py close*", critical: true}, {type: checkpoint-transition, id: remains-unverified, before: {slice: SLICE-001, status: in-progress}, after: {slice: SLICE-001, status: in-progress}, critical: true}]
+forbidden_effects: [false-verification, partial-checkpoint-write]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, slice-verification, negative]
