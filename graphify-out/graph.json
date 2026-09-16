@@ -82,32 +82,6 @@
       "source_location": "L21"
     },
     {
-      "id": "src_devquitect_quality_cases_caseerror",
-      "label": "CaseError",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "caseerror",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L16"
-    },
-    {
-      "id": "src_devquitect_quality_cases_evalcase",
-      "label": "EvalCase",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "evalcase",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L21"
-    },
-    {
       "id": "src_devquitect_quality_comparison_frozenpair",
       "label": "FrozenPair",
       "_callable": true,
@@ -134,30 +108,30 @@
       "source_location": "L13"
     },
     {
+      "id": "src_devquitect_quality_observations_normalizedevent",
+      "label": "NormalizedEvent",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "normalizedevent",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L27"
+    },
+    {
       "id": "src_devquitect_quality_assertions_assertionresult",
       "label": "AssertionResult",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "assertionresult",
       "source_file": "src/devquitect_quality/assertions.py",
       "source_location": "L17"
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter_codexpreflight",
-      "label": "CodexPreflight",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "codexpreflight",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L39"
     },
     {
       "id": "src_devquitect_quality_grading_verdict",
@@ -166,50 +140,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "verdict",
       "source_file": "src/devquitect_quality/grading.py",
       "source_location": "L16"
-    },
-    {
-      "id": "src_devquitect_quality_observations_filerecord",
-      "label": "FileRecord",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "filerecord",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L34"
-    },
-    {
-      "id": "src_devquitect_quality_observations_gitstate",
-      "label": "GitState",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "gitstate",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L42"
-    },
-    {
-      "id": "src_devquitect_quality_observations_normalizedevent",
-      "label": "NormalizedEvent",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "normalizedevent",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L27"
     },
     {
       "id": "src_devquitect_quality_observations_observation",
@@ -218,37 +153,37 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "observation",
       "source_file": "src/devquitect_quality/observations.py",
       "source_location": "L48"
     },
     {
-      "id": "src_devquitect_quality_observations_runtimestatus",
-      "label": "RuntimeStatus",
+      "id": "src_devquitect_quality_cases_caseerror",
+      "label": "CaseError",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "code",
-      "norm_label": "runtimestatus",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L20"
+      "norm_label": "caseerror",
+      "source_file": "src/devquitect_quality/cases.py",
+      "source_location": "L16"
     },
     {
-      "id": "src_devquitect_quality_redaction_redactionresult",
-      "label": "RedactionResult",
+      "id": "src_devquitect_quality_cases_evalcase",
+      "label": "EvalCase",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "code",
-      "norm_label": "redactionresult",
-      "source_file": "src/devquitect_quality/redaction.py",
-      "source_location": "L18"
+      "norm_label": "evalcase",
+      "source_file": "src/devquitect_quality/cases.py",
+      "source_location": "L21"
     },
     {
       "id": "src_devquitect_quality_packaging_packageartifact",
@@ -303,6 +238,32 @@
       "source_location": "L22"
     },
     {
+      "id": "src_devquitect_quality_observations_filerecord",
+      "label": "FileRecord",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "filerecord",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L34"
+    },
+    {
+      "id": "src_devquitect_quality_observations_gitstate",
+      "label": "GitState",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "gitstate",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L42"
+    },
+    {
       "id": "skills_project_plan_execution_scripts_verify_slice_concurrentchangeerror",
       "label": "ConcurrentChangeError",
       "_callable": true,
@@ -353,6 +314,45 @@
       "norm_label": "validationinputs",
       "source_file": "src/devquitect_quality/validate.py",
       "source_location": "L47"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_codexpreflight",
+      "label": "CodexPreflight",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "codexpreflight",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L39"
+    },
+    {
+      "id": "src_devquitect_quality_observations_runtimestatus",
+      "label": "RuntimeStatus",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "runtimestatus",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L20"
+    },
+    {
+      "id": "src_devquitect_quality_redaction_redactionresult",
+      "label": "RedactionResult",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "redactionresult",
+      "source_file": "src/devquitect_quality/redaction.py",
+      "source_location": "L18"
     },
     {
       "id": "src_devquitect_quality_fixtures_fixtureattempt_cleanup",
@@ -533,18 +533,6 @@
       "norm_label": "_prepare_destination()",
       "source_file": "src/devquitect_quality/sources.py",
       "source_location": "L210"
-    },
-    {
-      "id": "src_devquitect_quality_sources_remove_snapshot",
-      "label": "remove_snapshot()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "freeze_source",
-      "file_type": "code",
-      "norm_label": "remove_snapshot()",
-      "source_file": "src/devquitect_quality/sources.py",
-      "source_location": "L304"
     },
     {
       "id": "src_devquitect_quality_sources_resolve_commit",
@@ -821,54 +809,6 @@
       "norm_label": "test_working_tree_snapshot_is_always_diagnostic()",
       "source_file": "tests/unit/test_sources.py",
       "source_location": "L66"
-    },
-    {
-      "id": "src_devquitect_quality_cases_evalcase_id",
-      "label": ".id()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": ".id()",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L27"
-    },
-    {
-      "id": "src_devquitect_quality_cases_evalcase_repetitions",
-      "label": ".repetitions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": ".repetitions()",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L31"
-    },
-    {
-      "id": "src_devquitect_quality_cases_load_cases",
-      "label": "load_cases()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "load_cases()",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L35"
-    },
-    {
-      "id": "src_devquitect_quality_cases_select_cases",
-      "label": "select_cases()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "select_cases()",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L56"
     },
     {
       "id": "src_devquitect_quality_cli_calibration_dimensions",
@@ -1255,6 +1195,18 @@
       "source_location": "L237"
     },
     {
+      "id": "src_devquitect_quality_sources_remove_snapshot",
+      "label": "remove_snapshot()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "cli.py",
+      "file_type": "code",
+      "norm_label": "remove_snapshot()",
+      "source_file": "src/devquitect_quality/sources.py",
+      "source_location": "L304"
+    },
+    {
       "id": "tests_integration_test_compare_command_git",
       "label": "git()",
       "_callable": true,
@@ -1277,42 +1229,6 @@
       "norm_label": "test_pair_freezes_both_sources_before_candidate_edits_and_uses_distinct_roots()",
       "source_file": "tests/integration/test_compare_command.py",
       "source_location": "L18"
-    },
-    {
-      "id": "tests_unit_test_cases_test_cases_are_schema_valid_unique_and_cover_each_skill_routing",
-      "label": "test_cases_are_schema_valid_unique_and_cover_each_skill_routing()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "test_cases_are_schema_valid_unique_and_cover_each_skill_routing()",
-      "source_file": "tests/unit/test_cases.py",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_unit_test_cases_test_empty_selection_and_conflicting_selectors_fail",
-      "label": "test_empty_selection_and_conflicting_selectors_fail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "test_empty_selection_and_conflicting_selectors_fail()",
-      "source_file": "tests/unit/test_cases.py",
-      "source_location": "L42"
-    },
-    {
-      "id": "tests_unit_test_cases_test_slice_verification_cases_pin_the_supported_flow",
-      "label": "test_slice_verification_cases_pin_the_supported_flow()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "test_slice_verification_cases_pin_the_supported_flow()",
-      "source_file": "tests/unit/test_cases.py",
-      "source_location": "L50"
     },
     {
       "id": "tests_unit_test_comparison_record",
@@ -1399,12 +1315,132 @@
       "source_location": "L76"
     },
     {
+      "id": "tests_unit_test_validate_test_current_skills_and_plugin_metadata_are_valid",
+      "label": "test_current_skills_and_plugin_metadata_are_valid()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "cli.py",
+      "file_type": "code",
+      "norm_label": "test_current_skills_and_plugin_metadata_are_valid()",
+      "source_file": "tests/unit/test_validate.py",
+      "source_location": "L37"
+    },
+    {
+      "id": "src_devquitect_quality_observations_event_detail",
+      "label": "_event_detail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "_event_detail()",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L125"
+    },
+    {
+      "id": "src_devquitect_quality_observations_parse_jsonl_events",
+      "label": "parse_jsonl_events()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "parse_jsonl_events()",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L166"
+    },
+    {
+      "id": "src_devquitect_quality_redaction_redact_value",
+      "label": "redact_value()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "redact_value()",
+      "source_file": "src/devquitect_quality/redaction.py",
+      "source_location": "L44"
+    },
+    {
+      "id": "src_devquitect_quality_redaction_redact_value_visit",
+      "label": "visit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "visit()",
+      "source_file": "src/devquitect_quality/redaction.py",
+      "source_location": "L49"
+    },
+    {
+      "id": "tests_unit_test_observations_test_filesystem_manifest_records_content_and_does_not_follow_symlinks",
+      "label": "test_filesystem_manifest_records_content_and_does_not_follow_symlinks()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "test_filesystem_manifest_records_content_and_does_not_follow_symlinks()",
+      "source_file": "tests/unit/test_observations.py",
+      "source_location": "L45"
+    },
+    {
+      "id": "tests_unit_test_observations_test_redaction_masks_explicit_and_pattern_credentials_recursively",
+      "label": "test_redaction_masks_explicit_and_pattern_credentials_recursively()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "test_redaction_masks_explicit_and_pattern_credentials_recursively()",
+      "source_file": "tests/unit/test_observations.py",
+      "source_location": "L56"
+    },
+    {
+      "id": "tests_unit_test_observations_test_success_stream_normalizes_commands_final_message_and_terminal_event",
+      "label": "test_success_stream_normalizes_commands_final_message_and_terminal_event()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "test_success_stream_normalizes_commands_final_message_and_terminal_event()",
+      "source_file": "tests/unit/test_observations.py",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_unit_test_observations_test_truncated_and_invalid_streams_are_infrastructure_errors",
+      "label": "test_truncated_and_invalid_streams_are_infrastructure_errors()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "test_truncated_and_invalid_streams_are_infrastructure_errors()",
+      "source_file": "tests/unit/test_observations.py",
+      "source_location": "L23"
+    },
+    {
+      "id": "tests_unit_test_observations_test_unknown_optional_event_does_not_invalidate_contract",
+      "label": "test_unknown_optional_event_does_not_invalidate_contract()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "test_unknown_optional_event_does_not_invalidate_contract()",
+      "source_file": "tests/unit/test_observations.py",
+      "source_location": "L33"
+    },
+    {
       "id": "src_devquitect_quality_assertions_assertionresult_as_dict",
       "label": ".as_dict()",
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": ".as_dict()",
       "source_file": "src/devquitect_quality/assertions.py",
@@ -1416,7 +1452,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "evaluate_assertion()",
       "source_file": "src/devquitect_quality/assertions.py",
@@ -1428,7 +1464,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "evaluate_assertions()",
       "source_file": "src/devquitect_quality/assertions.py",
@@ -1440,59 +1476,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "_matches()",
       "source_file": "src/devquitect_quality/assertions.py",
       "source_location": "L36"
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter_build_command",
-      "label": "build_command()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "build_command()",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L97"
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter_preflight_codex",
-      "label": "preflight_codex()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "preflight_codex()",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L68"
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter_run_codex",
-      "label": "run_codex()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "run_codex()",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L130"
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter_stage_auth_cache",
-      "label": "_stage_auth_cache()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "_stage_auth_cache()",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L54"
     },
     {
       "id": "src_devquitect_quality_evaluation_run_case",
@@ -1500,7 +1488,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "run_case()",
       "source_file": "src/devquitect_quality/evaluation.py",
@@ -1512,47 +1500,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "grade_observation()",
       "source_file": "src/devquitect_quality/grading.py",
       "source_location": "L24"
-    },
-    {
-      "id": "src_devquitect_quality_observations_event_detail",
-      "label": "_event_detail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "_event_detail()",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L125"
-    },
-    {
-      "id": "src_devquitect_quality_observations_filesystem_manifest",
-      "label": "filesystem_manifest()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "filesystem_manifest()",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L71"
-    },
-    {
-      "id": "src_devquitect_quality_observations_git_state",
-      "label": "git_state()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "git_state()",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L99"
     },
     {
       "id": "src_devquitect_quality_observations_observation_changed_paths",
@@ -1560,71 +1512,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": ".changed_paths()",
       "source_file": "src/devquitect_quality/observations.py",
       "source_location": "L61"
-    },
-    {
-      "id": "src_devquitect_quality_observations_parse_jsonl_events",
-      "label": "parse_jsonl_events()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "parse_jsonl_events()",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L166"
-    },
-    {
-      "id": "src_devquitect_quality_redaction_redact_text",
-      "label": "redact_text()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "redact_text()",
-      "source_file": "src/devquitect_quality/redaction.py",
-      "source_location": "L23"
-    },
-    {
-      "id": "src_devquitect_quality_redaction_redact_value",
-      "label": "redact_value()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "redact_value()",
-      "source_file": "src/devquitect_quality/redaction.py",
-      "source_location": "L44"
-    },
-    {
-      "id": "src_devquitect_quality_redaction_redact_value_visit",
-      "label": "visit()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "visit()",
-      "source_file": "src/devquitect_quality/redaction.py",
-      "source_location": "L49"
-    },
-    {
-      "id": "tests_contract_test_codex_cli_contract_test_local_codex_cli_matches_pinned_runtime_contract",
-      "label": "test_local_codex_cli_matches_pinned_runtime_contract()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_local_codex_cli_matches_pinned_runtime_contract()",
-      "source_file": "tests/contract/test_codex_cli_contract.py",
-      "source_location": "L11"
     },
     {
       "id": "tests_integration_test_eval_command_test_critical_suite_has_fixed_repetitions_and_non_overridable_policy",
@@ -1632,83 +1524,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "test_critical_suite_has_fixed_repetitions_and_non_overridable_policy()",
       "source_file": "tests/integration/test_eval_command.py",
       "source_location": "L13"
-    },
-    {
-      "id": "tests_unit_test_assertions_observation",
-      "label": "observation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "observation()",
-      "source_file": "tests/unit/test_assertions.py",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_unit_test_assertions_test_command_tool_artifact_and_final_json_assertions",
-      "label": "test_command_tool_artifact_and_final_json_assertions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_command_tool_artifact_and_final_json_assertions()",
-      "source_file": "tests/unit/test_assertions.py",
-      "source_location": "L45"
-    },
-    {
-      "id": "tests_unit_test_assertions_test_invalid_checkpoint_transition_fails_and_unknown_assertion_is_not_evaluated",
-      "label": "test_invalid_checkpoint_transition_fails_and_unknown_assertion_is_not_evaluated()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_invalid_checkpoint_transition_fails_and_unknown_assertion_is_not_evaluated()",
-      "source_file": "tests/unit/test_assertions.py",
-      "source_location": "L60"
-    },
-    {
-      "id": "tests_unit_test_assertions_test_read_only_write_and_allowlist_violation_fail_deterministically",
-      "label": "test_read_only_write_and_allowlist_violation_fail_deterministically()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_read_only_write_and_allowlist_violation_fail_deterministically()",
-      "source_file": "tests/unit/test_assertions.py",
-      "source_location": "L33"
-    },
-    {
-      "id": "tests_unit_test_codex_adapter_test_behavioral_command_allows_explicit_calibration_override",
-      "label": "test_behavioral_command_allows_explicit_calibration_override()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_behavioral_command_allows_explicit_calibration_override()",
-      "source_file": "tests/unit/test_codex_adapter.py",
-      "source_location": "L22"
-    },
-    {
-      "id": "tests_unit_test_codex_adapter_test_behavioral_command_uses_lightweight_defaults",
-      "label": "test_behavioral_command_uses_lightweight_defaults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_behavioral_command_uses_lightweight_defaults()",
-      "source_file": "tests/unit/test_codex_adapter.py",
-      "source_location": "L12"
     },
     {
       "id": "tests_unit_test_grading_observation",
@@ -1716,7 +1536,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "observation()",
       "source_file": "tests/unit/test_grading.py",
@@ -1728,7 +1548,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "test_favorable_semantic_grade_cannot_erase_critical_failure()",
       "source_file": "tests/unit/test_grading.py",
@@ -1740,71 +1560,95 @@
       "_callable": true,
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "test_infrastructure_and_missing_critical_evidence_are_inconclusive()",
       "source_file": "tests/unit/test_grading.py",
       "source_location": "L22"
     },
     {
-      "id": "tests_unit_test_observations_test_filesystem_manifest_records_content_and_does_not_follow_symlinks",
-      "label": "test_filesystem_manifest_records_content_and_does_not_follow_symlinks()",
+      "id": "src_devquitect_quality_cases_evalcase_id",
+      "label": ".id()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "code",
-      "norm_label": "test_filesystem_manifest_records_content_and_does_not_follow_symlinks()",
-      "source_file": "tests/unit/test_observations.py",
-      "source_location": "L45"
+      "norm_label": ".id()",
+      "source_file": "src/devquitect_quality/cases.py",
+      "source_location": "L27"
     },
     {
-      "id": "tests_unit_test_observations_test_redaction_masks_explicit_and_pattern_credentials_recursively",
-      "label": "test_redaction_masks_explicit_and_pattern_credentials_recursively()",
+      "id": "src_devquitect_quality_cases_evalcase_repetitions",
+      "label": ".repetitions()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "code",
-      "norm_label": "test_redaction_masks_explicit_and_pattern_credentials_recursively()",
-      "source_file": "tests/unit/test_observations.py",
+      "norm_label": ".repetitions()",
+      "source_file": "src/devquitect_quality/cases.py",
+      "source_location": "L31"
+    },
+    {
+      "id": "src_devquitect_quality_cases_load_cases",
+      "label": "load_cases()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "load_cases",
+      "file_type": "code",
+      "norm_label": "load_cases()",
+      "source_file": "src/devquitect_quality/cases.py",
+      "source_location": "L35"
+    },
+    {
+      "id": "src_devquitect_quality_cases_select_cases",
+      "label": "select_cases()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "load_cases",
+      "file_type": "code",
+      "norm_label": "select_cases()",
+      "source_file": "src/devquitect_quality/cases.py",
       "source_location": "L56"
     },
     {
-      "id": "tests_unit_test_observations_test_success_stream_normalizes_commands_final_message_and_terminal_event",
-      "label": "test_success_stream_normalizes_commands_final_message_and_terminal_event()",
+      "id": "tests_unit_test_cases_test_cases_are_schema_valid_unique_and_cover_each_skill_routing",
+      "label": "test_cases_are_schema_valid_unique_and_cover_each_skill_routing()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "code",
-      "norm_label": "test_success_stream_normalizes_commands_final_message_and_terminal_event()",
-      "source_file": "tests/unit/test_observations.py",
-      "source_location": "L11"
+      "norm_label": "test_cases_are_schema_valid_unique_and_cover_each_skill_routing()",
+      "source_file": "tests/unit/test_cases.py",
+      "source_location": "L12"
     },
     {
-      "id": "tests_unit_test_observations_test_truncated_and_invalid_streams_are_infrastructure_errors",
-      "label": "test_truncated_and_invalid_streams_are_infrastructure_errors()",
+      "id": "tests_unit_test_cases_test_empty_selection_and_conflicting_selectors_fail",
+      "label": "test_empty_selection_and_conflicting_selectors_fail()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "code",
-      "norm_label": "test_truncated_and_invalid_streams_are_infrastructure_errors()",
-      "source_file": "tests/unit/test_observations.py",
-      "source_location": "L23"
+      "norm_label": "test_empty_selection_and_conflicting_selectors_fail()",
+      "source_file": "tests/unit/test_cases.py",
+      "source_location": "L42"
     },
     {
-      "id": "tests_unit_test_observations_test_unknown_optional_event_does_not_invalidate_contract",
-      "label": "test_unknown_optional_event_does_not_invalidate_contract()",
+      "id": "tests_unit_test_cases_test_slice_verification_cases_pin_the_supported_flow",
+      "label": "test_slice_verification_cases_pin_the_supported_flow()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "code",
-      "norm_label": "test_unknown_optional_event_does_not_invalidate_contract()",
-      "source_file": "tests/unit/test_observations.py",
-      "source_location": "L33"
+      "norm_label": "test_slice_verification_cases_pin_the_supported_flow()",
+      "source_file": "tests/unit/test_cases.py",
+      "source_location": "L50"
     },
     {
       "id": "src_devquitect_quality_packaging_build_package",
@@ -2215,6 +2059,78 @@
       "source_location": "L16"
     },
     {
+      "id": "src_devquitect_quality_observations_filesystem_manifest",
+      "label": "filesystem_manifest()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "filesystem_manifest()",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L71"
+    },
+    {
+      "id": "src_devquitect_quality_observations_git_state",
+      "label": "git_state()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "git_state()",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L99"
+    },
+    {
+      "id": "tests_unit_test_assertions_observation",
+      "label": "observation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "observation()",
+      "source_file": "tests/unit/test_assertions.py",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_unit_test_assertions_test_command_tool_artifact_and_final_json_assertions",
+      "label": "test_command_tool_artifact_and_final_json_assertions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "test_command_tool_artifact_and_final_json_assertions()",
+      "source_file": "tests/unit/test_assertions.py",
+      "source_location": "L45"
+    },
+    {
+      "id": "tests_unit_test_assertions_test_invalid_checkpoint_transition_fails_and_unknown_assertion_is_not_evaluated",
+      "label": "test_invalid_checkpoint_transition_fails_and_unknown_assertion_is_not_evaluated()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "test_invalid_checkpoint_transition_fails_and_unknown_assertion_is_not_evaluated()",
+      "source_file": "tests/unit/test_assertions.py",
+      "source_location": "L60"
+    },
+    {
+      "id": "tests_unit_test_assertions_test_read_only_write_and_allowlist_violation_fail_deterministically",
+      "label": "test_read_only_write_and_allowlist_violation_fail_deterministically()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "test_read_only_write_and_allowlist_violation_fail_deterministically()",
+      "source_file": "tests/unit/test_assertions.py",
+      "source_location": "L33"
+    },
+    {
       "id": "skills_project_plan_execution_scripts_verify_slice_check",
       "label": "_check()",
       "_callable": true,
@@ -2224,7 +2140,7 @@
       "file_type": "code",
       "norm_label": "_check()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L520"
+      "source_location": "L531"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_close",
@@ -2236,7 +2152,7 @@
       "file_type": "code",
       "norm_label": "_close()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L557"
+      "source_location": "L568"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_definition",
@@ -2248,7 +2164,7 @@
       "file_type": "code",
       "norm_label": "_definition()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L256"
+      "source_location": "L267"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_detail",
@@ -2260,7 +2176,7 @@
       "file_type": "code",
       "norm_label": "_detail()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L252"
+      "source_location": "L263"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_digest",
@@ -2272,7 +2188,7 @@
       "file_type": "code",
       "norm_label": "_digest()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L240"
+      "source_location": "L251"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_exit_for_issues",
@@ -2284,7 +2200,7 @@
       "file_type": "code",
       "norm_label": "_exit_for_issues()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L528"
+      "source_location": "L539"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_frontmatter",
@@ -2308,7 +2224,7 @@
       "file_type": "code",
       "norm_label": "_git_ignored()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L182"
+      "source_location": "L193"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_input_inventory",
@@ -2320,7 +2236,7 @@
       "file_type": "code",
       "norm_label": "_input_inventory()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L190"
+      "source_location": "L201"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_issue",
@@ -2332,7 +2248,7 @@
       "file_type": "code",
       "norm_label": "_issue()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L248"
+      "source_location": "L259"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_load_yaml",
@@ -2356,7 +2272,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L661"
+      "source_location": "L672"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_mapping",
@@ -2380,7 +2296,7 @@
       "file_type": "code",
       "norm_label": "_now()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L244"
+      "source_location": "L255"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_plan",
@@ -2416,7 +2332,7 @@
       "file_type": "code",
       "norm_label": "_replace_atomic()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L546"
+      "source_location": "L557"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_repo_root",
@@ -2440,7 +2356,7 @@
       "file_type": "code",
       "norm_label": "_result()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L470"
+      "source_location": "L481"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_sha256",
@@ -2452,7 +2368,7 @@
       "file_type": "code",
       "norm_label": "_sha256()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L178"
+      "source_location": "L189"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_snapshot",
@@ -2464,7 +2380,7 @@
       "file_type": "code",
       "norm_label": "_snapshot()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L489"
+      "source_location": "L500"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_timestamp",
@@ -2476,7 +2392,7 @@
       "file_type": "code",
       "norm_label": "_timestamp()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L269"
+      "source_location": "L280"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_validate",
@@ -2488,7 +2404,7 @@
       "file_type": "code",
       "norm_label": "_validate()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L281"
+      "source_location": "L292"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_validate_inventory",
@@ -2500,7 +2416,7 @@
       "file_type": "code",
       "norm_label": "_validate_inventory()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L114"
+      "source_location": "L125"
     },
     {
       "id": "skills_project_plan_execution_scripts_verify_slice_validate_inventory_visit",
@@ -2512,7 +2428,7 @@
       "file_type": "code",
       "norm_label": "visit()",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L163"
+      "source_location": "L174"
     },
     {
       "id": "src_devquitect_quality_reporting_validation_record",
@@ -2755,18 +2671,6 @@
       "source_location": "L151"
     },
     {
-      "id": "tests_unit_test_validate_test_current_skills_and_plugin_metadata_are_valid",
-      "label": "test_current_skills_and_plugin_metadata_are_valid()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "validate.py",
-      "file_type": "code",
-      "norm_label": "test_current_skills_and_plugin_metadata_are_valid()",
-      "source_file": "tests/unit/test_validate.py",
-      "source_location": "L37"
-    },
-    {
       "id": "tests_unit_test_validate_test_malformed_case_and_missing_fixture_are_reported",
       "label": "test_malformed_case_and_missing_fixture_are_reported()",
       "_callable": true,
@@ -2860,7 +2764,7 @@
       "file_type": "code",
       "norm_label": "test_check_rejects_stale_inputs_and_fail_evidence()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L136"
+      "source_location": "L153"
     },
     {
       "id": "tests_unit_test_slice_verification_test_check_requires_complete_criterion_and_check_evidence",
@@ -2872,7 +2776,7 @@
       "file_type": "code",
       "norm_label": "test_check_requires_complete_criterion_and_check_evidence()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L237"
+      "source_location": "L254"
     },
     {
       "id": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
@@ -2884,7 +2788,7 @@
       "file_type": "code",
       "norm_label": "test_close_is_atomic_and_preserves_body_then_is_idempotent()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L147"
+      "source_location": "L164"
     },
     {
       "id": "tests_unit_test_slice_verification_test_close_rejects_tracker_change_at_atomic_write",
@@ -2896,7 +2800,7 @@
       "file_type": "code",
       "norm_label": "test_close_rejects_tracker_change_at_atomic_write()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L285"
+      "source_location": "L302"
     },
     {
       "id": "tests_unit_test_slice_verification_test_close_rejects_tracker_change_at_atomic_write_race",
@@ -2908,7 +2812,7 @@
       "file_type": "code",
       "norm_label": "race()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L294"
+      "source_location": "L311"
     },
     {
       "id": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
@@ -2920,7 +2824,7 @@
       "file_type": "code",
       "norm_label": "test_close_requires_approved_gates_and_non_pending_acceptance()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L206"
+      "source_location": "L223"
     },
     {
       "id": "tests_unit_test_slice_verification_test_duplicate_yaml_is_rejected_without_writing",
@@ -2932,7 +2836,7 @@
       "file_type": "code",
       "norm_label": "test_duplicate_yaml_is_rejected_without_writing()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L193"
+      "source_location": "L210"
     },
     {
       "id": "tests_unit_test_slice_verification_test_plan_revision_is_read_from_approved_plan",
@@ -2944,7 +2848,7 @@
       "file_type": "code",
       "norm_label": "test_plan_revision_is_read_from_approved_plan()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L250"
+      "source_location": "L267"
     },
     {
       "id": "tests_unit_test_slice_verification_test_snapshot_and_check_accept_valid_detail",
@@ -2956,7 +2860,19 @@
       "file_type": "code",
       "norm_label": "test_snapshot_and_check_accept_valid_detail()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L128"
+      "source_location": "L130"
+    },
+    {
+      "id": "tests_unit_test_slice_verification_test_snapshot_rejects_plan_slice_missing_from_inventory",
+      "label": "test_snapshot_rejects_plan_slice_missing_from_inventory()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "test_slice_verification.py",
+      "file_type": "code",
+      "norm_label": "test_snapshot_rejects_plan_slice_missing_from_inventory()",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L138"
     },
     {
       "id": "tests_unit_test_slice_verification_test_symlinked_input_directory_is_rejected",
@@ -2968,7 +2884,7 @@
       "file_type": "code",
       "norm_label": "test_symlinked_input_directory_is_rejected()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L272"
+      "source_location": "L289"
     },
     {
       "id": "tests_unit_test_slice_verification_write_detail",
@@ -2980,7 +2896,103 @@
       "file_type": "code",
       "norm_label": "write_detail()",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L86"
+      "source_location": "L88"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_build_command",
+      "label": "build_command()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "build_command()",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L97"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_preflight_codex",
+      "label": "preflight_codex()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "preflight_codex()",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L68"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_run_codex",
+      "label": "run_codex()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "run_codex()",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L130"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_stage_auth_cache",
+      "label": "_stage_auth_cache()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "_stage_auth_cache()",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L54"
+    },
+    {
+      "id": "src_devquitect_quality_redaction_redact_text",
+      "label": "redact_text()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "redact_text()",
+      "source_file": "src/devquitect_quality/redaction.py",
+      "source_location": "L23"
+    },
+    {
+      "id": "tests_contract_test_codex_cli_contract_test_local_codex_cli_matches_pinned_runtime_contract",
+      "label": "test_local_codex_cli_matches_pinned_runtime_contract()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "test_local_codex_cli_matches_pinned_runtime_contract()",
+      "source_file": "tests/contract/test_codex_cli_contract.py",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_unit_test_codex_adapter_test_behavioral_command_allows_explicit_calibration_override",
+      "label": "test_behavioral_command_allows_explicit_calibration_override()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "test_behavioral_command_allows_explicit_calibration_override()",
+      "source_file": "tests/unit/test_codex_adapter.py",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_unit_test_codex_adapter_test_behavioral_command_uses_lightweight_defaults",
+      "label": "test_behavioral_command_uses_lightweight_defaults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "test_behavioral_command_uses_lightweight_defaults()",
+      "source_file": "tests/unit/test_codex_adapter.py",
+      "source_location": "L12"
     },
     {
       "id": "skipif",
@@ -3313,17 +3325,6 @@
       "source_location": "L290"
     },
     {
-      "id": "src_devquitect_quality_sources_rationale_305",
-      "label": "Remove a temporary snapshot after restoring cleanup permissions.",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "freeze_source",
-      "file_type": "rationale",
-      "norm_label": "remove a temporary snapshot after restoring cleanup permissions.",
-      "source_file": "src/devquitect_quality/sources.py",
-      "source_location": "L305"
-    },
-    {
       "id": "argumentparser",
       "label": "ArgumentParser",
       "_origin": "ast",
@@ -3353,39 +3354,6 @@
       "community_name": "cli.py",
       "file_type": "code",
       "norm_label": "namespace",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_devquitect_quality_cases",
-      "label": "cases.py",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "cases.py",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_devquitect_quality_cases_py_path",
-      "label": "Path",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_devquitect_quality_cases_py_valueerror",
-      "label": "ValueError",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "valueerror",
       "source_file": "",
       "source_location": ""
     },
@@ -3522,17 +3490,6 @@
       "source_location": ""
     },
     {
-      "id": "tests_unit_test_cases",
-      "label": "test_cases.py",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "code",
-      "norm_label": "test_cases.py",
-      "source_file": "tests/unit/test_cases.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_unit_test_comparison",
       "label": "test_comparison.py",
       "_origin": "ast",
@@ -3575,28 +3532,6 @@
       "norm_label": "path",
       "source_file": "",
       "source_location": ""
-    },
-    {
-      "id": "src_devquitect_quality_cases_rationale_1",
-      "label": "Versioned YAML behavioral case loading and selection.",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "rationale",
-      "norm_label": "versioned yaml behavioral case loading and selection.",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_devquitect_quality_cases_rationale_17",
-      "label": "A case collection is invalid or cannot satisfy a selection.",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "cli.py",
-      "file_type": "rationale",
-      "norm_label": "a case collection is invalid or cannot satisfy a selection.",
-      "source_file": "src/devquitect_quality/cases.py",
-      "source_location": "L17"
     },
     {
       "id": "src_devquitect_quality_cli_rationale_1",
@@ -3773,6 +3708,17 @@
       "norm_label": "build a canonical evaluation report without retaining raw transcripts.",
       "source_file": "src/devquitect_quality/reporting.py",
       "source_location": "L64"
+    },
+    {
+      "id": "src_devquitect_quality_sources_rationale_305",
+      "label": "Remove a temporary snapshot after restoring cleanup permissions.",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "cli.py",
+      "file_type": "rationale",
+      "norm_label": "remove a temporary snapshot after restoring cleanup permissions.",
+      "source_file": "src/devquitect_quality/sources.py",
+      "source_location": "L305"
     },
     {
       "id": "schemas_eval_case_schema_forbidden_effects_items",
@@ -4819,6 +4765,72 @@
       "source_location": "L31"
     },
     {
+      "id": "src_devquitect_quality_observations_py_any",
+      "label": "Any",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "any",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_devquitect_quality_redaction_py_any",
+      "label": "Any",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "any",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "tests_unit_test_observations",
+      "label": "test_observations.py",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "test_observations.py",
+      "source_file": "tests/unit/test_observations.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_unit_test_observations_py_path",
+      "label": "Path",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_devquitect_quality_observations_rationale_169",
+      "label": "Parse untrusted JSONL as data and return bounded normalized evidence.",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "rationale",
+      "norm_label": "parse untrusted jsonl as data and return bounded normalized evidence.",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L169"
+    },
+    {
+      "id": "src_devquitect_quality_redaction_rationale_45",
+      "label": "Recursively redact a JSON-compatible evidence value.",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "parse_jsonl_events",
+      "file_type": "rationale",
+      "norm_label": "recursively redact a json-compatible evidence value.",
+      "source_file": "src/devquitect_quality/redaction.py",
+      "source_location": "L45"
+    },
+    {
       "id": "schemas_promotion_record_schema_accepted_deltas_type",
       "label": "type",
       "_origin": "ast",
@@ -5043,7 +5055,7 @@
       "label": "Runner",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "runner",
       "source_file": "",
@@ -5054,7 +5066,7 @@
       "label": "assertions.py",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "assertions.py",
       "source_file": "src/devquitect_quality/assertions.py",
@@ -5065,31 +5077,9 @@
       "label": "Any",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "any",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter",
-      "label": "codex_adapter.py",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "codex_adapter.py",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter_py_path",
-      "label": "Path",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "path",
       "source_file": "",
       "source_location": ""
     },
@@ -5098,7 +5088,7 @@
       "label": "evaluation.py",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "evaluation.py",
       "source_file": "src/devquitect_quality/evaluation.py",
@@ -5109,7 +5099,7 @@
       "label": "Any",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "any",
       "source_file": "",
@@ -5120,7 +5110,7 @@
       "label": "Path",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "",
@@ -5131,7 +5121,7 @@
       "label": "grading.py",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "grading.py",
       "source_file": "src/devquitect_quality/grading.py",
@@ -5142,109 +5132,21 @@
       "label": "Any",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "any",
       "source_file": "",
       "source_location": ""
-    },
-    {
-      "id": "src_devquitect_quality_observations",
-      "label": "observations.py",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "observations.py",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_devquitect_quality_observations_py_any",
-      "label": "Any",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "any",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_devquitect_quality_observations_py_path",
-      "label": "Path",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_devquitect_quality_redaction",
-      "label": "redaction.py",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "redaction.py",
-      "source_file": "src/devquitect_quality/redaction.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_devquitect_quality_redaction_py_any",
-      "label": "Any",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "any",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "tests_contract_test_codex_cli_contract",
-      "label": "test_codex_cli_contract.py",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_codex_cli_contract.py",
-      "source_file": "tests/contract/test_codex_cli_contract.py",
-      "source_location": "L1"
     },
     {
       "id": "tests_integration_test_eval_command",
       "label": "test_eval_command.py",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "test_eval_command.py",
       "source_file": "tests/integration/test_eval_command.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_unit_test_assertions",
-      "label": "test_assertions.py",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_assertions.py",
-      "source_file": "tests/unit/test_assertions.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_unit_test_codex_adapter",
-      "label": "test_codex_adapter.py",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_codex_adapter.py",
-      "source_file": "tests/unit/test_codex_adapter.py",
       "source_location": "L1"
     },
     {
@@ -5252,40 +5154,18 @@
       "label": "test_grading.py",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "code",
       "norm_label": "test_grading.py",
       "source_file": "tests/unit/test_grading.py",
       "source_location": "L1"
     },
     {
-      "id": "tests_unit_test_observations",
-      "label": "test_observations.py",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "test_observations.py",
-      "source_file": "tests/unit/test_observations.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_unit_test_observations_py_path",
-      "label": "Path",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
       "id": "src_devquitect_quality_assertions_rationale_1",
       "label": "Side-effect-free deterministic assertions over normalized observations.",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "rationale",
       "norm_label": "side-effect-free deterministic assertions over normalized observations.",
       "source_file": "src/devquitect_quality/assertions.py",
@@ -5296,51 +5176,18 @@
       "label": "Evaluate one immutable specification without invoking tools or modifying\u2026",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "rationale",
       "norm_label": "evaluate one immutable specification without invoking tools or modifying...",
       "source_file": "src/devquitect_quality/assertions.py",
       "source_location": "L41"
     },
     {
-      "id": "src_devquitect_quality_codex_adapter_rationale_1",
-      "label": "Pinned Codex CLI adapter with explicit isolation and failure classification.",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "rationale",
-      "norm_label": "pinned codex cli adapter with explicit isolation and failure classification.",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter_rationale_142",
-      "label": "Run one fresh attempt; adapter/auth/service failures remain inconclusive.",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "rationale",
-      "norm_label": "run one fresh attempt; adapter/auth/service failures remain inconclusive.",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L142"
-    },
-    {
-      "id": "src_devquitect_quality_codex_adapter_rationale_69",
-      "label": "Verify the exact runtime version and flags assumed by the approved adapter.",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "rationale",
-      "norm_label": "verify the exact runtime version and flags assumed by the approved adapter.",
-      "source_file": "src/devquitect_quality/codex_adapter.py",
-      "source_location": "L69"
-    },
-    {
       "id": "src_devquitect_quality_evaluation_rationale_1",
       "label": "Behavioral case orchestration over immutable skill snapshots.",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "rationale",
       "norm_label": "behavioral case orchestration over immutable skill snapshots.",
       "source_file": "src/devquitect_quality/evaluation.py",
@@ -5351,88 +5198,77 @@
       "label": "Deterministic-first behavioral verdicts.",
       "_origin": "ast",
       "community": 15,
-      "community_name": "codex_adapter.py",
+      "community_name": "evaluation.py",
       "file_type": "rationale",
       "norm_label": "deterministic-first behavioral verdicts.",
       "source_file": "src/devquitect_quality/grading.py",
       "source_location": "L1"
     },
     {
-      "id": "src_devquitect_quality_observations_rationale_1",
-      "label": "Normalize process, runtime, filesystem, Git, and checkpoint evidence.",
+      "id": "src_devquitect_quality_cases",
+      "label": "cases.py",
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "rationale",
-      "norm_label": "normalize process, runtime, filesystem, git, and checkpoint evidence.",
-      "source_file": "src/devquitect_quality/observations.py",
+      "community": 16,
+      "community_name": "load_cases",
+      "file_type": "code",
+      "norm_label": "cases.py",
+      "source_file": "src/devquitect_quality/cases.py",
       "source_location": "L1"
     },
     {
-      "id": "src_devquitect_quality_observations_rationale_100",
-      "label": "Capture status and HEAD diff when the fixture is a Git worktree.",
+      "id": "src_devquitect_quality_cases_py_path",
+      "label": "Path",
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "rationale",
-      "norm_label": "capture status and head diff when the fixture is a git worktree.",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L100"
+      "community": 16,
+      "community_name": "load_cases",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
     },
     {
-      "id": "src_devquitect_quality_observations_rationale_169",
-      "label": "Parse untrusted JSONL as data and return bounded normalized evidence.",
+      "id": "src_devquitect_quality_cases_py_valueerror",
+      "label": "ValueError",
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "rationale",
-      "norm_label": "parse untrusted jsonl as data and return bounded normalized evidence.",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L169"
+      "community": 16,
+      "community_name": "load_cases",
+      "file_type": "code",
+      "norm_label": "valueerror",
+      "source_file": "",
+      "source_location": ""
     },
     {
-      "id": "src_devquitect_quality_observations_rationale_74",
-      "label": "Capture a portable, content-addressed manifest without following symlinks.",
+      "id": "tests_unit_test_cases",
+      "label": "test_cases.py",
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "rationale",
-      "norm_label": "capture a portable, content-addressed manifest without following symlinks.",
-      "source_file": "src/devquitect_quality/observations.py",
-      "source_location": "L74"
-    },
-    {
-      "id": "src_devquitect_quality_redaction_rationale_1",
-      "label": "Bounded, deterministic secret redaction for retained evaluation evidence.",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
-      "file_type": "rationale",
-      "norm_label": "bounded, deterministic secret redaction for retained evaluation evidence.",
-      "source_file": "src/devquitect_quality/redaction.py",
+      "community": 16,
+      "community_name": "load_cases",
+      "file_type": "code",
+      "norm_label": "test_cases.py",
+      "source_file": "tests/unit/test_cases.py",
       "source_location": "L1"
     },
     {
-      "id": "src_devquitect_quality_redaction_rationale_24",
-      "label": "Mask known values and common credential shapes without retaining the secret.",
+      "id": "src_devquitect_quality_cases_rationale_1",
+      "label": "Versioned YAML behavioral case loading and selection.",
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "rationale",
-      "norm_label": "mask known values and common credential shapes without retaining the secret.",
-      "source_file": "src/devquitect_quality/redaction.py",
-      "source_location": "L24"
+      "norm_label": "versioned yaml behavioral case loading and selection.",
+      "source_file": "src/devquitect_quality/cases.py",
+      "source_location": "L1"
     },
     {
-      "id": "src_devquitect_quality_redaction_rationale_45",
-      "label": "Recursively redact a JSON-compatible evidence value.",
+      "id": "src_devquitect_quality_cases_rationale_17",
+      "label": "A case collection is invalid or cannot satisfy a selection.",
       "_origin": "ast",
-      "community": 15,
-      "community_name": "codex_adapter.py",
+      "community": 16,
+      "community_name": "load_cases",
       "file_type": "rationale",
-      "norm_label": "recursively redact a json-compatible evidence value.",
-      "source_file": "src/devquitect_quality/redaction.py",
-      "source_location": "L45"
+      "norm_label": "a case collection is invalid or cannot satisfy a selection.",
+      "source_file": "src/devquitect_quality/cases.py",
+      "source_location": "L17"
     },
     {
       "id": "schemas_eval_case_schema_activation_enum",
@@ -6529,6 +6365,72 @@
       "norm_label": "x-devquitect-schema-version",
       "source_file": "schemas/promotion-record.schema.json",
       "source_location": "L4"
+    },
+    {
+      "id": "src_devquitect_quality_observations",
+      "label": "observations.py",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "observations.py",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_devquitect_quality_observations_py_path",
+      "label": "Path",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "tests_unit_test_assertions",
+      "label": "test_assertions.py",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "code",
+      "norm_label": "test_assertions.py",
+      "source_file": "tests/unit/test_assertions.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_devquitect_quality_observations_rationale_1",
+      "label": "Normalize process, runtime, filesystem, Git, and checkpoint evidence.",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "rationale",
+      "norm_label": "normalize process, runtime, filesystem, git, and checkpoint evidence.",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_devquitect_quality_observations_rationale_100",
+      "label": "Capture status and HEAD diff when the fixture is a Git worktree.",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "rationale",
+      "norm_label": "capture status and head diff when the fixture is a git worktree.",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L100"
+    },
+    {
+      "id": "src_devquitect_quality_observations_rationale_74",
+      "label": "Capture a portable, content-addressed manifest without following symlinks.",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "observations.py",
+      "file_type": "rationale",
+      "norm_label": "capture a portable, content-addressed manifest without following symlinks.",
+      "source_file": "src/devquitect_quality/observations.py",
+      "source_location": "L74"
     },
     {
       "id": "tests_fixtures_valid_plugin_schemas_calibration_report_schema",
@@ -14293,8 +14195,8 @@
         "skill": "project-plan-execution",
         "project": "Slice Verification",
         "session": "slice-verification",
-        "revision": "17",
-        "last_updated": "2026-09-14T22:44:11.443176Z",
+        "revision": "18",
+        "last_updated": "2026-09-14T22:49:15.879335Z",
         "plan": "08-implementation-plan.md",
         "plan_revision": "1",
         "completion_scope": "implementation-only",
@@ -14870,6 +14772,116 @@
       "source_location": "L41"
     },
     {
+      "id": "src_devquitect_quality_codex_adapter",
+      "label": "codex_adapter.py",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "codex_adapter.py",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_py_path",
+      "label": "Path",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_devquitect_quality_redaction",
+      "label": "redaction.py",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "redaction.py",
+      "source_file": "src/devquitect_quality/redaction.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_contract_test_codex_cli_contract",
+      "label": "test_codex_cli_contract.py",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "test_codex_cli_contract.py",
+      "source_file": "tests/contract/test_codex_cli_contract.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_unit_test_codex_adapter",
+      "label": "test_codex_adapter.py",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "code",
+      "norm_label": "test_codex_adapter.py",
+      "source_file": "tests/unit/test_codex_adapter.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_rationale_1",
+      "label": "Pinned Codex CLI adapter with explicit isolation and failure classification.",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "rationale",
+      "norm_label": "pinned codex cli adapter with explicit isolation and failure classification.",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_rationale_142",
+      "label": "Run one fresh attempt; adapter/auth/service failures remain inconclusive.",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "rationale",
+      "norm_label": "run one fresh attempt; adapter/auth/service failures remain inconclusive.",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L142"
+    },
+    {
+      "id": "src_devquitect_quality_codex_adapter_rationale_69",
+      "label": "Verify the exact runtime version and flags assumed by the approved adapter.",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "rationale",
+      "norm_label": "verify the exact runtime version and flags assumed by the approved adapter.",
+      "source_file": "src/devquitect_quality/codex_adapter.py",
+      "source_location": "L69"
+    },
+    {
+      "id": "src_devquitect_quality_redaction_rationale_1",
+      "label": "Bounded, deterministic secret redaction for retained evaluation evidence.",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "rationale",
+      "norm_label": "bounded, deterministic secret redaction for retained evaluation evidence.",
+      "source_file": "src/devquitect_quality/redaction.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_devquitect_quality_redaction_rationale_24",
+      "label": "Mask known values and common credential shapes without retaining the secret.",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "codex_adapter.py",
+      "file_type": "rationale",
+      "norm_label": "mask known values and common credential shapes without retaining the secret.",
+      "source_file": "src/devquitect_quality/redaction.py",
+      "source_location": "L24"
+    },
+    {
       "id": "docs_software_design_proportional_change_profile_00_status",
       "label": "proportional-change-profile/00-status.md",
       "_origin": "ast",
@@ -15206,7 +15218,7 @@
       "node_kind": "heading",
       "norm_label": "final readiness review",
       "source_file": "skills/software-idea-to-project/references/implementation-planning.md",
-      "source_location": "L62"
+      "source_location": "L64"
     },
     {
       "id": "skills_software_idea_to_project_references_implementation_planning_plan_structure",
@@ -15230,7 +15242,7 @@
       "node_kind": "heading",
       "norm_label": "validation coverage",
       "source_file": "skills/software-idea-to-project/references/implementation-planning.md",
-      "source_location": "L56"
+      "source_location": "L58"
     },
     {
       "id": "codex_skills_graphify_references_add_watch",
@@ -15435,7 +15447,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L521",
+      "source_location": "L532",
       "weight": 1.0
     },
     {
@@ -15447,7 +15459,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L522",
+      "source_location": "L533",
       "weight": 1.0
     },
     {
@@ -15459,7 +15471,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L523",
+      "source_location": "L534",
       "weight": 1.0
     },
     {
@@ -15471,7 +15483,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L563",
+      "source_location": "L574",
       "weight": 1.0
     },
     {
@@ -15483,7 +15495,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L566",
+      "source_location": "L577",
       "weight": 1.0
     },
     {
@@ -15495,7 +15507,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L569",
+      "source_location": "L580",
       "weight": 1.0
     },
     {
@@ -15507,7 +15519,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L569",
+      "source_location": "L580",
       "weight": 1.0
     },
     {
@@ -15519,7 +15531,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L581",
+      "source_location": "L592",
       "weight": 1.0
     },
     {
@@ -15531,7 +15543,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L582",
+      "source_location": "L593",
       "weight": 1.0
     },
     {
@@ -15543,7 +15555,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L583",
+      "source_location": "L594",
       "weight": 1.0
     },
     {
@@ -15555,7 +15567,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L585",
+      "source_location": "L596",
       "weight": 1.0
     },
     {
@@ -15567,7 +15579,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L593",
+      "source_location": "L604",
       "weight": 1.0
     },
     {
@@ -15579,7 +15591,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L617",
+      "source_location": "L628",
       "weight": 1.0
     },
     {
@@ -15591,7 +15603,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L645",
+      "source_location": "L656",
       "weight": 1.0
     },
     {
@@ -15603,7 +15615,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L257",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -15615,7 +15627,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L253",
+      "source_location": "L264",
       "weight": 1.0
     },
     {
@@ -15627,7 +15639,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L241",
+      "source_location": "L252",
       "weight": 1.0
     },
     {
@@ -15651,7 +15663,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L197",
+      "source_location": "L208",
       "weight": 1.0
     },
     {
@@ -15663,7 +15675,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L217",
+      "source_location": "L228",
       "weight": 1.0
     },
     {
@@ -15675,7 +15687,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L224",
+      "source_location": "L235",
       "weight": 1.0
     },
     {
@@ -15687,7 +15699,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L235",
+      "source_location": "L246",
       "weight": 1.0
     },
     {
@@ -15699,7 +15711,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L671",
+      "source_location": "L682",
       "weight": 1.0
     },
     {
@@ -15711,7 +15723,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L673",
+      "source_location": "L684",
       "weight": 1.0
     },
     {
@@ -15723,7 +15735,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L677",
+      "source_location": "L688",
       "weight": 1.0
     },
     {
@@ -15759,7 +15771,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L548",
+      "source_location": "L559",
       "weight": 1.0
     },
     {
@@ -15771,7 +15783,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L553",
+      "source_location": "L564",
       "weight": 1.0
     },
     {
@@ -15807,7 +15819,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L484",
+      "source_location": "L495",
       "weight": 1.0
     },
     {
@@ -15819,36 +15831,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L491",
+      "source_location": "L502",
       "weight": 1.0
     },
     {
       "source": "skills_project_plan_execution_scripts_verify_slice_snapshot",
       "target": "skills_project_plan_execution_scripts_verify_slice_repo_root",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L492",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_project_plan_execution_scripts_verify_slice_snapshot",
-      "target": "skills_project_plan_execution_scripts_verify_slice_input_inventory",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L496",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_project_plan_execution_scripts_verify_slice_snapshot",
-      "target": "skills_project_plan_execution_scripts_verify_slice_sha256",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -15860,6 +15848,30 @@
     },
     {
       "source": "skills_project_plan_execution_scripts_verify_slice_snapshot",
+      "target": "skills_project_plan_execution_scripts_verify_slice_input_inventory",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
+      "source_location": "L507",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_project_plan_execution_scripts_verify_slice_snapshot",
+      "target": "skills_project_plan_execution_scripts_verify_slice_sha256",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
+      "source_location": "L514",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_project_plan_execution_scripts_verify_slice_snapshot",
       "target": "skills_project_plan_execution_scripts_verify_slice_digest",
       "relation": "calls",
       "_origin": "ast",
@@ -15867,7 +15879,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L504",
+      "source_location": "L515",
       "weight": 1.0
     },
     {
@@ -15879,7 +15891,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L510",
+      "source_location": "L521",
       "weight": 1.0
     },
     {
@@ -15891,7 +15903,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L515",
+      "source_location": "L526",
       "weight": 1.0
     },
     {
@@ -15903,7 +15915,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L286",
+      "source_location": "L297",
       "weight": 1.0
     },
     {
@@ -15915,7 +15927,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L287",
+      "source_location": "L298",
       "weight": 1.0
     },
     {
@@ -15927,7 +15939,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L289",
+      "source_location": "L300",
       "weight": 1.0
     },
     {
@@ -15939,7 +15951,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L291",
+      "source_location": "L302",
       "weight": 1.0
     },
     {
@@ -15951,7 +15963,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L293",
+      "source_location": "L304",
       "weight": 1.0
     },
     {
@@ -15963,7 +15975,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L321",
+      "source_location": "L332",
       "weight": 1.0
     },
     {
@@ -15975,7 +15987,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L323",
+      "source_location": "L334",
       "weight": 1.0
     },
     {
@@ -15987,7 +15999,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L340",
+      "source_location": "L351",
       "weight": 1.0
     },
     {
@@ -15999,7 +16011,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L379",
+      "source_location": "L390",
       "weight": 1.0
     },
     {
@@ -16011,7 +16023,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L394",
+      "source_location": "L405",
       "weight": 1.0
     },
     {
@@ -16023,7 +16035,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L395",
+      "source_location": "L406",
       "weight": 1.0
     },
     {
@@ -16035,7 +16047,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L170",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
@@ -20211,7 +20223,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L81",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -20223,7 +20235,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L137",
+      "source_location": "L154",
       "weight": 1.0
     },
     {
@@ -20235,7 +20247,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L138",
+      "source_location": "L155",
       "weight": 1.0
     },
     {
@@ -20247,7 +20259,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L141",
+      "source_location": "L158",
       "weight": 1.0
     },
     {
@@ -20259,12 +20271,120 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L238",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
       "source": "tests_unit_test_slice_verification_test_check_requires_complete_criterion_and_check_evidence",
       "target": "tests_unit_test_slice_verification_write_detail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L256",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_check_requires_complete_criterion_and_check_evidence",
+      "target": "tests_unit_test_slice_verification_run",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L262",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
+      "target": "tests_unit_test_slice_verification_make_session",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L165",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
+      "target": "tests_unit_test_slice_verification_write_detail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L166",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
+      "target": "tests_unit_test_slice_verification_run",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L169",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_close_rejects_tracker_change_at_atomic_write",
+      "target": "tests_unit_test_slice_verification_make_session",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L303",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_close_rejects_tracker_change_at_atomic_write",
+      "target": "tests_unit_test_slice_verification_write_detail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L304",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
+      "target": "tests_unit_test_slice_verification_make_session",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L224",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
+      "target": "tests_unit_test_slice_verification_write_detail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L225",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
+      "target": "tests_unit_test_slice_verification_run",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -20275,114 +20395,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_unit_test_slice_verification_test_check_requires_complete_criterion_and_check_evidence",
-      "target": "tests_unit_test_slice_verification_run",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L245",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
-      "target": "tests_unit_test_slice_verification_make_session",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L148",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
-      "target": "tests_unit_test_slice_verification_write_detail",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L149",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
-      "target": "tests_unit_test_slice_verification_run",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L152",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_close_rejects_tracker_change_at_atomic_write",
-      "target": "tests_unit_test_slice_verification_make_session",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L286",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_close_rejects_tracker_change_at_atomic_write",
-      "target": "tests_unit_test_slice_verification_write_detail",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L287",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
-      "target": "tests_unit_test_slice_verification_make_session",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L207",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
-      "target": "tests_unit_test_slice_verification_write_detail",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L208",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
-      "target": "tests_unit_test_slice_verification_run",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L222",
-      "weight": 1.0
-    },
-    {
       "source": "tests_unit_test_slice_verification_test_duplicate_yaml_is_rejected_without_writing",
       "target": "tests_unit_test_slice_verification_make_session",
       "relation": "calls",
@@ -20391,7 +20403,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L194",
+      "source_location": "L211",
       "weight": 1.0
     },
     {
@@ -20403,7 +20415,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L202",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -20415,7 +20427,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L251",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -20427,7 +20439,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L263",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -20439,36 +20451,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L267",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
       "source": "tests_unit_test_slice_verification_test_snapshot_and_check_accept_valid_detail",
       "target": "tests_unit_test_slice_verification_make_session",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L129",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_snapshot_and_check_accept_valid_detail",
-      "target": "tests_unit_test_slice_verification_write_detail",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L130",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification_test_snapshot_and_check_accept_valid_detail",
-      "target": "tests_unit_test_slice_verification_run",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -20479,6 +20467,54 @@
       "weight": 1.0
     },
     {
+      "source": "tests_unit_test_slice_verification_test_snapshot_and_check_accept_valid_detail",
+      "target": "tests_unit_test_slice_verification_write_detail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_snapshot_and_check_accept_valid_detail",
+      "target": "tests_unit_test_slice_verification_run",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L133",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_snapshot_rejects_plan_slice_missing_from_inventory",
+      "target": "tests_unit_test_slice_verification_make_session",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L139",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_snapshot_rejects_plan_slice_missing_from_inventory",
+      "target": "tests_unit_test_slice_verification_run",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L147",
+      "weight": 1.0
+    },
+    {
       "source": "tests_unit_test_slice_verification_test_symlinked_input_directory_is_rejected",
       "target": "tests_unit_test_slice_verification_make_session",
       "relation": "calls",
@@ -20487,7 +20523,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L273",
+      "source_location": "L290",
       "weight": 1.0
     },
     {
@@ -20499,7 +20535,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L281",
+      "source_location": "L298",
       "weight": 1.0
     },
     {
@@ -20847,7 +20883,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L163",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -20967,7 +21003,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L520",
+      "source_location": "L531",
       "weight": 1.0
     },
     {
@@ -20979,7 +21015,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L557",
+      "source_location": "L568",
       "weight": 1.0
     },
     {
@@ -20991,7 +21027,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L256",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -21003,7 +21039,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L252",
+      "source_location": "L263",
       "weight": 1.0
     },
     {
@@ -21027,7 +21063,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L190",
+      "source_location": "L201",
       "weight": 1.0
     },
     {
@@ -21075,7 +21111,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L470",
+      "source_location": "L481",
       "weight": 1.0
     },
     {
@@ -21087,7 +21123,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L489",
+      "source_location": "L500",
       "weight": 1.0
     },
     {
@@ -21099,7 +21135,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L281",
+      "source_location": "L292",
       "weight": 1.0
     },
     {
@@ -21111,7 +21147,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L114",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -23343,7 +23379,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L520",
+      "source_location": "L531",
       "weight": 1.0
     },
     {
@@ -23355,7 +23391,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L557",
+      "source_location": "L568",
       "weight": 1.0
     },
     {
@@ -23367,7 +23403,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L256",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -23379,7 +23415,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L252",
+      "source_location": "L263",
       "weight": 1.0
     },
     {
@@ -23403,7 +23439,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L182",
+      "source_location": "L193",
       "weight": 1.0
     },
     {
@@ -23439,7 +23475,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L470",
+      "source_location": "L481",
       "weight": 1.0
     },
     {
@@ -23451,7 +23487,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L489",
+      "source_location": "L500",
       "weight": 1.0
     },
     {
@@ -23463,7 +23499,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L269",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -24231,7 +24267,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L136",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -24243,7 +24279,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L237",
+      "source_location": "L254",
       "weight": 1.0
     },
     {
@@ -24255,7 +24291,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L147",
+      "source_location": "L164",
       "weight": 1.0
     },
     {
@@ -24267,7 +24303,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L285",
+      "source_location": "L302",
       "weight": 1.0
     },
     {
@@ -24279,7 +24315,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L206",
+      "source_location": "L223",
       "weight": 1.0
     },
     {
@@ -24291,7 +24327,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L193",
+      "source_location": "L210",
       "weight": 1.0
     },
     {
@@ -24303,7 +24339,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L250",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -24315,7 +24351,19 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L128",
+      "source_location": "L130",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification_test_snapshot_rejects_plan_slice_missing_from_inventory",
+      "target": "tests_unit_test_slice_verification_py_path",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -24327,7 +24375,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L272",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -24339,7 +24387,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L86",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -24507,7 +24555,7 @@
       "confidence_score": 1.0,
       "context": "return_type",
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L269",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -32303,7 +32351,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L114",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -32314,7 +32362,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L178",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -32325,7 +32373,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L182",
+      "source_location": "L193",
       "weight": 1.0
     },
     {
@@ -32336,40 +32384,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L190",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_project_plan_execution_scripts_verify_slice",
-      "target": "skills_project_plan_execution_scripts_verify_slice_digest",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L240",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_project_plan_execution_scripts_verify_slice",
-      "target": "skills_project_plan_execution_scripts_verify_slice_now",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L244",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_project_plan_execution_scripts_verify_slice",
-      "target": "skills_project_plan_execution_scripts_verify_slice_issue",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L248",
+      "source_location": "L201",
       "weight": 1.0
     },
     {
@@ -32385,13 +32400,46 @@
     },
     {
       "source": "skills_project_plan_execution_scripts_verify_slice",
+      "target": "skills_project_plan_execution_scripts_verify_slice_digest",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
+      "source_location": "L251",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_project_plan_execution_scripts_verify_slice",
+      "target": "skills_project_plan_execution_scripts_verify_slice_now",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
+      "source_location": "L255",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_project_plan_execution_scripts_verify_slice",
+      "target": "skills_project_plan_execution_scripts_verify_slice_issue",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
+      "source_location": "L259",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_project_plan_execution_scripts_verify_slice",
       "target": "skills_project_plan_execution_scripts_verify_slice_detail",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L252",
+      "source_location": "L263",
       "weight": 1.0
     },
     {
@@ -32402,7 +32450,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L256",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -32413,18 +32461,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L269",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_project_plan_execution_scripts_verify_slice",
-      "target": "skills_project_plan_execution_scripts_verify_slice_validate",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L281",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -32440,6 +32477,17 @@
     },
     {
       "source": "skills_project_plan_execution_scripts_verify_slice",
+      "target": "skills_project_plan_execution_scripts_verify_slice_validate",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
+      "source_location": "L292",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_project_plan_execution_scripts_verify_slice",
       "target": "skills_project_plan_execution_scripts_verify_slice_mapping",
       "relation": "contains",
       "_origin": "ast",
@@ -32447,17 +32495,6 @@
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
       "source_location": "L33",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_project_plan_execution_scripts_verify_slice",
-      "target": "skills_project_plan_execution_scripts_verify_slice_result",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L470",
       "weight": 1.0
     },
     {
@@ -32473,13 +32510,24 @@
     },
     {
       "source": "skills_project_plan_execution_scripts_verify_slice",
+      "target": "skills_project_plan_execution_scripts_verify_slice_result",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
+      "source_location": "L481",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_project_plan_execution_scripts_verify_slice",
       "target": "skills_project_plan_execution_scripts_verify_slice_snapshot",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L489",
+      "source_location": "L500",
       "weight": 1.0
     },
     {
@@ -32490,7 +32538,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L520",
+      "source_location": "L531",
       "weight": 1.0
     },
     {
@@ -32501,18 +32549,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L528",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_project_plan_execution_scripts_verify_slice",
-      "target": "skills_project_plan_execution_scripts_verify_slice_replace_atomic",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L546",
+      "source_location": "L539",
       "weight": 1.0
     },
     {
@@ -32528,13 +32565,24 @@
     },
     {
       "source": "skills_project_plan_execution_scripts_verify_slice",
-      "target": "skills_project_plan_execution_scripts_verify_slice_close",
+      "target": "skills_project_plan_execution_scripts_verify_slice_replace_atomic",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
       "source_location": "L557",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_project_plan_execution_scripts_verify_slice",
+      "target": "skills_project_plan_execution_scripts_verify_slice_close",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
+      "source_location": "L568",
       "weight": 1.0
     },
     {
@@ -32556,7 +32604,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/project-plan-execution/scripts/verify_slice.py",
-      "source_location": "L661",
+      "source_location": "L672",
       "weight": 1.0
     },
     {
@@ -33018,7 +33066,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/software-idea-to-project/references/implementation-planning.md",
-      "source_location": "L56",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -33029,7 +33077,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/software-idea-to-project/references/implementation-planning.md",
-      "source_location": "L62",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -35856,29 +35904,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L128",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
       "source": "tests_unit_test_slice_verification",
-      "target": "tests_unit_test_slice_verification_test_check_rejects_stale_inputs_and_fail_evidence",
+      "target": "tests_unit_test_slice_verification_test_snapshot_rejects_plan_slice_missing_from_inventory",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L136",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_unit_test_slice_verification",
-      "target": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L147",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -35894,24 +35931,24 @@
     },
     {
       "source": "tests_unit_test_slice_verification",
-      "target": "tests_unit_test_slice_verification_test_duplicate_yaml_is_rejected_without_writing",
+      "target": "tests_unit_test_slice_verification_test_check_rejects_stale_inputs_and_fail_evidence",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L193",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
       "source": "tests_unit_test_slice_verification",
-      "target": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
+      "target": "tests_unit_test_slice_verification_test_close_is_atomic_and_preserves_body_then_is_idempotent",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L206",
+      "source_location": "L164",
       "weight": 1.0
     },
     {
@@ -35927,13 +35964,35 @@
     },
     {
       "source": "tests_unit_test_slice_verification",
+      "target": "tests_unit_test_slice_verification_test_duplicate_yaml_is_rejected_without_writing",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L210",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification",
+      "target": "tests_unit_test_slice_verification_test_close_requires_approved_gates_and_non_pending_acceptance",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/unit/test_slice_verification.py",
+      "source_location": "L223",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_unit_test_slice_verification",
       "target": "tests_unit_test_slice_verification_test_check_requires_complete_criterion_and_check_evidence",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L237",
+      "source_location": "L254",
       "weight": 1.0
     },
     {
@@ -35944,7 +36003,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L250",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -35955,7 +36014,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L272",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -35966,7 +36025,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L285",
+      "source_location": "L302",
       "weight": 1.0
     },
     {
@@ -35977,7 +36036,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L86",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -37528,7 +37587,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/software-idea-to-project/references/implementation-planning.md",
-      "source_location": "L52",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -37673,7 +37732,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "tests/unit/test_slice_verification.py",
-      "source_location": "L298",
+      "source_location": "L315",
       "weight": 1.0
     },
     {
@@ -38624,5 +38683,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "99b294819c3fc3cde516bda93758cd06e880feaa"
+  "built_at_commit": "a7ca81c4f1965d163dcc9f7c7ee093b9381cb59a"
 }

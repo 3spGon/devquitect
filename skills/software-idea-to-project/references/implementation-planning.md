@@ -32,7 +32,9 @@ Organize delivery into thin vertical slices that produce observable behavior. Gi
 New approved plans include one fenced `devquitect-verification` YAML inventory containing stable
 slice IDs, atomic criteria, exact checks with relative working directories, dependencies, and
 declared input paths. The inventory is the machine-readable acceptance contract; surrounding
-prose explains it and must not duplicate a second normative criteria table.
+prose explains it and must not duplicate a second normative criteria table. Before putting a plan
+in `Review`, ensure its `SLICE-*` headings and inventory keys are an exact match; do not omit a
+prose slice or add an inventory-only slice.
 
 - outcome and observable acceptance criteria;
 - dependencies and prerequisites;

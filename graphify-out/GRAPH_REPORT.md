@@ -1,16 +1,16 @@
-# Graph Report - devquitect-instruction-governance  (2026-09-14)
+# Graph Report - devquitect-instruction-governance  (2026-09-15)
 
 ## Corpus Check
-- 129 files · ~76,947 words
+- 129 files · ~77,081 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1299 nodes · 2036 edges · 108 communities (90 shown, 15 thin omitted)
+- 1300 nodes · 2040 edges · 112 communities (94 shown, 15 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 85 edges (avg confidence: 0.93)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `99b29481`
+- Built from commit: `a7ca81c4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -24,17 +24,21 @@
 - SLICE-001.md
 - schemas/authority-map.schema.json
 - valid-plugin/schemas/authority-map.schema.json
+- codex_adapter.py
 - type
 - slice-verification/README.md
+- parse_jsonl_events
 - properties
 - compatibility
-- codex_adapter.py
+- evaluation.py
+- load_cases
 - properties
 - type
 - Devquitect Skill Development System architecture
 - schemas/eval-case.schema.json
 - items
 - schemas/promotion-record.schema.json
+- observations.py
 - valid-plugin/schemas/calibration-report.schema.json
 - valid-plugin/schemas/eval-case.schema.json
 - valid-plugin/schemas/promotion-record.schema.json
@@ -134,29 +138,29 @@
 10. `_run_eval()` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `test_current_skills_and_plugin_metadata_are_valid()` --uses--> `SkillSource`  [INFERRED]
-  tests/unit/test_validate.py → src/devquitect_quality/models.py
-- `test_critical_suite_has_fixed_repetitions_and_non_overridable_policy()` --uses--> `AssertionResult`  [INFERRED]
-  tests/integration/test_eval_command.py → src/devquitect_quality/assertions.py
-- `test_favorable_semantic_grade_cannot_erase_critical_failure()` --uses--> `AssertionResult`  [INFERRED]
-  tests/unit/test_grading.py → src/devquitect_quality/assertions.py
-- `test_infrastructure_and_missing_critical_evidence_are_inconclusive()` --uses--> `AssertionResult`  [INFERRED]
-  tests/unit/test_grading.py → src/devquitect_quality/assertions.py
-- `test_fake_adapter_run_is_normalized_and_read_only_violation_fails()` --calls--> `evaluate_assertion()`  [EXTRACTED]
-  tests/integration/test_fake_codex_run.py → src/devquitect_quality/assertions.py
+- `test_critical_suite_has_fixed_repetitions_and_non_overridable_policy()` --uses--> `RuntimeStatus`  [INFERRED]
+  tests/integration/test_eval_command.py → src/devquitect_quality/observations.py
+- `observation()` --uses--> `RuntimeStatus`  [INFERRED]
+  tests/unit/test_assertions.py → src/devquitect_quality/observations.py
+- `observation()` --uses--> `RuntimeStatus`  [INFERRED]
+  tests/unit/test_grading.py → src/devquitect_quality/observations.py
+- `observation()` --uses--> `NormalizedEvent`  [INFERRED]
+  tests/unit/test_assertions.py → src/devquitect_quality/observations.py
+- `observation()` --uses--> `Observation`  [INFERRED]
+  tests/unit/test_assertions.py → src/devquitect_quality/observations.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (108 total, 15 thin omitted)
+## Communities (112 total, 15 thin omitted)
 
 ### Community 0 - "freeze_source"
-Cohesion: 0.06
-Nodes (60): skipif, FixtureAttempt, _initialize_git(), materialize_attempt(), Path, Fresh fixture, skill-discovery, configuration, and evidence namespaces., Create one isolated attempt. The caller owns cleanup unless used as a context…, Quality tooling for the Devquitect skill bundle. (+52 more)
+Cohesion: 0.07
+Nodes (58): skipif, FixtureAttempt, _initialize_git(), materialize_attempt(), Path, Fresh fixture, skill-discovery, configuration, and evidence namespaces., Create one isolated attempt. The caller owns cleanup unless used as a context…, Quality tooling for the Devquitect skill bundle. (+50 more)
 
 ### Community 1 - "cli.py"
-Cohesion: 0.05
-Nodes (82): ArgumentParser, ComparisonClass, Namespace, CaseError, EvalCase, load_cases(), Path, ValueError (+74 more)
+Cohesion: 0.06
+Nodes (74): ArgumentParser, ComparisonClass, Namespace, _calibration_dimensions(), _calibration_evidence(), _check_record(), _configuration_failure(), _emit() (+66 more)
 
 ### Community 2 - "build_package"
 Cohesion: 0.08
@@ -172,7 +176,7 @@ Nodes (44): additionalProperties, minLength, type, type, format, type, $id, type
 
 ### Community 5 - "validate.py"
 Cohesion: 0.11
-Nodes (43): Create one stable, machine-readable structural-validation record., validation_record(), _authority_path(), _git(), load_directory_inputs(), load_validation_inputs(), _local_references(), _parse_frontmatter() (+35 more)
+Nodes (42): Create one stable, machine-readable structural-validation record., validation_record(), _authority_path(), _git(), load_directory_inputs(), load_validation_inputs(), _local_references(), _parse_frontmatter() (+34 more)
 
 ### Community 7 - "schemas/authority-map.schema.json"
 Cohesion: 0.09
@@ -182,9 +186,17 @@ Nodes (26): additionalProperties, items, type, $id, minLength, type, additionalP
 Cohesion: 0.09
 Nodes (24): additionalProperties, items, type, minLength, type, additionalProperties, properties, required (+16 more)
 
+### Community 9 - "codex_adapter.py"
+Cohesion: 0.15
+Nodes (17): build_command(), CodexPreflight, preflight_codex(), Path, Pinned Codex CLI adapter with explicit isolation and failure classification., Run one fresh attempt; adapter/auth/service failures remain inconclusive., Verify the exact runtime version and flags assumed by the approved adapter., run_codex() (+9 more)
+
 ### Community 10 - "type"
 Cohesion: 0.22
 Nodes (11): items, type, uniqueItems, minLength, type, forbidden_effects, turns, items (+3 more)
+
+### Community 12 - "parse_jsonl_events"
+Cohesion: 0.16
+Nodes (15): _event_detail(), NormalizedEvent, parse_jsonl_events(), Any, Parse untrusted JSONL as data and return bounded normalized evidence., Any, Recursively redact a JSON-compatible evidence value., redact_value() (+7 more)
 
 ### Community 13 - "properties"
 Cohesion: 0.20
@@ -194,9 +206,13 @@ Nodes (10): type, type, properties, accepted_deltas, approved_by, schema_version
 Cohesion: 0.20
 Nodes (10): additionalProperties, properties, required, type, enum, items, type, compatibility (+2 more)
 
-### Community 15 - "codex_adapter.py"
-Cohesion: 0.06
-Nodes (65): Runner, AssertionResult, evaluate_assertion(), evaluate_assertions(), _matches(), Any, Side-effect-free deterministic assertions over normalized observations., Evaluate one immutable specification without invoking tools or modifying… (+57 more)
+### Community 15 - "evaluation.py"
+Cohesion: 0.16
+Nodes (21): Runner, AssertionResult, evaluate_assertion(), evaluate_assertions(), _matches(), Any, Side-effect-free deterministic assertions over normalized observations., Evaluate one immutable specification without invoking tools or modifying… (+13 more)
+
+### Community 16 - "load_cases"
+Cohesion: 0.23
+Nodes (11): CaseError, EvalCase, load_cases(), Path, ValueError, Versioned YAML behavioral case loading and selection., A case collection is invalid or cannot satisfy a selection., select_cases() (+3 more)
 
 ### Community 17 - "properties"
 Cohesion: 0.22
@@ -221,6 +237,10 @@ Nodes (8): items, type, properties, required, assertions, type, minLength, type
 ### Community 22 - "schemas/promotion-record.schema.json"
 Cohesion: 0.25
 Nodes (7): additionalProperties, $id, required, $schema, title, type, x-devquitect-schema-version
+
+### Community 23 - "observations.py"
+Cohesion: 0.25
+Nodes (12): FileRecord, filesystem_manifest(), git_state(), GitState, Path, Normalize process, runtime, filesystem, Git, and checkpoint evidence., Capture status and HEAD diff when the fixture is a Git worktree., Capture a portable, content-addressed manifest without following symlinks. (+4 more)
 
 ### Community 25 - "valid-plugin/schemas/calibration-report.schema.json"
 Cohesion: 0.50
@@ -363,8 +383,8 @@ Cohesion: 0.20
 Nodes (10): Autonomy and terminal conditions, Discover and report sessions, Durable Session State, Gates and invalidation, Migrate schema v1 to v2, Portability boundary, Recover missing, corrupt, or stale state, Resume by state (+2 more)
 
 ### Community 61 - "test_slice_verification.py"
-Cohesion: 0.42
-Nodes (14): make_session(), CompletedProcess, Path, run(), test_check_rejects_stale_inputs_and_fail_evidence(), test_check_requires_complete_criterion_and_check_evidence(), test_close_is_atomic_and_preserves_body_then_is_idempotent(), test_close_rejects_tracker_change_at_atomic_write() (+6 more)
+Cohesion: 0.40
+Nodes (15): make_session(), CompletedProcess, Path, run(), test_check_rejects_stale_inputs_and_fail_evidence(), test_check_requires_complete_criterion_and_check_evidence(), test_close_is_atomic_and_preserves_body_then_is_idempotent(), test_close_rejects_tracker_change_at_atomic_write() (+7 more)
 
 ### Community 62 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -520,7 +540,7 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `SourceError` connect `freeze_source` to `cli.py`, `build_package`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `Contrato propuesto de verificación` connect `Requisitos y escenarios de aceptación` to `slice-verification/01-concept.md`?**
+- **Why does `Proportional Change Profile architecture` connect `Proportional Change Profile architecture` to `proportional-change-profile/08-implementation-plan.md`, `Proposed architecture`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **Why does `FixtureAttempt` connect `freeze_source` to `codex_adapter.py`?**
   _High betweenness centrality (0.007) - this node is a cross-community bridge._

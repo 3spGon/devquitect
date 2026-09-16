@@ -30,6 +30,8 @@ def make_session(tmp_path: Path, *, status: str = "in-progress") -> tuple[Path, 
 Status: Approved
 Plan revision: 1
 
+## SLICE-001 — Demo
+
 ```devquitect-verification
 schema_version: 1
 slices:
@@ -131,6 +133,21 @@ def test_snapshot_and_check_accept_valid_detail(tmp_path: Path) -> None:
     result = run(session.parents[2], "check", "--session", str(session), "--slice", "SLICE-001")
     assert result.returncode == 0, result.stderr + result.stdout
     assert json.loads(result.stdout)["result"] == "PASS"
+
+
+def test_snapshot_rejects_plan_slice_missing_from_inventory(tmp_path: Path) -> None:
+    session, _ = make_session(tmp_path)
+    plan = session / "08-implementation-plan.md"
+    plan.write_text(
+        plan.read_text(encoding="utf-8").replace(
+            "```devquitect-verification", "## SLICE-002 — Omitted\n\n```devquitect-verification"
+        ),
+        encoding="utf-8",
+    )
+    result = run(session.parents[2], "snapshot", "--session", str(session), "--slice", "SLICE-001")
+    assert result.returncode == 2
+    assert "plan slice inventory mismatch" in result.stdout
+    assert "missing from inventory: SLICE-002" in result.stdout
 
 
 def test_check_rejects_stale_inputs_and_fail_evidence(tmp_path: Path) -> None:

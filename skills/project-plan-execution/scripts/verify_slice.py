@@ -108,6 +108,19 @@ def _plan(session: Path) -> tuple[dict[str, Any], str, Path, int, str]:
     if not isinstance(inventory, dict) or inventory.get("schema_version") != 1:
         raise ValueError("unsupported verification inventory")
     _validate_inventory(inventory)
+    declared_slices = set(
+        re.findall(r"^#{1,6}\s+\b(SLICE-[A-Za-z0-9][A-Za-z0-9_-]*)\b", text, re.M)
+    )
+    inventory_slices = set(inventory["slices"])
+    if declared_slices != inventory_slices:
+        missing = sorted(declared_slices - inventory_slices)
+        undocumented = sorted(inventory_slices - declared_slices)
+        details = []
+        if missing:
+            details.append(f"missing from inventory: {', '.join(missing)}")
+        if undocumented:
+            details.append(f"missing from plan headings: {', '.join(undocumented)}")
+        raise ValueError(f"plan slice inventory mismatch ({'; '.join(details)})")
     return inventory, text, plan_path, int(revision_match.group(1)), status_match.group(1)
 
 
