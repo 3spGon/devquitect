@@ -1,8 +1,8 @@
 {
   ".codex-plugin/plugin.json": {
-    "mtime": 1789433254.3209221,
-    "seen": 1789538199.709415,
-    "ast_hash": "c5e56b5ff730de88ddb3dd565e6878f9",
+    "mtime": 1789538654.9550889,
+    "seen": 1789962058.928394,
+    "ast_hash": "1cc57c224875f6e00d2c11197328f579",
     "semantic_hash": ""
   },
   ".codex/hooks.json": {
@@ -318,15 +318,15 @@
     "semantic_hash": ""
   },
   "skills/project-plan-execution/scripts/verify_slice.py": {
-    "mtime": 1789538189.4747715,
-    "seen": 1789538199.709426,
-    "ast_hash": "e03d43dadc75d6810700538247a4ed31",
+    "mtime": 1789961971.445075,
+    "seen": 1789962058.928405,
+    "ast_hash": "56002869bb04da5cf72e41da2361b164",
     "semantic_hash": ""
   },
   "tests/unit/test_slice_verification.py": {
-    "mtime": 1789538189.6005855,
-    "seen": 1789538199.709452,
-    "ast_hash": "74a229167eeaf7667e198a7bcb09b0fb",
+    "mtime": 1789962009.7107546,
+    "seen": 1789962058.92843,
+    "ast_hash": "7c8054907667503141a1f9c45815ec01",
     "semantic_hash": ""
   },
   ".codex/skills/graphify/SKILL.md": {
@@ -750,15 +750,15 @@
     "semantic_hash": ""
   },
   "skills/project-plan-execution/references/delivery-state.md": {
-    "mtime": 1789433254.3314772,
-    "seen": 1789538199.7094998,
-    "ast_hash": "a519b7dfc7ec33a2b38330215f7ddc5c",
+    "mtime": 1789961932.63726,
+    "seen": 1789962058.9284859,
+    "ast_hash": "e54ac742be8e525c1d3bcee8be2977c2",
     "semantic_hash": ""
   },
   "skills/project-plan-execution/references/execution.md": {
-    "mtime": 1789433254.3316731,
-    "seen": 1789538199.709501,
-    "ast_hash": "b1faa6e710b4e458be6626677b34544c",
+    "mtime": 1789961932.715407,
+    "seen": 1789962058.9284868,
+    "ast_hash": "823457f77246276860f8031f348438e0",
     "semantic_hash": ""
   },
   "skills/project-plan-execution/references/slice-verification.md": {
@@ -927,6 +927,78 @@
     "mtime": 1789433254.3261495,
     "seen": 1789538199.709497,
     "ast_hash": "3ad16ab78f76da466ac7e83619b249ee",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/00-status.md": {
+    "mtime": 1789962092.1194685,
+    "seen": 1789962109.6850681,
+    "ast_hash": "068c194b601dd204c4192f595f5ab02a",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/01-concept.md": {
+    "mtime": 1789869847.125073,
+    "seen": 1789962058.928441,
+    "ast_hash": "1ec3047245345c9b1762b357e0fa2934",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/02-requirements.md": {
+    "mtime": 1789869847.1785393,
+    "seen": 1789962058.928441,
+    "ast_hash": "92f5bbf7dbd2c525746e49d0bd151f09",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/04-architecture.md": {
+    "mtime": 1789875927.6150777,
+    "seen": 1789962058.928442,
+    "ast_hash": "9f83a7261dee8b54d921dd2802d2e7be",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/05-data-model.md": {
+    "mtime": 1789875927.6710684,
+    "seen": 1789962058.928442,
+    "ast_hash": "3edfb5d05faf0722832f50887cf35940",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/06-api-contracts.md": {
+    "mtime": 1789875927.72569,
+    "seen": 1789962058.928443,
+    "ast_hash": "064a9ff1216e8fe622488ba14d9d2ecf",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/07-decisions.md": {
+    "mtime": 1789875927.7788336,
+    "seen": 1789962058.928443,
+    "ast_hash": "7047b41cc93b4210f249be02db8cb972",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/08-implementation-plan.md": {
+    "mtime": 1789876798.6953373,
+    "seen": 1789962058.928444,
+    "ast_hash": "03632e02f4f28563ccf4b8a09391e282",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/09-delivery-status.md": {
+    "mtime": 1789962092.1920676,
+    "seen": 1789962109.6850739,
+    "ast_hash": "b4b71369008307f69f44bd2641f64ff9",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/brainstorm.md": {
+    "mtime": 1789876798.76833,
+    "seen": 1789962058.9284449,
+    "ast_hash": "9245e47de2260eaf8dafa794ed7824aa",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/slices/SLICE-001.md": {
+    "mtime": 1789961675.8565981,
+    "seen": 1789962058.928446,
+    "ast_hash": "0525e732824944eb9e16949dcc023060",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20260920_015633_57e4c85e_how_does_devquitect_recover_delivery_execution_aft.md": {
+    "mtime": 1789869393.603635,
+    "seen": 1789962058.9284842,
+    "ast_hash": "82f0d60729c644f5acd97b6dcaf592af",
     "semantic_hash": ""
   }
 }

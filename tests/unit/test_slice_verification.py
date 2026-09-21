@@ -56,7 +56,7 @@ slices:
         encoding="utf-8",
     )
     tracker = """---
-schema_version: 2
+schema_version: 3
 session: demo
 revision: 3
 plan_revision: 1
@@ -65,6 +65,15 @@ delivery_status: active
 current_slice: SLICE-001
 next_action: test
 pending_user_action: null
+execution_frontier:
+  last_completed: []
+  in_progress:
+    action: test
+    paths:
+      - src/input.txt
+  do_not_repeat: []
+  pending_verification:
+    - python -c pass
 slices:
   SLICE-001:
     status: STATUS
@@ -83,6 +92,14 @@ Keep this body.
         run(repository, "snapshot", "--session", str(session), "--slice", "SLICE-001").stdout
     )
     return session, snapshot
+
+
+def set_tracker_version(session: Path, version: int, *, delivery_status: str = "active") -> None:
+    tracker = session / "09-delivery-status.md"
+    text = tracker.read_text(encoding="utf-8")
+    text = text.replace("schema_version: 3", f"schema_version: {version}")
+    text = text.replace("delivery_status: active", f"delivery_status: {delivery_status}")
+    tracker.write_text(text, encoding="utf-8")
 
 
 def write_detail(
@@ -317,3 +334,117 @@ def test_close_rejects_tracker_change_at_atomic_write(tmp_path: Path, monkeypatc
     assert code == 2 and result["result"] == "UNSUPPORTED"
     assert "revision.conflict" in json.dumps(result)
     assert "external change" in (session / "09-delivery-status.md").read_text(encoding="utf-8")
+
+
+def test_active_legacy_operations_require_migration_without_writing(tmp_path: Path) -> None:
+    session, _ = make_session(tmp_path)
+    set_tracker_version(session, 2)
+    repository = session.parents[2]
+    before = (session / "09-delivery-status.md").read_bytes()
+    for operation in ("snapshot", "check"):
+        result = run(repository, operation, "--session", str(session), "--slice", "SLICE-001")
+        assert result.returncode == 2
+        assert "tracker.migration-required" in result.stdout
+        assert (session / "09-delivery-status.md").read_bytes() == before
+    result = run(
+        repository,
+        "close",
+        "--session",
+        str(session),
+        "--slice",
+        "SLICE-001",
+        "--expected-revision",
+        "3",
+    )
+    assert result.returncode == 2 and "tracker.migration-required" in result.stdout
+    assert (session / "09-delivery-status.md").read_bytes() == before
+
+
+def test_completed_legacy_checkpoint_remains_readable_and_unchanged(tmp_path: Path) -> None:
+    session, snapshot = make_session(tmp_path, status="verified")
+    write_detail(session, snapshot)
+    set_tracker_version(session, 2, delivery_status="complete")
+    repository = session.parents[2]
+    before = (session / "09-delivery-status.md").read_bytes()
+    result = run(repository, "check", "--session", str(session), "--slice", "SLICE-001")
+    assert result.returncode == 0
+    result = run(
+        repository,
+        "close",
+        "--session",
+        str(session),
+        "--slice",
+        "SLICE-001",
+        "--expected-revision",
+        "3",
+    )
+    assert result.returncode == 0
+    assert (session / "09-delivery-status.md").read_bytes() == before
+
+
+def test_unknown_tracker_version_is_unsupported_without_writing(tmp_path: Path) -> None:
+    session, _ = make_session(tmp_path)
+    set_tracker_version(session, 99)
+    tracker = session / "09-delivery-status.md"
+    before = tracker.read_bytes()
+    result = run(session.parents[2], "snapshot", "--session", str(session), "--slice", "SLICE-001")
+    assert result.returncode == 2 and "tracker.schema-unsupported" in result.stdout
+    assert tracker.read_bytes() == before
+
+
+def test_v3_frontier_rejects_invalid_and_duplicate_paths(tmp_path: Path) -> None:
+    session, _ = make_session(tmp_path)
+    tracker = session / "09-delivery-status.md"
+    text = tracker.read_text(encoding="utf-8").replace(
+        "- src/input.txt",
+        "- ../outside\n      - src/input.txt\n      - src/input.txt",
+    )
+    tracker.write_text(text, encoding="utf-8")
+    result = run(session.parents[2], "snapshot", "--session", str(session), "--slice", "SLICE-001")
+    assert result.returncode == 2
+    assert result.stdout.count("tracker.frontier-invalid") >= 2
+    assert tracker.read_text(encoding="utf-8") == text
+
+
+def test_v3_frontier_requires_typed_fields_and_action_for_partial_work(tmp_path: Path) -> None:
+    session, _ = make_session(tmp_path)
+    tracker = session / "09-delivery-status.md"
+    text = tracker.read_text(encoding="utf-8").replace(
+        "last_completed: []", "last_completed: wrong"
+    ).replace(
+        "    action: test", "    action: ''"
+    )
+    tracker.write_text(text, encoding="utf-8")
+    result = run(session.parents[2], "check", "--session", str(session), "--slice", "SLICE-001")
+    assert result.returncode == 2
+    assert "tracker.frontier-invalid" in result.stdout
+
+
+def test_v3_close_clears_frontier_and_preserves_unknown_data(tmp_path: Path) -> None:
+    session, snapshot = make_session(tmp_path)
+    write_detail(session, snapshot)
+    tracker = session / "09-delivery-status.md"
+    text = tracker.read_text(encoding="utf-8").replace(
+        "ownership:\n  state: held", "ownership:\n  state: held\nunknown_field: preserve-me"
+    )
+    tracker.write_text(text, encoding="utf-8")
+    result = run(
+        session.parents[2],
+        "close",
+        "--session",
+        str(session),
+        "--slice",
+        "SLICE-001",
+        "--expected-revision",
+        "3",
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    closed = yaml.safe_load(
+        (session / "09-delivery-status.md")
+        .read_text(encoding="utf-8")
+        .split("---", 2)[1]
+    )
+    assert closed["unknown_field"] == "preserve-me"
+    assert closed["execution_frontier"]["last_completed"] == []
+    assert closed["execution_frontier"]["in_progress"] is None
+    assert closed["execution_frontier"]["pending_verification"] == []

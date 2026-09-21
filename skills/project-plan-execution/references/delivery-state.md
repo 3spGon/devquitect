@@ -4,11 +4,11 @@ Read this reference when initializing, reporting, resuming, handing off, repairi
 
 ## Initialization and schema
 
-Create the checkpoint only after every authorization prerequisite in `SKILL.md` is satisfied. Copy the exact authorized `SLICE-*` identifiers from the approved plan and initialize revision `1`:
+Create the checkpoint only after every authorization prerequisite in `SKILL.md` is satisfied. Copy the exact authorized `SLICE-*` identifiers from the approved plan and initialize schema v3 at revision `1`:
 
 ```markdown
 ---
-schema_version: 1
+schema_version: 3
 skill: project-plan-execution
 project: Document Intake
 session: document-intake
@@ -29,6 +29,13 @@ required_context:
   - 04-architecture.md
   - 08-implementation-plan.md
 blockers: []
+execution_frontier:
+  last_completed: []
+  in_progress:
+    action: Implement SLICE-01 request correlation behavior
+    paths: []
+  do_not_repeat: []
+  pending_verification: []
 slices:
   SLICE-01:
     status: pending
@@ -57,7 +64,7 @@ Use these exact values:
 
 Required invariants:
 
-- `schema_version` is `1`, `skill` is `project-plan-execution`, and `session` equals the containing slug.
+- `schema_version` is `3` for new or migrated active checkpoints, `skill` is `project-plan-execution`, and `session` equals the containing slug.
 - `revision` and `plan_revision` are positive integers. Increment `revision` exactly once per coherent checkpoint update.
 - `last_updated` is ISO 8601 with an explicit UTC offset.
 - `plan` and every `required_context` entry are relative paths inside the session directory.
@@ -69,6 +76,9 @@ Required invariants:
 - With `complete`, `current_slice`, `next_action`, and `pending_user_action` are `null`; every authorized slice is `verified` or explicitly `deferred`, and no required acceptance is pending.
 - `implemented` never implies verification. `verified` requires current evidence that every acceptance criterion and required command succeeded.
 - `deferred` requires explicit authorization and a reason in the evidence body.
+- `execution_frontier` is required in v3 and contains exactly these semantic members: `last_completed`, `in_progress`, `do_not_repeat`, and `pending_verification`. Unknown fields are preserved but do not acquire meaning.
+- Frontier lists contain non-empty strings. `in_progress` is null or a mapping with a non-empty `action` and normalized repository-relative `paths`; paths cannot be absolute, escaping, duplicated, or backslash-separated.
+- Frontier facts are reconstructive context only; they cannot establish slice status, evidence, acceptance, authorization, completion, or verification.
 
 The Markdown body owns concise execution evidence and handoff context. Do not duplicate the full implementation plan or large command logs. A verified slice may link one `slices/<SLICE-ID>.md` detail; that file is the sole structured evidence record, while legacy status reads remain read-only.
 
@@ -81,6 +91,21 @@ delivery_checkpoint: 09-delivery-status.md
 ```
 
 Increment the definition checkpoint revision once, but preserve `phase: complete`, `phase_status: complete`, approved gates, and null definition actions. This link is an index, not a second source of delivery truth. If `00-status.md` changed concurrently, stop and reconcile instead of writing the pointer blindly.
+
+## Frontier refresh and legacy compatibility
+
+Refresh the frontier, canonical fields, revision, and timestamp in one coherent write after a
+functional change, consequential decision, completed migration, transition to verification, a
+resolved verification failure, or a material recovery reconciliation. Routine reads and
+individual commands do not force a checkpoint write.
+
+Versions 1 and 2 remain readable. Completed legacy checkpoints stay byte-for-byte unchanged
+unless an authorized operation already needs to update them. Active legacy checkpoints report
+`tracker.migration-required` to verifier snapshot/check/close operations and are not rewritten;
+the recovery workflow must reconcile repository evidence first and then perform one v3 migration.
+Unknown versions are unsupported. Migration preserves existing fields, including `ownership`,
+plan revision, slices, evidence, required context, and blockers. Unestablished frontier facts
+remain empty or null and are never inferred from conversation.
 
 ## Discover and report
 

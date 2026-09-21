@@ -130,7 +130,9 @@ def _validate_inventory(inventory: dict[str, Any]) -> None:
         raise ValueError("verification inventory must contain slices")
     slice_ids = set(slices)
     for slice_id, spec in slices.items():
-        if not isinstance(slice_id, str) or not re.fullmatch(r"SLICE-[A-Za-z0-9][A-Za-z0-9_-]*", slice_id):
+        if not isinstance(slice_id, str) or not re.fullmatch(
+            r"SLICE-[A-Za-z0-9][A-Za-z0-9_-]*", slice_id
+        ):
             raise ValueError(f"invalid slice ID: {slice_id!r}")
         if not isinstance(spec, dict):
             raise ValueError(f"slice {slice_id} must be a mapping")
@@ -149,7 +151,9 @@ def _validate_inventory(inventory: dict[str, Any]) -> None:
                 raise ValueError(f"slice {slice_id} has invalid criteria")
             if not isinstance(criterion.get("text"), str) or not criterion["text"].strip():
                 raise ValueError(f"criterion {criterion_id} must have text")
-            if not isinstance(criterion.get("requirement"), str) or not criterion["requirement"].strip():
+            if not isinstance(criterion.get("requirement"), str) or not criterion[
+                "requirement"
+            ].strip():
                 raise ValueError(f"criterion {criterion_id} must have a requirement")
         checks = spec.get("checks")
         if not isinstance(checks, dict) or not checks:
@@ -262,6 +266,135 @@ def _issue(code: str, path: str, message: str) -> dict[str, str]:
     return {"code": code, "path": path, "message": message}
 
 
+def _frontier_issues(tracker: dict[str, Any]) -> list[dict[str, str]]:
+    version = tracker.get("schema_version")
+    if not isinstance(version, int) or isinstance(version, bool):
+        return [
+            _issue(
+                "tracker.schema-unsupported",
+                "tracker.schema_version",
+                "schema_version must be the integer 3 for supported writes",
+            )
+        ]
+    if version in {1, 2}:
+        if tracker.get("delivery_status") == "active":
+            return [
+                _issue(
+                    "tracker.migration-required",
+                    "tracker.schema_version",
+                    "active legacy checkpoint requires repository reconciliation "
+                    "and migration to schema v3",
+                )
+            ]
+        return []
+    if version != 3:
+        return [
+            _issue(
+                "tracker.schema-unsupported",
+                "tracker.schema_version",
+                f"unsupported checkpoint schema version: {version}",
+            )
+        ]
+
+    frontier = tracker.get("execution_frontier")
+    if not isinstance(frontier, dict):
+        return [
+            _issue(
+                "tracker.frontier-invalid",
+                "tracker.execution_frontier",
+                "schema v3 requires an execution_frontier mapping",
+            )
+        ]
+    issues: list[dict[str, str]] = []
+    required = {"last_completed", "in_progress", "do_not_repeat", "pending_verification"}
+    missing = required - frontier.keys()
+    if missing:
+        issues.append(
+            _issue(
+                "tracker.frontier-invalid",
+                "tracker.execution_frontier",
+                f"missing required frontier fields: {', '.join(sorted(missing))}",
+            )
+        )
+
+    def validate_text_list(field: str) -> None:
+        value = frontier.get(field)
+        if not isinstance(value, list) or any(
+            not isinstance(item, str) or not item.strip() for item in value
+        ):
+            issues.append(
+                _issue(
+                    "tracker.frontier-invalid",
+                    f"tracker.execution_frontier.{field}",
+                    "must be a list of non-empty strings",
+                )
+            )
+
+    validate_text_list("last_completed")
+    validate_text_list("do_not_repeat")
+    validate_text_list("pending_verification")
+
+    in_progress = frontier.get("in_progress")
+    if in_progress is not None:
+        if not isinstance(in_progress, dict):
+            issues.append(
+                _issue(
+                    "tracker.frontier-invalid",
+                    "tracker.execution_frontier.in_progress",
+                    "must be null or a mapping",
+                )
+            )
+        else:
+            action = in_progress.get("action")
+            if not isinstance(action, str) or not action.strip():
+                issues.append(
+                    _issue(
+                        "tracker.frontier-invalid",
+                        "tracker.execution_frontier.in_progress.action",
+                        "a non-empty action is required when in_progress is present",
+                    )
+                )
+            paths = in_progress.get("paths")
+            if not isinstance(paths, list) or any(
+                not isinstance(path, str) or not path.strip() for path in paths
+            ):
+                issues.append(
+                    _issue(
+                        "tracker.frontier-invalid",
+                        "tracker.execution_frontier.in_progress.paths",
+                        "must be a list of repository-relative paths",
+                    )
+                )
+            else:
+                seen: set[str] = set()
+                for path in paths:
+                    normalized = PurePosixPath(path).as_posix()
+                    unsafe = (
+                        path != normalized
+                        or "\\" in path
+                        or PurePosixPath(path).is_absolute()
+                        or ".." in PurePosixPath(path).parts
+                    )
+                    if unsafe:
+                        issues.append(
+                            _issue(
+                                "tracker.frontier-invalid",
+                                "tracker.execution_frontier.in_progress.paths",
+                                f"unsafe or non-normalized path: {path!r}",
+                            )
+                        )
+                    if path in seen:
+                        issues.append(
+                            _issue(
+                                "tracker.frontier-invalid",
+                                "tracker.execution_frontier.in_progress.paths",
+                                f"duplicate path: {path!r}",
+                            )
+                        )
+                    seen.add(path)
+    return issues
+
+
 def _detail(session: Path, slice_id: str) -> tuple[dict[str, Any], str, bytes]:
     return _frontmatter(session / "slices" / f"{slice_id}.md")
 
@@ -304,6 +437,9 @@ def _validate(
             issues.append(_issue("definition.invalid", "00-status.md", str(exc)))
         tracker_path = session / "09-delivery-status.md"
         tracker, _, tracker_bytes = _frontmatter(tracker_path)
+        tracker_issues = _frontier_issues(tracker)
+        if tracker_issues:
+            return tracker, tracker_issues, {}, plan_path, []
         slice_plan = inventory.get("slices", {}).get(slice_id)
         if not isinstance(slice_plan, dict):
             issues.append(
@@ -347,7 +483,9 @@ def _validate(
             )
         if not isinstance(detail.get("environment"), dict):
             issues.append(
-                _issue("detail.environment", f"slices/{slice_id}.md", "environment must be a mapping")
+                _issue(
+                    "detail.environment", f"slices/{slice_id}.md", "environment must be a mapping"
+                )
             )
         try:
             _timestamp(detail.get("verified_at"), "verified_at")
@@ -503,6 +641,13 @@ def _snapshot(session: Path, slice_id: str) -> tuple[dict[str, Any], int]:
     try:
         inventory, plan_text, _, _, _ = _plan(session)
         root = _repo_root(session)
+        tracker, _, _ = _frontmatter(session / "09-delivery-status.md")
+        tracker_issues = _frontier_issues(tracker)
+        if tracker_issues:
+            return (
+                _result("snapshot", session, slice_id, "UNSUPPORTED", tracker_issues, []),
+                EXIT_UNSUPPORTED,
+            )
         item = inventory.get("slices", {}).get(slice_id)
         if not isinstance(item, dict):
             raise ValueError(f"unknown slice: {slice_id}")
@@ -552,8 +697,15 @@ def _exit_for_issues(issues: list[dict[str, str]]) -> int:
         "slice.unauthorized",
         "revision.conflict",
         "summary.delimiters",
+        "tracker.migration-required",
+        "tracker.schema-unsupported",
+        "tracker.frontier-invalid",
     }
-    return EXIT_UNSUPPORTED if any(issue["code"] in unsupported for issue in issues) else EXIT_INVALID
+    return (
+        EXIT_UNSUPPORTED
+        if any(issue["code"] in unsupported for issue in issues)
+        else EXIT_INVALID
+    )
 
 
 def _replace_atomic(path: Path, content: bytes, expected: bytes | None = None) -> None:
@@ -570,6 +722,13 @@ def _replace_atomic(path: Path, content: bytes, expected: bytes | None = None) -
 def _close(session: Path, slice_id: str, expected_revision: int) -> tuple[dict[str, Any], int]:
     tracker_path = session / "09-delivery-status.md"
     original_tracker = tracker_path.read_bytes()
+    tracker_preview, _, _ = _frontmatter(tracker_path)
+    tracker_issues = _frontier_issues(tracker_preview)
+    if tracker_issues:
+        return (
+            _result("close", session, slice_id, "UNSUPPORTED", tracker_issues, []),
+            EXIT_UNSUPPORTED,
+        )
     original_plan = (session / "08-implementation-plan.md").read_bytes()
     original_definition = (session / "00-status.md").read_bytes()
     original_detail = (session / "slices" / f"{slice_id}.md").read_bytes()
@@ -579,7 +738,10 @@ def _close(session: Path, slice_id: str, expected_revision: int) -> tuple[dict[s
             _issue("revision.conflict", "tracker.revision", "expected revision does not match")
         )
     if issues:
-        return _result("close", session, slice_id, "FAIL", issues, records), _exit_for_issues(issues)
+        return (
+            _result("close", session, slice_id, "FAIL", issues, records),
+            _exit_for_issues(issues),
+        )
     if tracker.get("slices", {}).get(slice_id, {}).get("status") == "verified":
         return _result("close", session, slice_id, "PASS", [], records), 0
     if tracker_path.read_bytes() != original_tracker:
@@ -587,7 +749,9 @@ def _close(session: Path, slice_id: str, expected_revision: int) -> tuple[dict[s
     if (session / "08-implementation-plan.md").read_bytes() != original_plan:
         issues.append(_issue("revision.conflict", "plan", "plan changed during close"))
     if (session / "00-status.md").read_bytes() != original_definition:
-        issues.append(_issue("revision.conflict", "00-status.md", "definition changed during close"))
+        issues.append(
+            _issue("revision.conflict", "00-status.md", "definition changed during close")
+        )
     if (session / "slices" / f"{slice_id}.md").read_bytes() != original_detail:
         issues.append(_issue("revision.conflict", "detail", "evidence changed during close"))
     try:
@@ -602,7 +766,10 @@ def _close(session: Path, slice_id: str, expected_revision: int) -> tuple[dict[s
     except (OSError, RuntimeError, ValueError, KeyError) as exc:
         issues.append(_issue("runtime.invalid", "inputs", str(exc)))
     if issues:
-        return _result("close", session, slice_id, "FAIL", issues, records), _exit_for_issues(issues)
+        return (
+            _result("close", session, slice_id, "FAIL", issues, records),
+            _exit_for_issues(issues),
+        )
     _, body, original = _frontmatter(tracker_path)
     history = ""
     if "\n## Delivery history\n" in body:
@@ -635,6 +802,10 @@ def _close(session: Path, slice_id: str, expected_revision: int) -> tuple[dict[s
     front["slices"][slice_id]["evidence"] = f"slices/{slice_id}.md"
     front["current_slice"] = None
     front["next_action"] = "Select the next ready authorized slice"
+    frontier = front.get("execution_frontier")
+    if isinstance(frontier, dict):
+        frontier["in_progress"] = None
+        frontier["pending_verification"] = []
     summary = (
         "<!-- devquitect:slice-close:start -->\n\n"
         f"Verified {slice_id} at {now}; evidence: `slices/{slice_id}.md`.\n\n"
