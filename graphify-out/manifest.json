@@ -1,8 +1,8 @@
 {
   ".codex-plugin/plugin.json": {
-    "mtime": 1789538654.9550889,
-    "seen": 1789962058.928394,
-    "ast_hash": "1cc57c224875f6e00d2c11197328f579",
+    "mtime": 1789968332.2359116,
+    "seen": 1789968561.635367,
+    "ast_hash": "463929238a3ac1701c4be1c8d2c285aa",
     "semantic_hash": ""
   },
   ".codex/hooks.json": {
@@ -120,10 +120,10 @@
     "semantic_hash": "99a62f54a75be0c6649b0600be3ad272"
   },
   "src/devquitect_quality/packaging.py": {
-    "mtime": 1789011242.0356658,
-    "seen": 1789082872.150769,
-    "ast_hash": "0fa38a23483fefd8d8119c1202e38f56",
-    "semantic_hash": "0fa38a23483fefd8d8119c1202e38f56"
+    "mtime": 1789968456.1467197,
+    "seen": 1789968561.635385,
+    "ast_hash": "3d75838eace433d144ffb0ab6820319e",
+    "semantic_hash": ""
   },
   "src/devquitect_quality/promotion.py": {
     "mtime": 1789404318.1427665,
@@ -150,10 +150,10 @@
     "semantic_hash": "283b9958b30917954ac998df2fd406b2"
   },
   "src/devquitect_quality/validate.py": {
-    "mtime": 1789404318.14303,
-    "seen": 1789422262.647676,
-    "ast_hash": "b09163626055dfa1a0d400fe633addc2",
-    "semantic_hash": "b09163626055dfa1a0d400fe633addc2"
+    "mtime": 1789968491.3027728,
+    "seen": 1789968561.635388,
+    "ast_hash": "ee25afd859109c583416098e08722f45",
+    "semantic_hash": ""
   },
   "tests/contract/test_codex_cli_contract.py": {
     "mtime": 1789011242.036306,
@@ -162,10 +162,10 @@
     "semantic_hash": "0decabee3234ea3e3b7d19a0feab11e4"
   },
   "tests/fixtures/valid-plugin/.codex-plugin/plugin.json": {
-    "mtime": 1789011242.0372915,
-    "seen": 1789082872.150771,
-    "ast_hash": "318360775069e02032028ee0799f0a03",
-    "semantic_hash": "318360775069e02032028ee0799f0a03"
+    "mtime": 1789968332.298647,
+    "seen": 1789968561.6353889,
+    "ast_hash": "192d1f44f9bc5ba38e4fe69ecebe01a3",
+    "semantic_hash": ""
   },
   "tests/fixtures/valid-plugin/schemas/authority-map.schema.json": {
     "mtime": 1789404318.1432376,
@@ -234,9 +234,9 @@
     "semantic_hash": "8d8652c0755d138705e1aa72cabf59db"
   },
   "tests/integration/test_release_check.py": {
-    "mtime": 1789404318.143703,
-    "seen": 1789422262.647684,
-    "ast_hash": "21c7499ccd858079ebfab0eb88df8c63",
+    "mtime": 1789968403.8481512,
+    "seen": 1789968561.635396,
+    "ast_hash": "713ed56d52651f9714b58234a4aa0040",
     "semantic_hash": ""
   },
   "tests/integration/test_stable_baseline.py": {
@@ -252,9 +252,9 @@
     "semantic_hash": "aec3fc71c1322e541fd91054d2894c35"
   },
   "tests/unit/test_cases.py": {
-    "mtime": 1789433254.3328645,
-    "seen": 1789538199.709447,
-    "ast_hash": "1917be5d2e1e94f1a58fd41fa055c48c",
+    "mtime": 1789965235.825948,
+    "seen": 1789965485.659123,
+    "ast_hash": "50e7fcf5ed018824087aa7cb31ae2188",
     "semantic_hash": ""
   },
   "tests/unit/test_codex_adapter.py": {
@@ -282,10 +282,10 @@
     "semantic_hash": "e5e0ee304e43272c3134bccc46a40b2a"
   },
   "tests/unit/test_packaging.py": {
-    "mtime": 1789011242.039503,
-    "seen": 1789082872.15078,
-    "ast_hash": "191b96655e3242257dfab0236f70c7af",
-    "semantic_hash": "191b96655e3242257dfab0236f70c7af"
+    "mtime": 1789968388.4822636,
+    "seen": 1789968561.635401,
+    "ast_hash": "947472cf8c1bd6ae9ae107b2f56098e6",
+    "semantic_hash": ""
   },
   "tests/unit/test_promotion.py": {
     "mtime": 1789011242.0396724,
@@ -306,10 +306,10 @@
     "semantic_hash": "f5145fc118e8d317715b756ab6956814"
   },
   "tests/unit/test_validate.py": {
-    "mtime": 1789404318.1439135,
-    "seen": 1789422262.647692,
-    "ast_hash": "d0b72907069a69ad49c6840b13884001",
-    "semantic_hash": "d0b72907069a69ad49c6840b13884001"
+    "mtime": 1789968541.6888661,
+    "seen": 1789968561.635403,
+    "ast_hash": "241c2f56073e806d7cd2f82f031ceb5f",
+    "semantic_hash": ""
   },
   "skills-lock.json": {
     "mtime": 1789083210.6996148,
@@ -396,15 +396,15 @@
     "semantic_hash": ""
   },
   "authority-map.yaml": {
-    "mtime": 1789538189.6626344,
-    "seen": 1789538199.70946,
-    "ast_hash": "a529dcf42d57fffd22e84fb8edc07ee9",
+    "mtime": 1789965000.814894,
+    "seen": 1789965485.659136,
+    "ast_hash": "a3baaac808cedeccc45530d96d01ae48",
     "semantic_hash": ""
   },
   "docs/contributing-skills.md": {
-    "mtime": 1789404318.1410089,
-    "seen": 1789422262.647697,
-    "ast_hash": "09afa2327d2b9c0c00cb48513fb752df",
+    "mtime": 1789968342.900776,
+    "seen": 1789968561.6354098,
+    "ast_hash": "95b41965139960aa49fd31c5d264fd9e",
     "semantic_hash": ""
   },
   "docs/software-design/instruction-governance/00-status.md": {
@@ -738,9 +738,9 @@
     "semantic_hash": ""
   },
   "skills/project-plan-execution/SKILL.md": {
-    "mtime": 1789433254.3311243,
-    "seen": 1789538199.709499,
-    "ast_hash": "1ab6b39e9a3f142ff27cabdf400dc924",
+    "mtime": 1789964991.041632,
+    "seen": 1789965485.659189,
+    "ast_hash": "403f7d9d8e755dc88981b1a26b71de48",
     "semantic_hash": ""
   },
   "skills/project-plan-execution/agents/openai.yaml": {
@@ -972,15 +972,15 @@
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/08-implementation-plan.md": {
-    "mtime": 1789876798.6953373,
-    "seen": 1789962058.928444,
-    "ast_hash": "03632e02f4f28563ccf4b8a09391e282",
+    "mtime": 1789967360.5156069,
+    "seen": 1789967367.062591,
+    "ast_hash": "006f44d86628231edc0208eaf26945ef",
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/09-delivery-status.md": {
-    "mtime": 1789962092.1920676,
-    "seen": 1789962109.6850739,
-    "ast_hash": "b4b71369008307f69f44bd2641f64ff9",
+    "mtime": 1789968715.8898363,
+    "seen": 1789968733.075305,
+    "ast_hash": "daf4770eaab2cea324db2980d4919fea",
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/brainstorm.md": {
@@ -990,15 +990,123 @@
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/slices/SLICE-001.md": {
-    "mtime": 1789961675.8565981,
-    "seen": 1789962058.928446,
-    "ast_hash": "0525e732824944eb9e16949dcc023060",
+    "mtime": 1789962192.3892698,
+    "seen": 1789965485.659143,
+    "ast_hash": "cae5a6e1ec3e4df2a2a44fcaa3cf36e3",
     "semantic_hash": ""
   },
   "graphify-out/memory/query_20260920_015633_57e4c85e_how_does_devquitect_recover_delivery_execution_aft.md": {
     "mtime": 1789869393.603635,
     "seen": 1789962058.9284842,
     "ast_hash": "82f0d60729c644f5acd97b6dcaf592af",
+    "semantic_hash": ""
+  },
+  "hooks/compaction_recovery.py": {
+    "mtime": 1789965429.7754743,
+    "seen": 1789965485.659096,
+    "ast_hash": "2a041e662a5ca62e75e4bf368efc04ce",
+    "semantic_hash": ""
+  },
+  "hooks/hooks.json": {
+    "mtime": 1789964952.5755227,
+    "seen": 1789965485.6590981,
+    "ast_hash": "a124ef4fdc3a2c182d0e50a073dd426d",
+    "semantic_hash": ""
+  },
+  "tests/unit/test_compaction_recovery_hook.py": {
+    "mtime": 1789965597.7282598,
+    "seen": 1789965612.444439,
+    "ast_hash": "c7e0dbcb3b6062be4d866cc42b89455b",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/slices/SLICE-002.md": {
+    "mtime": 1789967642.1354418,
+    "seen": 1789968561.635416,
+    "ast_hash": "2ff599f9233315db80a66e15e54a6af1",
+    "semantic_hash": ""
+  },
+  "evals/cases/compaction-recovery-resume-negative.yaml": {
+    "mtime": 1789965159.3318572,
+    "seen": 1789965485.659171,
+    "ast_hash": "a4a5d91bd4401cd1f9ac450b028e1cc1",
+    "semantic_hash": ""
+  },
+  "evals/cases/compaction-recovery-resume-positive.yaml": {
+    "mtime": 1789965159.2658648,
+    "seen": 1789965485.659172,
+    "ast_hash": "f20619565afb62bab8b3963c1ac0affe",
+    "semantic_hash": ""
+  },
+  "evals/fixtures/compaction-recovery/00-status.md": {
+    "mtime": 1789965158.7992897,
+    "seen": 1789965485.65918,
+    "ast_hash": "b88d51f36d26d687e6cb5c3b461f480a",
+    "semantic_hash": ""
+  },
+  "evals/fixtures/compaction-recovery/08-implementation-plan.md": {
+    "mtime": 1789965158.8716404,
+    "seen": 1789965485.659181,
+    "ast_hash": "90bab561c4f194d8142c390676556561",
+    "semantic_hash": ""
+  },
+  "evals/fixtures/compaction-recovery/09-delivery-status.md": {
+    "mtime": 1789965158.9414868,
+    "seen": 1789965485.659181,
+    "ast_hash": "239f34fb15fd688fd1efb4241eb75266",
+    "semantic_hash": ""
+  },
+  "evals/fixtures/compaction-recovery/README.md": {
+    "mtime": 1789965158.7187986,
+    "seen": 1789965485.659182,
+    "ast_hash": "f4d35600f67bf17b82415e836e6e759f",
+    "semantic_hash": ""
+  },
+  "evals/fixtures/compaction-recovery/evidence/pending-d.md": {
+    "mtime": 1789965159.2019286,
+    "seen": 1789965485.659182,
+    "ast_hash": "06ec3b74fc34fd0567294b3d4ad38697",
+    "semantic_hash": ""
+  },
+  "evals/fixtures/compaction-recovery/evidence/repository-disagreement.md": {
+    "mtime": 1789965159.1395824,
+    "seen": 1789965485.659183,
+    "ast_hash": "9504e70209ef2cb0fbb6f618781efba7",
+    "semantic_hash": ""
+  },
+  "evals/fixtures/compaction-recovery/evidence/stale-conversation.md": {
+    "mtime": 1789965159.0733714,
+    "seen": 1789965485.659183,
+    "ast_hash": "9438dd00b6b08d92ccf72e534d79d6f9",
+    "semantic_hash": ""
+  },
+  "evals/fixtures/compaction-recovery/partial-c.txt": {
+    "mtime": 1789965159.0075083,
+    "seen": 1789965485.659183,
+    "ast_hash": "35da06e2852110565d9f7f6dd244b334",
+    "semantic_hash": ""
+  },
+  "skills/project-plan-execution/references/compaction-recovery.md": {
+    "mtime": 1789964982.9384632,
+    "seen": 1789965485.65919,
+    "ast_hash": "bbc987d913e4b13a1a0e3992633601ab",
+    "semantic_hash": ""
+  },
+  "tests/fixtures/valid-plugin/hooks/compaction_recovery.py": {
+    "mtime": 1789968332.465235,
+    "seen": 1789968561.6353889,
+    "ast_hash": "7d48609a7e9d027cd00c2a2fcdbd9b7f",
+    "semantic_hash": ""
+  },
+  "tests/fixtures/valid-plugin/hooks/hooks.json": {
+    "mtime": 1789968332.403483,
+    "seen": 1789968561.63539,
+    "ast_hash": "a124ef4fdc3a2c182d0e50a073dd426d",
+    "semantic_hash": ""
+  },
+  "docs/software-design/compaction-recovery/slices/SLICE-003.md": {
+    "mtime": 1789968640.3384986,
+    "seen": 1789968664.279538,
+    "ast_hash": "d4d3b90b67d5f72b50b402d18acde502",
     "semantic_hash": ""
   }
 }

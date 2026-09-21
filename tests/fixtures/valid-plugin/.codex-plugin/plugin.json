@@ -2,5 +2,6 @@
   "name": "fixture-plugin",
   "version": "1.0.0",
   "description": "Fixture plugin",
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
 }

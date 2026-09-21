@@ -21,3 +21,18 @@ contracts:
         role: routes
       - path: skills/project-plan-execution/references/slice-verification.md
         role: tests
+  - id: project-plan-execution.compaction-recovery
+    owner_path: hooks/compaction_recovery.py
+    secondary_paths:
+      - path: skills/project-plan-execution/references/compaction-recovery.md
+        role: explains
+      - path: skills/project-plan-execution/SKILL.md
+        role: routes
+      - path: hooks/hooks.json
+        role: routes
+      - path: tests/unit/test_compaction_recovery_hook.py
+        role: tests
+      - path: evals/cases/compaction-recovery-resume-positive.yaml
+        role: tests
+      - path: evals/cases/compaction-recovery-resume-negative.yaml
+        role: tests

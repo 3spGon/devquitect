@@ -30,6 +30,10 @@ def test_cases_are_schema_valid_unique_and_cover_each_skill_routing() -> None:
         "slice-verification-negative",
         "slice-verification-legacy-status",
     } <= identifiers
+    assert {
+        "compaction-recovery-resume-positive",
+        "compaction-recovery-resume-negative",
+    } <= identifiers
     assert {case.id for case in select_cases(cases, suite="change-profile")} == {
         "change-profile-expedited",
         "change-profile-elevation",
@@ -65,3 +69,23 @@ def test_slice_verification_cases_pin_the_supported_flow() -> None:
     assert {item["pattern"] for item in negative if item["type"] == "command-prohibition"} == {
         "*verify_slice.py close*"
     }
+
+
+def test_compaction_recovery_cases_pin_conservative_policy() -> None:
+    cases = load_cases(ROOT / "evals/cases", ROOT / "schemas/eval-case.schema.json")
+    selected = {case.id: case.data for case in cases if case.id.startswith("compaction-recovery-")}
+    positive = selected["compaction-recovery-resume-positive"]
+    negative = selected["compaction-recovery-resume-negative"]
+    assert positive["fixture"] == negative["fixture"] == "compaction-recovery"
+    assert "verification-without-evidence" in positive["forbidden_effects"]
+    assert {
+        "workspace-write",
+        "stale-memory-authority",
+        "repeated-completed-work",
+    } <= set(negative["forbidden_effects"])
+    assert any(
+        item.get("id") == "do-not-repeat-completed-slices" for item in positive["assertions"]
+    )
+    assert any(
+        item.get("id") == "reject-stale-memory-repetition" for item in negative["assertions"]
+    )

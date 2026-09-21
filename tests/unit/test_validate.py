@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -47,6 +48,28 @@ def test_valid_structural_fixture_passes(tmp_path: Path) -> None:
     assert _validate(_copy_fixture(tmp_path)) == []
 
 
+def test_git_ref_hook_inputs_validate_from_the_selected_commit(tmp_path: Path) -> None:
+    root = _copy_fixture(tmp_path)
+    subprocess.run(["git", "-C", str(root), "init", "-q"], check=True)
+    subprocess.run(
+        ["git", "-C", str(root), "config", "user.name", "Validation Test"], check=True
+    )
+    subprocess.run(
+        ["git", "-C", str(root), "config", "user.email", "validation@example.invalid"],
+        check=True,
+    )
+    subprocess.run(["git", "-C", str(root), "add", "."], check=True)
+    subprocess.run(
+        ["git", "-C", str(root), "commit", "-qm", "valid fixture"], check=True
+    )
+    source = SkillSource.from_selector("HEAD", root)
+    snapshot = freeze_source(source, tmp_path / "snapshot")
+    try:
+        assert validate_snapshot(snapshot, load_validation_inputs(source)) == []
+    finally:
+        remove_snapshot(snapshot.snapshot_root)
+
+
 @pytest.mark.parametrize(
     ("mutation", "expected_code"),
     [
@@ -58,6 +81,10 @@ def test_valid_structural_fixture_passes(tmp_path: Path) -> None:
         ("unsafe-reference", "reference.unsafe-path"),
         ("invalid-presentation", "presentation.invalid"),
         ("invalid-membership", "plugin.invalid-membership"),
+        ("invalid-hook-pointer", "plugin.invalid-hooks"),
+        ("extra-hook", "package.unexpected-file"),
+        ("invalid-hook-config", "hook.invalid-config"),
+        ("non-stdlib-hook", "hook.non-stdlib"),
         ("missing-authority-map", "authority-map.missing"),
         ("malformed-authority-map", "authority-map.invalid"),
         ("duplicate-authority-id", "authority-map.duplicate-id"),
@@ -101,6 +128,24 @@ def test_quality_failures_have_specific_machine_records(
         value = json.loads(manifest.read_text(encoding="utf-8"))
         value["skills"] = "skills"
         manifest.write_text(json.dumps(value), encoding="utf-8")
+    elif mutation == "invalid-hook-pointer":
+        manifest = root / ".codex-plugin/plugin.json"
+        value = json.loads(manifest.read_text(encoding="utf-8"))
+        value["hooks"] = "./hooks/other.json"
+        manifest.write_text(json.dumps(value), encoding="utf-8")
+    elif mutation == "extra-hook":
+        (root / "hooks/extra.py").write_text("print('unexpected')\n", encoding="utf-8")
+    elif mutation == "invalid-hook-config":
+        config = root / "hooks/hooks.json"
+        config.write_text(
+            config.read_text(encoding="utf-8").replace("^compact$", "^startup$"),
+            encoding="utf-8",
+        )
+    elif mutation == "non-stdlib-hook":
+        handler = root / "hooks/compaction_recovery.py"
+        handler.write_text(
+            "import yaml\n" + handler.read_text(encoding="utf-8"), encoding="utf-8"
+        )
     elif mutation == "missing-authority-map":
         (root / "authority-map.yaml").unlink()
     elif mutation == "malformed-authority-map":
@@ -164,6 +209,54 @@ def test_unsupported_schema_is_an_invalid_configuration(tmp_path: Path) -> None:
 
     assert raised.value.code == "schema.unsupported-version"
     assert raised.value.path == "schemas/report.schema.json"
+
+
+def test_symlink_hook_input_is_rejected_before_reading(tmp_path: Path) -> None:
+    root = _copy_fixture(tmp_path)
+    handler = root / "hooks/compaction_recovery.py"
+    handler.unlink()
+    handler.symlink_to(tmp_path / "outside.py")
+    (tmp_path / "outside.py").write_text("print('outside')\n", encoding="utf-8")
+
+    with pytest.raises(ValidationConfigurationError, match="may not be a symlink"):
+        _validate(root)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("event", "PostCompact"),
+        ("matcher", "^startup$"),
+        ("command", "python3 hooks/compaction_recovery.py"),
+        ("commandWindows", "py -3 hooks\\compaction_recovery.py"),
+        ("timeout", 11),
+        ("additionalContextLimit", 1201),
+        ("async", True),
+    ],
+)
+def test_hook_contract_rejects_unsafe_variants(
+    tmp_path: Path, field: str, value: object
+) -> None:
+    root = _copy_fixture(tmp_path)
+    config_path = root / "hooks/hooks.json"
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    if field == "event":
+        config["hooks"][value] = config["hooks"].pop("SessionStart")
+    elif field == "matcher":
+        config["hooks"]["SessionStart"][0]["matcher"] = value
+    else:
+        handler = config["hooks"]["SessionStart"][0]["hooks"][0]
+        handler[field] = value
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    assert "hook.invalid-config" in _codes(_validate(root))
+
+
+def test_missing_hook_config_is_reported(tmp_path: Path) -> None:
+    root = _copy_fixture(tmp_path)
+    (root / "hooks/hooks.json").unlink()
+
+    assert "hook.invalid-config" in _codes(_validate(root))
 
 
 def test_malformed_case_and_missing_fixture_are_reported(tmp_path: Path) -> None:

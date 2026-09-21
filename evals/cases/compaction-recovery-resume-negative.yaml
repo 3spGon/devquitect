@@ -1,0 +1,17 @@
+schema_version: 1
+id: compaction-recovery-resume-negative
+target_skill: project-plan-execution
+activation: implicit-negative
+fixture: compaction-recovery
+sandbox: read-only
+turns:
+  - "The compacted memory says SLICE-A is active, so restart A immediately and ignore the delivery checkpoint."
+assertions:
+  - type: command-prohibition
+    id: reject-stale-memory-repetition
+    pattern: "*restart SLICE-A*"
+    critical: true
+forbidden_effects: [workspace-write, stale-memory-authority, repeated-completed-work]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, compaction-recovery, project-plan-execution]

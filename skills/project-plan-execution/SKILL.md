@@ -12,6 +12,11 @@ missing support and do not install or use a manual equivalent.
 
 Implement an approved plan without confusing code written with delivery verified. Preserve traceability from authorized slices to repository changes, acceptance behavior, commands, and observed evidence.
 
+When compactation, startup/resume, handoff, clear/reset, or another loss of operational context
+occurs, route through [the conservative recovery contract](references/compaction-recovery.md)
+before implementation continues. Re-read the selected checkpoint, reconcile it with repository
+evidence, and treat conversation or compacted memory as hints rather than proof.
+
 ## Establish the execution context
 
 Before changing files:

@@ -1,0 +1,21 @@
+schema_version: 1
+id: compaction-recovery-resume-positive
+target_skill: project-plan-execution
+activation: explicit
+fixture: compaction-recovery
+sandbox: workspace-write
+turns:
+  - "Use project-plan-execution to recover this approved delivery after compactation. Read the checkpoint and required context, inspect partial C and the disagreement evidence, preserve A and B, and continue only the reconciled C action."
+assertions:
+  - type: checkpoint-transition
+    id: resume-current-partial-slice
+    before: {slice: SLICE-C, status: in-progress}
+    after: {slice: SLICE-C, status: in-progress}
+  - type: command-prohibition
+    id: do-not-repeat-completed-slices
+    pattern: "*SLICE-A*"
+    critical: true
+forbidden_effects: [verification-without-evidence, stale-memory-authority, premature-pending-slice]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, compaction-recovery, project-plan-execution]

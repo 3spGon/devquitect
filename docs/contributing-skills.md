@@ -8,7 +8,7 @@ Create a skill at `skills/<skill-name>/` where `<skill-name>` is unique, kebab-c
 
 Every skill includes `agents/openai.yaml` with non-empty `interface.display_name`, `interface.short_description`, and `interface.default_prompt` values. Local resources must be linked from `SKILL.md` with relative Markdown links, must remain inside the skill directory, and must exist as regular files. Unreferenced files, escaping paths, and symlinks are not eligible plugin inputs.
 
-The root `.codex-plugin/plugin.json` identifies the `devquitect` plugin and declares `"skills": "./skills/"`. Its name is stable kebab-case, its version follows semantic versioning, and its component paths are relative to the plugin root.
+The root `.codex-plugin/plugin.json` identifies the `devquitect` plugin, declares `"skills": "./skills/"`, and declares `"hooks": "./hooks/hooks.json"`. Its name is stable kebab-case, its version follows semantic versioning, and its component paths are relative to the plugin root. The hook manifest and `hooks/compaction_recovery.py` are the only accepted hook inputs; both must be regular files inside the repository.
 
 ## Validate a contribution
 
@@ -110,8 +110,11 @@ Authorization, routing, persistent-state, or compatibility changes require a rev
 
 Packaging is allowed only from an immutable Git commit whose committed plugin manifest already
 contains the requested semantic version. A working-tree selector, mismatched version, missing
-declared skill, symlink, archive, cache, report, test input, or machine-local file blocks the
-build. The command reads Git objects rather than the checkout and writes only a normalized ZIP
+declared skill or hook, symlink, archive, cache, report, test input, or machine-local file blocks the
+build. Review the exact hook command and trust state after every plugin install or update. Enable
+or disable the handler individually with Codex `/hooks`; a disabled or untrusted hook means
+automatic compactation recovery is unavailable, so use the manual project-plan-execution recovery
+sequence. The command reads Git objects rather than the checkout and writes only a normalized ZIP
 plus a deterministic entry manifest:
 
 ```text

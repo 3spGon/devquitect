@@ -36,8 +36,14 @@ def package_repository(tmp_path: Path) -> Path:
     for name in SCHEMAS:
         (schemas / name).write_bytes((source_schemas / name).read_bytes())
     (repository / ".codex-plugin/plugin.json").write_text(
-        '{"name":"devquitect","version":"0.1.0","skills":"./skills/"}\n',
+        '{"name":"devquitect","version":"0.1.0","skills":"./skills/",'
+        '"hooks":"./hooks/hooks.json"}\n',
         encoding="utf-8",
+    )
+    (repository / "hooks").mkdir()
+    (repository / "hooks/hooks.json").write_text("{}\n", encoding="utf-8")
+    (repository / "hooks/compaction_recovery.py").write_text(
+        "#!/usr/bin/env python3\nprint('ok')\n", encoding="utf-8"
     )
     for name in SKILLS:
         skill = repository / "skills" / name
@@ -52,7 +58,8 @@ def package_repository(tmp_path: Path) -> Path:
     git(repository, "commit", "-qm", "baseline input")
     manifest = repository / ".codex-plugin/plugin.json"
     manifest.write_text(
-        '{"name":"devquitect","version":"0.2.0","skills":"./skills/"}\n',
+        '{"name":"devquitect","version":"0.2.0","skills":"./skills/",'
+        '"hooks":"./hooks/hooks.json"}\n',
         encoding="utf-8",
     )
     git(repository, "add", ".")
@@ -194,6 +201,25 @@ def test_release_check_blocks_evidence_from_a_different_commit_with_same_snapsho
     package = build_package(repository, "HEAD", "0.2.0", tmp_path / "probe")
     evidence = tmp_path / "evidence"
     write_evidence(evidence, package.snapshot_id, git(repository, "rev-parse", "HEAD^"))
+
+    with pytest.raises(PromotionError, match="matches the source snapshot"):
+        release_check(repository, "HEAD", "0.2.0", evidence, tmp_path / "release")
+
+
+def test_release_check_binds_hook_only_commit_even_when_snapshot_is_unchanged(
+    tmp_path: Path,
+) -> None:
+    repository = package_repository(tmp_path)
+    previous = build_package(repository, "HEAD", "0.2.0", tmp_path / "previous")
+    handler = repository / "hooks/compaction_recovery.py"
+    handler.write_text(handler.read_text(encoding="utf-8") + "changed\n", encoding="utf-8")
+    git(repository, "add", ".")
+    git(repository, "commit", "-qm", "hook-only change")
+    current = build_package(repository, "HEAD", "0.2.0", tmp_path / "current")
+    assert previous.snapshot_id == current.snapshot_id
+    assert previous.source_commit != current.source_commit
+    evidence = tmp_path / "evidence"
+    write_evidence(evidence, previous.snapshot_id, previous.source_commit)
 
     with pytest.raises(PromotionError, match="matches the source snapshot"):
         release_check(repository, "HEAD", "0.2.0", evidence, tmp_path / "release")

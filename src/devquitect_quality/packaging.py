@@ -14,6 +14,9 @@ from .models import SkillSource
 from .sources import SourceError, freeze_source
 
 PLUGIN_MANIFEST = ".codex-plugin/plugin.json"
+HOOK_CONFIG = "hooks/hooks.json"
+HOOK_HANDLER = "hooks/compaction_recovery.py"
+HOOK_PATHS = {HOOK_CONFIG, HOOK_HANDLER}
 EXPECTED_SKILLS = {
     "project-plan-execution",
     "software-idea-to-project",
@@ -92,7 +95,7 @@ def _resolve_commit(repository: Path, selector: str) -> str:
 
 def _safe_path(path: str) -> PurePosixPath:
     relative = PurePosixPath(path)
-    allowed = path == PLUGIN_MANIFEST or (
+    allowed = path in {PLUGIN_MANIFEST, *HOOK_PATHS} or (
         len(relative.parts) >= 3 and relative.parts[0] == "skills"
     )
     if (
@@ -118,6 +121,7 @@ def _tree_entries(repository: Path, commit: str) -> list[tuple[str, str, bytes]]
         commit,
         "--",
         PLUGIN_MANIFEST,
+        "hooks",
         "skills",
     )
     assert isinstance(raw, bytes)
@@ -148,8 +152,14 @@ def _normalize_manifest(content: bytes, version: str) -> bytes:
         manifest = json.loads(content)
     except (UnicodeDecodeError, json.JSONDecodeError) as error:
         raise PackageError("plugin manifest must be valid UTF-8 JSON") from error
-    if manifest.get("name") != "devquitect" or manifest.get("skills") != "./skills/":
-        raise PackageError("plugin manifest must declare devquitect and ./skills/")
+    if (
+        manifest.get("name") != "devquitect"
+        or manifest.get("skills") != "./skills/"
+        or manifest.get("hooks") != "./hooks/hooks.json"
+    ):
+        raise PackageError(
+            "plugin manifest must declare devquitect, ./skills/, and ./hooks/hooks.json"
+        )
     if manifest.get("version") != version:
         raise PackageError(
             f"requested version {version} does not match committed plugin manifest "

@@ -1,8 +1,8 @@
 # Plan de implementación — Compaction Recovery
 
 Status: Approved
-Last updated: 2026-09-19
-Plan revision: 1
+Last updated: 2026-09-20
+Plan revision: 2
 
 ## Confirmed
 
@@ -16,9 +16,10 @@ Planning is not implementation authorization. No product source, plugin version,
 commit, publication, model-backed evaluation, or external system is changed by approving this
 document.
 
-The user explicitly approved implementation plan revision 1 on 2026-09-19. This approval
-completes software definition; it does not authorize any implementation slice or model-backed
-evaluation.
+The user explicitly approved implementation plan revision 1 on 2026-09-19. The user later
+authorized revision 2 to resolve the SLICE-002/SLICE-003 validation-boundary dependency. This
+approval completes software definition; it does not authorize any implementation slice or
+model-backed evaluation beyond the currently authorized delivery slice.
 
 The verified repository stack is Python 3.12+, PyYAML, jsonschema, pytest, Ruff, `uv`, and the
 pinned Codex CLI 0.154.0 adapter. Plugin hooks and App Server lifecycle behavior are current
@@ -122,6 +123,11 @@ multiple, or malformed checkpoint candidates. Dependency: SLICE-001 verified and
 - `authority-map.yaml`: add `project-plan-execution.compaction-recovery` with the hook script as
   owner, recovery reference as `explains`, entrypoint as `routes`, and external cases/tests as
   `tests`; preserve existing delivery-state/execution ownership.
+- `src/devquitect_quality/validate.py`: admit repository-relative paths declared by the selected
+  authority map into the frozen validation inputs while retaining source, regular-file, and path
+  safety checks; this is the validation-boundary prerequisite for the slice.
+- `tests/unit/test_validate.py`: cover external authority-map paths from the working tree and
+  preserve the existing missing/unsafe authority-path records.
 - `tests/unit/test_cases.py`: prove the new external cases load, retain fixed critical policy,
   and do not weaken existing cases.
 
@@ -144,8 +150,9 @@ and then reports `resumed`, `reconciled`, `blocked`, or `ambiguous`. Conversatio
 authorization, acceptance, deferral, completion, or verification.
 
 **Verification and evidence:** run hook subprocess tests, case loading, structural validation,
-and common checks. Do not execute the YAML behavioral cases with a model without separate
-authorization. Run `graphify update .` after code changes and before final evidence capture.
+the validator-boundary tests, and common checks. Do not execute the YAML behavioral cases with a
+model without separate authorization. Run `graphify update .` after code changes and before final
+evidence capture.
 
 **Rollback:** removing the runtime handler before it is packaged does not alter checkpoint
 state. Preserve the manual recovery reference and v3 reader if any active delivery has migrated.
@@ -160,8 +167,9 @@ enable/disable behavior. Dependency: SLICE-002 verified and current.
 
 - `.codex-plugin/plugin.json`: declare exactly `"hooks": "./hooks/hooks.json"` without a
   version bump in this local implementation task.
-- `src/devquitect_quality/validate.py`: freeze root hook inputs for working-tree/git-ref sources,
-  validate the exact manifest/config/command contract, and reject undeclared/symlink inputs.
+- `src/devquitect_quality/validate.py`: validate the exact manifest/config/command contract after
+  the repository-relative authority paths and approved hook inputs are admitted by SLICE-002;
+  reject undeclared/symlink hook inputs.
 - `src/devquitect_quality/packaging.py`: admit the two exact hook files in `_safe_path` and
   `_tree_entries`, preserving regular-file checks, order, modes, timestamps, and digest behavior.
 - `tests/unit/test_validate.py`: positive linkage plus missing, extra, escaping, symlink,
@@ -179,11 +187,12 @@ enable/disable behavior. Dependency: SLICE-002 verified and current.
 - `tests/fixtures/valid-plugin/hooks/hooks.json`
 - `tests/fixtures/valid-plugin/hooks/compaction_recovery.py`
 
-**Implementation details:** `load_validation_inputs` admits only the manifest and two root hook
-paths in addition to its existing schemas/cases/fixtures/rubrics/authority map. The validator
-requires the exact manifest pointer, one synchronous `SessionStart` group, matcher `^compact$`,
-one command handler, POSIX and Windows commands resolving only through `PLUGIN_ROOT`, timeout
-10, context limit 1200, and no extra handler. It rejects symlinks before reading content.
+**Implementation details:** `load_validation_inputs` already admits the repository-relative
+authority paths declared by the selected source. This slice additionally admits only the
+manifest and two root hook paths. The validator requires the exact manifest pointer, one
+synchronous `SessionStart` group, matcher `^compact$`, one command handler, POSIX and Windows
+commands resolving only through `PLUGIN_ROOT`, timeout 10, context limit 1200, and no extra
+handler. It rejects symlinks before reading content.
 
 Packaging reads the same three plugin-level paths from the selected immutable commit. Hook-only
 changes must alter the package digest. Release evidence remains safely bound by both
@@ -397,8 +406,10 @@ slices:
       - "evals/cases"
       - "evals/fixtures/compaction-recovery"
       - "schemas"
+      - "src/devquitect_quality/validate.py"
       - "tests/unit/test_compaction_recovery_hook.py"
       - "tests/unit/test_cases.py"
+      - "tests/unit/test_validate.py"
       - "pyproject.toml"
       - "uv.lock"
       - "AGENTS.md"

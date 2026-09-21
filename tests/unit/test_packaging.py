@@ -22,8 +22,14 @@ def package_repository(tmp_path: Path) -> Path:
     repository = tmp_path / "repository"
     (repository / ".codex-plugin").mkdir(parents=True)
     (repository / ".codex-plugin/plugin.json").write_text(
-        '{"name":"devquitect","version":"0.1.0","skills":"./skills/"}\n',
+        '{"name":"devquitect","version":"0.1.0","skills":"./skills/",'
+        '"hooks":"./hooks/hooks.json"}\n',
         encoding="utf-8",
+    )
+    (repository / "hooks").mkdir()
+    (repository / "hooks/hooks.json").write_text("{}\n", encoding="utf-8")
+    (repository / "hooks/compaction_recovery.py").write_text(
+        "#!/usr/bin/env python3\nprint('ok')\n", encoding="utf-8"
     )
     for name in SKILLS:
         skill = repository / "skills" / name
@@ -38,7 +44,8 @@ def package_repository(tmp_path: Path) -> Path:
     git(repository, "commit", "-qm", "baseline input")
     manifest = repository / ".codex-plugin/plugin.json"
     manifest.write_text(
-        '{"name":"devquitect","version":"0.2.0","skills":"./skills/"}\n',
+        '{"name":"devquitect","version":"0.2.0","skills":"./skills/",'
+        '"hooks":"./hooks/hooks.json"}\n',
         encoding="utf-8",
     )
     git(repository, "add", ".")
@@ -57,7 +64,8 @@ def test_package_is_reproducible_and_contains_only_allowlisted_inputs(tmp_path: 
         names = archive.namelist()
         assert names == sorted(names)
         assert names[0] == ".codex-plugin/plugin.json"
-        assert {Path(name).parts[1] for name in names[1:]} == set(SKILLS)
+        assert names[1:3] == ["hooks/compaction_recovery.py", "hooks/hooks.json"]
+        assert {Path(name).parts[1] for name in names[3:]} == set(SKILLS)
         assert all(info.date_time == (1980, 1, 1, 0, 0, 0) for info in archive.infolist())
 
 
@@ -70,6 +78,29 @@ def test_changed_committed_input_changes_artifact_digest(tmp_path: Path) -> None
     git(repository, "commit", "-qm", "change input")
     after = build_package(repository, "HEAD", "0.2.0", tmp_path / "after")
     assert before.artifact_digest != after.artifact_digest
+
+
+def test_changed_committed_hook_changes_digest_and_snapshot_stays_stable(tmp_path: Path) -> None:
+    repository = package_repository(tmp_path)
+    before = build_package(repository, "HEAD", "0.2.0", tmp_path / "before")
+    handler = repository / "hooks/compaction_recovery.py"
+    handler.write_text(handler.read_text(encoding="utf-8") + "changed\n", encoding="utf-8")
+    git(repository, "add", ".")
+    git(repository, "commit", "-qm", "change hook input")
+    after = build_package(repository, "HEAD", "0.2.0", tmp_path / "after")
+    assert before.snapshot_id == after.snapshot_id
+    assert before.source_commit != after.source_commit
+    assert before.artifact_digest != after.artifact_digest
+
+
+def test_package_rejects_undeclared_hook_input(tmp_path: Path) -> None:
+    repository = package_repository(tmp_path)
+    (repository / "hooks/extra.py").write_text("print('unexpected')\n", encoding="utf-8")
+    git(repository, "add", ".")
+    git(repository, "commit", "-qm", "extra hook input")
+
+    with pytest.raises(PackageError, match="unsafe or undeclared package entry"):
+        build_package(repository, "HEAD", "0.2.0", tmp_path / "extra")
 
 
 def test_package_rejects_working_tree_invalid_semver_and_symlink(tmp_path: Path) -> None:

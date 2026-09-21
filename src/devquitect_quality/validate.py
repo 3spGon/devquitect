@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import ast
 import json
 import re
 import subprocess
+import sys
 from collections import Counter
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -21,6 +23,12 @@ from .reporting import validation_record
 SUPPORTED_SCHEMA_VERSION = 1
 PLUGIN_MANIFEST_PATH = ".codex-plugin/plugin.json"
 PLUGIN_PREFIX = ".codex-plugin/"
+HOOKS_PREFIX = "hooks/"
+HOOK_CONFIG_PATH = "hooks/hooks.json"
+HOOK_HANDLER_PATH = "hooks/compaction_recovery.py"
+HOOK_INPUT_PATHS = (HOOK_CONFIG_PATH, HOOK_HANDLER_PATH)
+HOOK_COMMAND = 'python3 "$PLUGIN_ROOT/hooks/compaction_recovery.py"'
+HOOK_COMMAND_WINDOWS = 'py -3 "%PLUGIN_ROOT%\\hooks\\compaction_recovery.py"'
 SCHEMA_PREFIX = "schemas/"
 CASE_PREFIX = "evals/cases/"
 FIXTURE_PREFIX = "evals/fixtures/"
@@ -48,6 +56,7 @@ class ValidationInputs:
     """Non-skill structural inputs frozen in memory for one validation run."""
 
     files: Mapping[str, bytes]
+    unexpected_paths: tuple[str, ...] = ()
 
 
 def _safe_path(path: str) -> PurePosixPath:
@@ -76,24 +85,42 @@ def _git(repository: Path, *args: str) -> bytes:
     return process.stdout
 
 
+def _authority_map_paths(raw: bytes) -> tuple[str, ...]:
+    try:
+        value = yaml.safe_load(raw)
+    except (UnicodeDecodeError, yaml.YAMLError):
+        return ()
+    if not isinstance(value, dict) or not isinstance(value.get("contracts"), list):
+        return ()
+
+    paths: list[str] = []
+    for contract in value["contracts"]:
+        if not isinstance(contract, dict):
+            continue
+        owner_path = contract.get("owner_path")
+        if isinstance(owner_path, str):
+            paths.append(owner_path)
+        secondary_paths = contract.get("secondary_paths")
+        if isinstance(secondary_paths, list):
+            for secondary in secondary_paths:
+                if isinstance(secondary, dict) and isinstance(secondary.get("path"), str):
+                    paths.append(secondary["path"])
+    return tuple(dict.fromkeys(paths))
+
+
 def load_validation_inputs(source: SkillSource) -> ValidationInputs:
     """Read all non-skill validation inputs once from the selected source."""
 
     repository = source.repository_root
-    wanted_prefixes = (
-        PLUGIN_PREFIX,
-        SCHEMA_PREFIX,
-        CASE_PREFIX,
-        FIXTURE_PREFIX,
-        RUBRIC_PREFIX,
-        AUTHORITY_MAP_PATH,
-    )
     files: dict[str, bytes] = {}
     if source.kind == "working-tree":
         plugin_directory = repository / PLUGIN_PREFIX.rstrip("/")
+        hooks_directory = repository / HOOKS_PREFIX.rstrip("/")
         candidates: list[Path] = []
         if plugin_directory.exists():
             candidates.extend(path for path in plugin_directory.rglob("*") if path.is_file())
+        if hooks_directory.exists():
+            candidates.extend(path for path in hooks_directory.rglob("*") if path.is_file())
         for root_name in (
             SCHEMA_PREFIX.rstrip("/"),
             CASE_PREFIX.rstrip("/"),
@@ -106,6 +133,7 @@ def load_validation_inputs(source: SkillSource) -> ValidationInputs:
         authority_map = repository / AUTHORITY_MAP_PATH
         if authority_map.is_file():
             candidates.append(authority_map)
+        unexpected_paths: list[str] = []
         for path in candidates:
             if not path.exists():
                 continue
@@ -115,40 +143,143 @@ def load_validation_inputs(source: SkillSource) -> ValidationInputs:
                 raise ValidationConfigurationError(
                     "source.unsafe-path", relative, "validation input may not be a symlink"
                 )
+            if relative.startswith((PLUGIN_PREFIX, HOOKS_PREFIX)) and relative not in {
+                PLUGIN_MANIFEST_PATH,
+                *HOOK_INPUT_PATHS,
+            }:
+                unexpected_paths.append(relative)
+                continue
+            if relative not in {
+                PLUGIN_MANIFEST_PATH,
+                *HOOK_INPUT_PATHS,
+                AUTHORITY_MAP_PATH,
+            } and not any(
+                relative.startswith(prefix)
+                for prefix in (SCHEMA_PREFIX, CASE_PREFIX, FIXTURE_PREFIX, RUBRIC_PREFIX)
+            ):
+                continue
             files[relative] = path.read_bytes()
+        for declared_path in _authority_map_paths(files.get(AUTHORITY_MAP_PATH, b"")):
+            try:
+                relative = _safe_path(declared_path)
+            except ValueError:
+                continue
+            path = repository.joinpath(*relative.parts)
+            if path.is_symlink():
+                raise ValidationConfigurationError(
+                    "source.unsafe-path",
+                    relative.as_posix(),
+                    "validation input may not be a symlink",
+                )
+            if path.is_file():
+                files[relative.as_posix()] = path.read_bytes()
     else:
         raw_paths = _git(
             repository,
             "ls-tree",
             "-r",
-            "--name-only",
+            "--full-tree",
             "-z",
             source.selector,
             "--",
             PLUGIN_PREFIX.rstrip("/"),
+            HOOKS_PREFIX.rstrip("/"),
             SCHEMA_PREFIX.rstrip("/"),
             CASE_PREFIX.rstrip("/"),
             FIXTURE_PREFIX.rstrip("/"),
             RUBRIC_PREFIX.rstrip("/"),
             AUTHORITY_MAP_PATH,
         )
-        for raw_path in raw_paths.split(b"\x00"):
-            if not raw_path:
+        unexpected_paths = []
+        for record in raw_paths.split(b"\x00"):
+            if not record:
                 continue
-            try:
-                relative = raw_path.decode("utf-8")
-            except UnicodeDecodeError as error:
+            metadata, separator, raw_path = record.partition(b"\t")
+            if not separator:
                 raise ValidationConfigurationError(
-                    "source.unsafe-path", "skills", "source contains a non-UTF-8 path"
+                    "source.read-failed",
+                    "skills",
+                    "Git returned an invalid validation input record",
+                )
+            try:
+                mode, object_type, _ = metadata.split(b" ", 2)
+                relative = raw_path.decode("utf-8")
+            except (ValueError, UnicodeDecodeError) as error:
+                raise ValidationConfigurationError(
+                    "source.unsafe-path", "skills", "source contains an invalid path"
                 ) from error
             _safe_path(relative)
-            if not any(
-                relative == prefix or relative.startswith(prefix)
-                for prefix in wanted_prefixes
+            if relative.startswith((PLUGIN_PREFIX, HOOKS_PREFIX)) and relative not in {
+                PLUGIN_MANIFEST_PATH,
+                *HOOK_INPUT_PATHS,
+            }:
+                unexpected_paths.append(relative)
+                continue
+            if relative not in {
+                PLUGIN_MANIFEST_PATH,
+                *HOOK_INPUT_PATHS,
+                AUTHORITY_MAP_PATH,
+            } and not any(
+                relative.startswith(prefix)
+                for prefix in (SCHEMA_PREFIX, CASE_PREFIX, FIXTURE_PREFIX, RUBRIC_PREFIX)
             ):
                 continue
+            if object_type != b"blob" or mode not in {b"100644", b"100755"}:
+                raise ValidationConfigurationError(
+                    "source.unsafe-path", relative, "validation input must be a regular file"
+                )
             files[relative] = _git(repository, "show", f"{source.selector}:{relative}")
-    return ValidationInputs(files=dict(sorted(files.items())))
+        declared_paths: list[str] = []
+        for declared_path in _authority_map_paths(files.get(AUTHORITY_MAP_PATH, b"")):
+            try:
+                declared_paths.append(_safe_path(declared_path).as_posix())
+            except ValueError:
+                continue
+        if declared_paths:
+            raw_declared = _git(
+                repository,
+                "ls-tree",
+                "-r",
+                "-z",
+                "--full-tree",
+                source.selector,
+                "--",
+                *declared_paths,
+            )
+            for record in raw_declared.split(b"\x00"):
+                if not record:
+                    continue
+                metadata, separator, raw_path = record.partition(b"\t")
+                if not separator:
+                    raise ValidationConfigurationError(
+                        "source.read-failed",
+                        AUTHORITY_MAP_PATH,
+                        "Git returned an invalid authority-map path record",
+                    )
+                try:
+                    mode, object_type, _ = metadata.split(b" ", 2)
+                    relative = raw_path.decode("utf-8")
+                except (ValueError, UnicodeDecodeError) as error:
+                    raise ValidationConfigurationError(
+                        "source.unsafe-path",
+                        AUTHORITY_MAP_PATH,
+                        "source contains an invalid authority-map path",
+                    ) from error
+                _safe_path(relative)
+                if mode == b"120000":
+                    raise ValidationConfigurationError(
+                        "source.unsafe-path",
+                        relative,
+                        "validation input may not be a symlink",
+                    )
+                if object_type == b"blob":
+                    files[relative] = _git(
+                        repository, "show", f"{source.selector}:{relative}"
+                    )
+    return ValidationInputs(
+        files=dict(sorted(files.items())),
+        unexpected_paths=tuple(sorted(set(unexpected_paths))),
+    )
 
 
 def load_directory_inputs(plugin_root: Path | str) -> ValidationInputs:
@@ -170,6 +301,112 @@ def _parse_json(files: Mapping[str, bytes], path: str) -> Any:
         raise ValidationConfigurationError(
             "configuration.invalid-json", path, f"invalid JSON: {error}"
         ) from error
+
+
+def _validate_hook_contract(
+    manifest: Mapping[str, Any], inputs: ValidationInputs
+) -> list[dict[str, str]]:
+    records: list[dict[str, str]] = []
+    for path in inputs.unexpected_paths:
+        if path.startswith((PLUGIN_PREFIX, HOOKS_PREFIX)):
+            records.append(
+                validation_record(
+                    "package.unexpected-file", path, "only declared plugin hook inputs are allowed"
+                )
+            )
+    if manifest.get("hooks") != "./hooks/hooks.json":
+        records.append(
+            validation_record(
+                "plugin.invalid-hooks",
+                PLUGIN_MANIFEST_PATH,
+                "hooks must declare './hooks/hooks.json'",
+            )
+        )
+    try:
+        config = _parse_json(inputs.files, HOOK_CONFIG_PATH)
+    except ValidationConfigurationError as error:
+        records.append(validation_record("hook.invalid-config", error.path, error.message))
+        config = None
+    if isinstance(config, dict):
+        groups = config.get("hooks")
+        session_start = groups.get("SessionStart") if isinstance(groups, dict) else None
+        if set(config) != {"hooks"}:
+            records.append(
+                validation_record(
+                    "hook.invalid-config", HOOK_CONFIG_PATH, "hook configuration has extra fields"
+                )
+            )
+        if not isinstance(groups, dict) or set(groups) != {"SessionStart"}:
+            records.append(
+                validation_record(
+                    "hook.invalid-config", HOOK_CONFIG_PATH, "only SessionStart hooks are allowed"
+                )
+            )
+        if not isinstance(session_start, list) or len(session_start) != 1:
+            records.append(
+                validation_record(
+                    "hook.invalid-config",
+                    HOOK_CONFIG_PATH,
+                    "exactly one SessionStart group is required",
+                )
+            )
+        else:
+            group = session_start[0]
+            handlers = group.get("hooks") if isinstance(group, dict) else None
+            if (
+                not isinstance(group, dict)
+                or group.get("matcher") != "^compact$"
+                or not isinstance(handlers, list)
+                or len(handlers) != 1
+            ):
+                records.append(
+                    validation_record(
+                        "hook.invalid-config",
+                        HOOK_CONFIG_PATH,
+                        "SessionStart must match ^compact$ and contain one handler",
+                    )
+                )
+            elif handlers[0] != {
+                "type": "command",
+                "command": HOOK_COMMAND,
+                "commandWindows": HOOK_COMMAND_WINDOWS,
+                "timeout": 10,
+                "additionalContextLimit": 1200,
+            }:
+                records.append(
+                    validation_record(
+                        "hook.invalid-config",
+                        HOOK_CONFIG_PATH,
+                        "hook handler does not match the approved synchronous contract",
+                    )
+                )
+    try:
+        handler = inputs.files[HOOK_HANDLER_PATH].decode("utf-8")
+        tree = ast.parse(handler, filename=HOOK_HANDLER_PATH)
+    except KeyError:
+        records.append(
+            validation_record(
+                "hook.missing-handler", HOOK_HANDLER_PATH, "hook handler is missing"
+            )
+        )
+    except (SyntaxError, UnicodeDecodeError) as error:
+        records.append(validation_record("hook.invalid-handler", HOOK_HANDLER_PATH, str(error)))
+    else:
+        imports = []
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                imports.extend(alias.name.split(".", 1)[0] for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                imports.append(node.module.split(".", 1)[0])
+        unsupported = sorted({name for name in imports if name not in sys.stdlib_module_names})
+        if unsupported:
+            records.append(
+                validation_record(
+                    "hook.non-stdlib", HOOK_HANDLER_PATH,
+                    f"hook handler imports non-standard modules: {', '.join(unsupported)}",
+                )
+            )
+    return records
 
 
 def _parse_frontmatter(path: Path) -> tuple[dict[str, Any] | None, str | None]:
@@ -242,10 +479,12 @@ def _validate_schemas(files: Mapping[str, bytes]) -> dict[str, Any]:
 
 
 def _authority_path(
-    root: Path, path: str, map_path: str, kind: str
+    root: Path, files: Mapping[str, bytes], path: str, map_path: str, kind: str
 ) -> dict[str, str] | None:
     try:
         relative = _safe_path(path)
+        if relative.as_posix() in files:
+            return None
         target = root.joinpath(*relative.parts)
         target.resolve().relative_to(root.resolve())
     except ValueError:
@@ -315,13 +554,13 @@ def _validate_authority_map(
                 )
             )
         owner_record = _authority_path(
-            root, contract["owner_path"], AUTHORITY_MAP_PATH, "owner"
+            root, files, contract["owner_path"], AUTHORITY_MAP_PATH, "owner"
         )
         if owner_record:
             records.append(owner_record)
         for secondary in contract["secondary_paths"]:
             secondary_record = _authority_path(
-                root, secondary["path"], AUTHORITY_MAP_PATH, "secondary"
+                root, files, secondary["path"], AUTHORITY_MAP_PATH, "secondary"
             )
             if secondary_record:
                 records.append(secondary_record)
@@ -434,6 +673,7 @@ def validate_structure(
                     "only plugin.json is allowed inside .codex-plugin",
                 )
             )
+    records.extend(_validate_hook_contract(manifest, inputs))
     for key in ("name", "version", "description", "skills"):
         if not isinstance(manifest.get(key), str) or not manifest[key].strip():
             records.append(

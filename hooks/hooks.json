@@ -1,0 +1,18 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^compact$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/compaction_recovery.py\"",
+            "commandWindows": "py -3 \"%PLUGIN_ROOT%\\hooks\\compaction_recovery.py\"",
+            "timeout": 10,
+            "additionalContextLimit": 1200
+          }
+        ]
+      }
+    ]
+  }
+}
