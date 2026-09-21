@@ -154,7 +154,7 @@ validation rather than silently falling back.
 
 The App Server adapter:
 
-1. starts the repository-pinned Codex in an isolated evaluation environment;
+1. starts the repository-controlled Codex adapter in an isolated evaluation environment;
 2. sends prompt turns through the existing evaluation policy;
 3. sends `thread/compact/start` for every compact step;
 4. waits for the same-thread `contextCompaction` `item/completed` before the next step;

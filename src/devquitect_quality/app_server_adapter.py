@@ -12,7 +12,11 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-from .codex_adapter import _stage_auth_cache
+from .codex_adapter import (
+    DEFAULT_TEST_MODEL,
+    DEFAULT_TEST_REASONING_EFFORT,
+    _stage_auth_cache,
+)
 from .fixtures import FixtureAttempt
 from .models import SkillSnapshot
 from .observations import (
@@ -219,6 +223,7 @@ def _drive(
     cwd: Path,
     sandbox: str,
     model: str,
+    reasoning_effort: str,
     timeout_seconds: int,
 ) -> tuple[list[dict[str, Any]], int]:
     if process.stdout is None:
@@ -370,7 +375,12 @@ def _drive(
                 raise AppServerError("scenario prompt must be non-empty text")
             result = request(
                 "turn/start",
-                {"threadId": thread_id, "input": [{"type": "text", "text": prompt}]},
+                {
+                    "threadId": thread_id,
+                    "input": [{"type": "text", "text": prompt}],
+                    "model": model,
+                    "effort": reasoning_effort,
+                },
             )
             turn = result.get("turn")
             if not isinstance(turn, Mapping) or not isinstance(turn.get("id"), str):
@@ -399,7 +409,6 @@ def run_app_server(
     timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS,
     environment: Mapping[str, str] | None = None,
 ) -> Observation:
-    del reasoning_effort
     before_files = filesystem_manifest(attempt.workspace)
     before_git = git_state(attempt.workspace)
     state_before = checkpoint_state(attempt.workspace)
@@ -456,7 +465,8 @@ def run_app_server(
             scenario,
             cwd=attempt.workspace,
             sandbox=sandbox,
-            model=model or "gpt-5.4-mini",
+            model=model or DEFAULT_TEST_MODEL,
+            reasoning_effort=reasoning_effort or DEFAULT_TEST_REASONING_EFFORT,
             timeout_seconds=timeout_seconds,
         )
         status = RuntimeStatus(0, "success")

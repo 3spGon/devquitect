@@ -1,4 +1,4 @@
-"""Pinned Codex CLI adapter with explicit isolation and failure classification."""
+"""Codex CLI adapter with explicit isolation and failure classification."""
 
 from __future__ import annotations
 
@@ -21,9 +21,8 @@ from .observations import (
 )
 from .redaction import redact_text
 
-SUPPORTED_CODEX_VERSION = "0.154.0"
-DEFAULT_TEST_MODEL = "gpt-5.4-mini"
-DEFAULT_TEST_REASONING_EFFORT = "low"
+DEFAULT_TEST_MODEL = "gpt-5.6-luna"
+DEFAULT_TEST_REASONING_EFFORT = "high"
 REQUIRED_FLAGS = (
     "--ephemeral",
     "--json",
@@ -67,7 +66,7 @@ def _stage_auth_cache(source: Path, codex_home: Path) -> Path:
 
 
 def preflight_codex(executable: str = "codex") -> CodexPreflight:
-    """Verify the exact runtime version and flags assumed by the approved adapter."""
+    """Verify the runtime and capabilities assumed by the approved adapter."""
 
     try:
         version_run = subprocess.run(
@@ -82,10 +81,8 @@ def preflight_codex(executable: str = "codex") -> CodexPreflight:
     errors: list[str] = []
     if version_run.returncode != 0:
         errors.append(version_run.stderr.strip() or "codex --version failed")
-    if version != SUPPORTED_CODEX_VERSION:
-        errors.append(
-            f"unsupported Codex CLI version {version!r}; expected {SUPPORTED_CODEX_VERSION}"
-        )
+    elif not version:
+        errors.append("codex --version returned no version")
     help_text = help_run.stdout + help_run.stderr
     if help_run.returncode != 0:
         errors.append("codex exec --help failed")

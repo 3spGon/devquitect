@@ -137,7 +137,7 @@ source immutability, reproducible bytes, and digest behavior remain unchanged.
 
 ## Behavioral evaluation architecture
 
-Existing ordinary cases continue through the pinned `codex exec` adapter. Cases that declare
+Existing ordinary cases continue through the `codex exec` adapter. Cases that declare
 compactation lifecycle steps use a dedicated App Server adapter over stdio JSON-RPC. The
 adapter starts an isolated workspace and isolated `CODEX_HOME`, validates packaged sources,
 then may use `--dangerously-bypass-hook-trust` only inside that disposable evaluation boundary.

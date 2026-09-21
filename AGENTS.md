@@ -14,7 +14,7 @@ These instructions apply to the entire repository.
 ## Behavioral tests and usage
 
 - Do not run `devquitect eval`, `devquitect compare`, or `devquitect check --behavioral` unless the user explicitly authorizes model-backed testing for the current task.
-- When behavioral testing is authorized and the user does not request another calibration, use `gpt-5.4-mini` with `--reasoning-effort low`.
+- When behavioral testing is authorized and the user does not request another calibration, use `gpt-5.6-luna` with `--reasoning-effort high`.
 - Credential-free checks are the default after changes.
 
 ## Evolving Devquitect skills

@@ -80,7 +80,7 @@ No Git remote or CI provider is configured in the represented baseline.
 - `devquitect package` reads an exact Git commit, enforces the committed semantic version and package allowlist, and emits a normalized plugin ZIP with entry and artifact SHA-256 identities.
 - `devquitect release-check` rebuilds in two fresh roots, requires a passing credential-free check bound to the same snapshot, ignores model-backed evidence for promotion eligibility, applies compatibility and migration policy, and emits an explicitly unapproved promotion proposal.
 - `devquitect check` composes structural validation with the credential-free unit, integration, and CLI contract suite; `--behavioral` explicitly adds trusted critical evaluation and clean-ref self-hosting comparison.
-- Real behavioral commands default to the efficient, Codex CLI `0.154.0`-compatible `gpt-5.4-mini` model at `low` reasoning effort, retain that identity in evidence, and allow explicit calibration overrides; fast checks invoke no model.
+- Real behavioral commands default to Codex CLI `gpt-5.6-luna` at `high` reasoning effort as a convenience, retain runtime identity in evidence, and allow explicit model and effort overrides; fast checks invoke no model.
 
 ## Technical landscape
 
@@ -100,7 +100,7 @@ git diff --exit-code -- skills
 
 The proportional Change Profile candidate passed the skill-specific `quick_validate.py` check plus `tests/unit/test_cases.py` and `tests/integration/test_eval_command.py` with three focused tests passing. Five versioned Change Profile cases cover expedited routing, trust-sensitive elevation, stale context, legacy schema-v2 compatibility, and behavior-preserving refactor routing. Promotion requires a credential-free check bound to the exact candidate; working-tree checks do not substitute for it.
 
-The fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, lightweight behavioral defaults, package allowlists, normalized rebuilds, release evidence blocking, App Server lifecycle protocol handling, and integrated check exit/report behavior. The current SLICE-004 baseline also passes focused scenario, observation, assertion, routing, and fake-App-Server tests without credentials. Candidate commit `1e3f576b8b45cd4591c2b44cf883b6926cba4e55` passed the full trusted `check` with `gpt-5.4-mini`, reasoning effort `low`, eight critical runs, and clean-ref comparison `5e4a0da7-df75-48ad-b901-8fb769871533` against snapshot `sha256:062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef`. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
+The fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, configurable behavioral defaults, package allowlists, normalized rebuilds, release evidence blocking, App Server lifecycle protocol handling, and integrated check exit/report behavior. The current SLICE-004 baseline also passes focused scenario, observation, assertion, routing, and fake-App-Server tests without credentials. Candidate commit `1e3f576b8b45cd4591c2b44cf883b6926cba4e55` passed the full trusted `check` with `gpt-5.4-mini`, reasoning effort `low`, eight critical runs, and clean-ref comparison `5e4a0da7-df75-48ad-b901-8fb769871533` against snapshot `sha256:062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef`. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
 
 ## Preserved behavior
 
@@ -111,7 +111,7 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 - Contributor checks remain local because no hosted CI provider is configured.
 - Behavioral checks require an explicit trusted run with ChatGPT or API authentication; ordinary fast checks remain credential-free.
 - Compatibility across model or Codex runtime changes is not measured.
-- Real lifecycle scenarios depend on the pinned Codex App Server `0.154.0` protocol and trusted
+- Real lifecycle scenarios depend on the Codex App Server protocol and trusted
   authentication; adapter, hook, service, or same-thread lifecycle failures remain inconclusive.
 - Model-backed evidence is candidate-specific and retained in local reports rather than this source baseline; it is review-only and cannot change promotion eligibility.
 - No marketplace entry, installation automation, hosted CI, or publication mechanism has been implemented.

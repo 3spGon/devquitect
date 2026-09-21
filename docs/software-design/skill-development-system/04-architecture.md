@@ -13,7 +13,7 @@ Last updated: 2026-08-30
 ## Assumptions
 
 - Python 3.12 is the orchestration language because it is already available in the development environment and supports portable filesystem, subprocess, schema, and test tooling.
-- The behavioral adapter invokes pinned Codex CLI behavior through `codex exec --ephemeral --json`; the Python SDK remains a future adapter option if it exposes equivalent evidence and isolation guarantees.
+- The behavioral adapter invokes Codex CLI behavior through `codex exec --ephemeral --json`; the Python SDK remains a future adapter option if it exposes equivalent evidence and isolation guarantees.
 - Initial behavioral fixtures do not require external network access beyond the model invocation performed by Codex.
 - CI integration is an adapter over the same local commands rather than a second quality implementation.
 
@@ -53,7 +53,7 @@ maintainer / contributor
                               isolated case workspaces
                                            |
                                            v
-                                pinned Codex adapter
+                                Codex adapter
                                            |
                                            v
                        observations -> assertions -> verdicts

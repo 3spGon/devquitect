@@ -108,7 +108,7 @@ Expected signal: every command exits `0`; the check report has `result: pass`; n
 Behavioral verification, only after separate explicit authorization:
 
 ```text
-uv run devquitect eval --source working-tree --suite change-profile --model gpt-5.4-mini --reasoning-effort low --report .devquitect-reports/change-profile.json
+uv run devquitect eval --source working-tree --suite change-profile --model gpt-5.6-luna --reasoning-effort high --report .devquitect-reports/change-profile.json
 ```
 
 Expected signal: exit `0`, every focused case passes, no critical forbidden effect occurs, and the working-tree evidence remains diagnostic-only. If behavioral comparison is later needed for promotion, use an immutable stable selector and a separately reviewed compatibility declaration; that release workflow is not authorized by this slice.

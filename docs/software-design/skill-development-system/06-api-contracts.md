@@ -74,9 +74,9 @@ Contributor entry point. Without `--behavioral`, it runs the fast credential-fre
 
 This command delegates to the same underlying engines as the narrower commands; it does not redefine their policies.
 
-Behavioral execution defaults to `gpt-5.4-mini` with reasoning effort `low`. Explicit model and
-effort flags are calibration overrides and must be retained in the resulting evidence. The default
-credential-free check does not invoke either model configuration.
+Behavioral execution defaults to `gpt-5.6-luna` with reasoning effort `high` as a convenience.
+Explicit model and effort flags are test configuration and must be retained in the resulting
+evidence. The default credential-free check does not invoke either model configuration.
 
 ### `devquitect package`
 

@@ -29,7 +29,7 @@ that predates the plugin, hook, or scenario inputs produces recorded `inconclusi
 does not block closure when the candidate checks pass.
 
 The verified repository stack is Python 3.12+, PyYAML, jsonschema, pytest, Ruff, `uv`, and the
-pinned Codex CLI 0.154.0 adapter. Plugin hooks and App Server lifecycle behavior are current
+Codex CLI adapter with capability checks. Plugin hooks and App Server lifecycle behavior are current
 official Codex interfaces. The existing skills snapshot remains skill-only; lifecycle evaluation
 will freeze the selected source's manifest and hook inputs separately through the repository's
 validation-input loader so historical snapshot identities do not change and stable/candidate
@@ -264,8 +264,8 @@ scenarios produce reviewable evidence. Dependency: SLICE-003 verified and curren
 the existing skill snapshot before any attempt. The adapter creates a temporary plugin root from
 that frozen manifest/hooks plus the frozen skills, generates a one-plugin local marketplace,
 and uses `codex plugin marketplace add` and `codex plugin add` inside the attempt's isolated
-`CODEX_HOME`. It never changes the user's plugin configuration or cache. It starts pinned Codex
-0.154.0 App Server over stdio with the existing sandbox/model policy and
+`CODEX_HOME`. It never changes the user's plugin configuration or cache. It starts the Codex
+App Server over stdio with the existing sandbox/model policy and
 `--dangerously-bypass-hook-trust` only after structural validation inside this disposable
 boundary.
 

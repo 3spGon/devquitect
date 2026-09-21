@@ -55,13 +55,13 @@ JSON output and atomic report files use the versioned canonical envelope in `sch
 
 ## Runtime isolation and evidence safety
 
-Every behavioral attempt uses a fresh temporary Git workspace, Codex conversation, `CODEX_HOME`, installed-skill root, and evidence namespace. The supported adapter is pinned to Codex CLI `0.154.0` and invokes `codex exec --ephemeral --json` with an explicit working directory, `read-only` or `workspace-write` sandbox, `--ignore-user-config`, and `--ignore-rules`. `danger-full-access` is never release-eligible.
+Every behavioral attempt uses a fresh temporary Git workspace, Codex conversation, `CODEX_HOME`, installed-skill root, and evidence namespace. The supported adapter records the detected Codex CLI version and requires `codex exec --ephemeral --json` with an explicit working directory, `read-only` or `workspace-write` sandbox, `--ignore-user-config`, and `--ignore-rules`. `danger-full-access` is never release-eligible.
 
 The isolated `CODEX_HOME` contains no user configuration. For trusted local execution, the runner may stage the existing file-backed ChatGPT login cache with permissions `0600` only for the lifetime of the subprocess, then removes it immediately. The cache never enters the fixture workspace, evidence namespace, repository, or report. Environment-provided authentication follows the same subprocess-only boundary. Known credential values and common secret patterns are masked before normalized evidence is retained.
 
 Raw JSONL is treated as untrusted data. Normalized evidence bounds event count and records process status, messages, commands, tools, searches, file manifests, Git status/diff, and declared checkpoint transitions. Local raw streams should be retained only long enough to diagnose a run and must not be committed. Add `.devquitect-reports/` or another caller-selected evidence directory to local ignore policy when retaining reports.
 
-Adapter, authentication, service, invalid-JSONL, truncated-stream, and missing-terminal-event failures are inconclusive and exit `3`; they never pass and are not automatically retried. Start troubleshooting with `codex --version` and `codex exec --help`, then verify that CLI `0.154.0` exposes the required isolation flags and that model authentication is available only to the trusted subprocess.
+Adapter, authentication, service, invalid-JSONL, truncated-stream, and missing-terminal-event failures are inconclusive and exit `3`; they never pass and are not automatically retried. Start troubleshooting with `codex --version` and `codex exec --help`, then verify that the CLI exposes the required isolation flags and that model authentication is available only to the trusted subprocess.
 
 Lifecycle cases use a versioned `scenario` instead of `turns` when they must exercise the real
 App Server. Each step is exactly one non-empty `prompt` or `{compact: {}}`. The adapter sends
@@ -97,10 +97,10 @@ Trusted maintainers can explicitly execute real behavior with either ChatGPT sub
 uv run devquitect eval --source <selector> --suite critical --report .devquitect-reports/critical.json
 ```
 
-Real behavioral commands default to the lightweight `gpt-5.4-mini` model with reasoning effort
-`low`, including both sides of comparisons and `check --behavioral`. This is the normal configuration
-for repeated tests. Use `--model` and `--reasoning-effort` only for an intentional calibration or
-quality investigation, and review the retained model identity before comparing results.
+Real behavioral commands default to `gpt-5.6-luna` with reasoning effort `high`, including both
+sides of comparisons and `check --behavioral`. This default is a convenience, not a promotion
+policy. Use `--model` and `--reasoning-effort` to choose the configuration for a test, and review
+the retained model identity before comparing results.
 
 Exit `3` and `result: inconclusive` identify authentication, service, adapter, or missing-event failures and must be diagnosed rather than retried until pass. Review the source and snapshot identities, case digests, deterministic checks, runtime classification, and redaction labels in the report. A working-tree run remains diagnostic-only. Structural success alone does not publish, install, or make a candidate release-eligible.
 

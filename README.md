@@ -2,8 +2,9 @@
 
 Devquitect packages three focused Codex skills for defining software, executing approved persistent
 plans, and performing targeted behavior-preserving refactors. The repository also owns a local,
-provider-neutral quality toolchain for structural validation, isolated behavioral evaluation,
-stable/candidate comparison, deterministic plugin packaging, and release-eligibility review.
+Codex-backed quality toolchain for structural validation, isolated behavioral evaluation,
+stable/candidate comparison, deterministic plugin packaging, and release-eligibility review, with
+provider-neutral contracts for validation, reports, and release evidence.
 
 ## Local definition of done
 
@@ -27,10 +28,9 @@ Exit codes are `0` for pass, `1` for a quality or policy failure, `2` for invali
 and `3` for inconclusive infrastructure. Ordinary checks use fake runtime evidence and need no API
 key or ChatGPT subscription. Real behavioral checks require explicitly trusted local authentication.
 
-Behavioral commands default to `gpt-5.4-mini` with reasoning effort `low` to limit subscription
-usage during repeated tests. A deliberate calibration run can override both with `--model` and
-`--reasoning-effort`; the selected values are retained in reports. The credential-free check never
-invokes a model.
+Behavioral commands default to `gpt-5.6-luna` with reasoning effort `high` as a convenience. A
+test can override both with `--model` and `--reasoning-effort`; the selected values are retained
+in reports. The credential-free check never invokes a model.
 
 See [the contributor workflow](docs/contributing-skills.md) for authoring, negative activation
 boundaries, evidence review, packaging, promotion proposals, and recovery. Local commands never

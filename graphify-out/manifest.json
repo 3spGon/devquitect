@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "src/devquitect_quality/codex_adapter.py": {
-    "mtime": 1789974827.5707133,
-    "seen": 1789974843.498175,
-    "ast_hash": "5ccc2b950153c22487fb413d37361a6d",
+    "mtime": 1790011891.3858044,
+    "seen": 1790012235.461684,
+    "ast_hash": "2e4138f47b558b838d0fc41c850a83bd",
     "semantic_hash": ""
   },
   "src/devquitect_quality/comparison.py": {
@@ -156,10 +156,10 @@
     "semantic_hash": ""
   },
   "tests/contract/test_codex_cli_contract.py": {
-    "mtime": 1789011242.036306,
-    "seen": 1789082872.150771,
-    "ast_hash": "0decabee3234ea3e3b7d19a0feab11e4",
-    "semantic_hash": "0decabee3234ea3e3b7d19a0feab11e4"
+    "mtime": 1790010287.496268,
+    "seen": 1790010356.6374578,
+    "ast_hash": "543fe10f98bd0b87eb7cd10f818b5615",
+    "semantic_hash": ""
   },
   "tests/fixtures/valid-plugin/.codex-plugin/plugin.json": {
     "mtime": 1789968332.298647,
@@ -204,9 +204,9 @@
     "semantic_hash": "ed9e3f2575d2d6d0a866695875fab558"
   },
   "tests/integration/test_check_command.py": {
-    "mtime": 1789404318.1434855,
-    "seen": 1789422262.647681,
-    "ast_hash": "23336fd272eaabe61898c3e12bf9f23b",
+    "mtime": 1790011891.4983766,
+    "seen": 1790012235.461699,
+    "ast_hash": "56de9f45106c0b70a86c11dc5e6b46c9",
     "semantic_hash": ""
   },
   "tests/integration/test_compare_command.py": {
@@ -222,9 +222,9 @@
     "semantic_hash": ""
   },
   "tests/integration/test_fake_codex_run.py": {
-    "mtime": 1789404318.1435788,
-    "seen": 1789422262.6476831,
-    "ast_hash": "b55200d9fe98de8bd03051f797f8f698",
+    "mtime": 1790010348.2769732,
+    "seen": 1790010356.6374662,
+    "ast_hash": "0bbe6b954d0c2f838c4f62eacdec7a70",
     "semantic_hash": ""
   },
   "tests/integration/test_fixture_isolation.py": {
@@ -258,10 +258,10 @@
     "semantic_hash": ""
   },
   "tests/unit/test_codex_adapter.py": {
-    "mtime": 1789011242.038896,
-    "seen": 1789082872.150778,
-    "ast_hash": "96fb29d12f9bb6332beee33b50a5edce",
-    "semantic_hash": "96fb29d12f9bb6332beee33b50a5edce"
+    "mtime": 1790011891.4428866,
+    "seen": 1790012235.461704,
+    "ast_hash": "a14fb9fda17504b171c3e70d676394f9",
+    "semantic_hash": ""
   },
   "tests/unit/test_comparison.py": {
     "mtime": 1789011242.0390623,
@@ -390,9 +390,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1789011242.02314,
-    "seen": 1789422262.647697,
-    "ast_hash": "f855174bd747f54d3a100b69034d446e",
+    "mtime": 1790011891.5550592,
+    "seen": 1790012235.461715,
+    "ast_hash": "35bbc85579d17f24924b03c5dca4ad31",
     "semantic_hash": ""
   },
   "authority-map.yaml": {
@@ -402,9 +402,9 @@
     "semantic_hash": ""
   },
   "docs/contributing-skills.md": {
-    "mtime": 1789970050.0832925,
-    "seen": 1789970528.231443,
-    "ast_hash": "e304f43f801b238a364b744b8e813596",
+    "mtime": 1790011891.6138358,
+    "seen": 1790012235.461716,
+    "ast_hash": "c028a0a2760578797d6ab99a4abc152e",
     "semantic_hash": ""
   },
   "docs/software-design/instruction-governance/00-status.md": {
@@ -504,9 +504,9 @@
     "semantic_hash": ""
   },
   "docs/software-design/proportional-change-profile/08-implementation-plan.md": {
-    "mtime": 1789011242.025339,
-    "seen": 1789422262.647705,
-    "ast_hash": "d92386f6762b189c7f60564174874ede",
+    "mtime": 1790012047.937621,
+    "seen": 1790012235.4617338,
+    "ast_hash": "6ce8418b4e62764c252b7c9d25bc44e5",
     "semantic_hash": ""
   },
   "docs/software-design/proportional-change-profile/09-delivery-status.md": {
@@ -540,9 +540,9 @@
     "semantic_hash": ""
   },
   "docs/software-design/skill-development-system/04-architecture.md": {
-    "mtime": 1789011242.026724,
-    "seen": 1789422262.647709,
-    "ast_hash": "5b9da07d32359393c575bb69f1151489",
+    "mtime": 1790010335.2847164,
+    "seen": 1790010356.637502,
+    "ast_hash": "a7b106828667d8b5b2672e77dcc73cab",
     "semantic_hash": ""
   },
   "docs/software-design/skill-development-system/05-data-model.md": {
@@ -552,21 +552,21 @@
     "semantic_hash": ""
   },
   "docs/software-design/skill-development-system/06-api-contracts.md": {
-    "mtime": 1789011242.0270743,
-    "seen": 1789422262.6477098,
-    "ast_hash": "278999d094beddb4162f939466f0f987",
+    "mtime": 1790012047.8815265,
+    "seen": 1790012235.461739,
+    "ast_hash": "b28d2ce637f22e820a66c32acd7d3c6d",
     "semantic_hash": ""
   },
   "docs/software-design/skill-development-system/07-decisions.md": {
-    "mtime": 1789011242.0271745,
-    "seen": 1789422262.6477098,
-    "ast_hash": "ebf6fcae7f0af635d929ecf043bf47a7",
+    "mtime": 1790010335.3386366,
+    "seen": 1790010356.637504,
+    "ast_hash": "c089254451102e5c54a41a18aba9e248",
     "semantic_hash": ""
   },
   "docs/software-design/skill-development-system/08-implementation-plan.md": {
-    "mtime": 1789011242.0273716,
-    "seen": 1789422262.647711,
-    "ast_hash": "60b224ceb603ebca793b85f2d1ce82ac",
+    "mtime": 1790010335.4490178,
+    "seen": 1790010356.637504,
+    "ast_hash": "43519669070e4b2ad79f3a609157785f",
     "semantic_hash": ""
   },
   "docs/software-design/skill-development-system/09-delivery-status.md": {
@@ -624,9 +624,9 @@
     "semantic_hash": ""
   },
   "docs/software-design/system-context.md": {
-    "mtime": 1789970058.7902274,
-    "seen": 1789970528.2314749,
-    "ast_hash": "0b21cdbd2219dbf2c12da5ac72fe80c6",
+    "mtime": 1790012111.62834,
+    "seen": 1790012235.461747,
+    "ast_hash": "f97989ea8190c300a1247e1026c53b21",
     "semantic_hash": ""
   },
   "evals/cases/change-profile-elevation.yaml": {
@@ -948,9 +948,9 @@
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/04-architecture.md": {
-    "mtime": 1789875927.6150777,
-    "seen": 1789962058.928442,
-    "ast_hash": "9f83a7261dee8b54d921dd2802d2e7be",
+    "mtime": 1790010348.211528,
+    "seen": 1790010356.637484,
+    "ast_hash": "0bb758965b3d69a06abe34f3b4d7b12f",
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/05-data-model.md": {
@@ -960,9 +960,9 @@
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/06-api-contracts.md": {
-    "mtime": 1789875927.72569,
-    "seen": 1789962058.928443,
-    "ast_hash": "064a9ff1216e8fe622488ba14d9d2ecf",
+    "mtime": 1790010287.6780758,
+    "seen": 1790010356.637485,
+    "ast_hash": "4c1145fca80b3e64e7752d710709d08c",
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/07-decisions.md": {
@@ -972,15 +972,15 @@
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/08-implementation-plan.md": {
-    "mtime": 1790002158.2304895,
-    "seen": 1790002246.093236,
-    "ast_hash": "67a017fc697b5edefd5f4f93db7738b8",
+    "mtime": 1790010287.739961,
+    "seen": 1790010356.637486,
+    "ast_hash": "b9bf4a4c8aeccd4d48a6169e3e5c6430",
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/09-delivery-status.md": {
-    "mtime": 1790002195.8454833,
-    "seen": 1790002246.093237,
-    "ast_hash": "bbec48b4570f72df027fa254b8d3734c",
+    "mtime": 1790002279.6457698,
+    "seen": 1790007307.750518,
+    "ast_hash": "3fd812b5225e9b54b480a932485c7efe",
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/brainstorm.md": {
@@ -1110,9 +1110,9 @@
     "semantic_hash": ""
   },
   "src/devquitect_quality/app_server_adapter.py": {
-    "mtime": 1789976775.2506278,
-    "seen": 1789976790.203279,
-    "ast_hash": "990cb2b5995d506cd1e8d4d7eaee78bf",
+    "mtime": 1790012047.8251905,
+    "seen": 1790012235.4616818,
+    "ast_hash": "c4268b0e24c328bfea5efb22a6115a26",
     "semantic_hash": ""
   },
   "tests/integration/test_app_server_adapter.py": {

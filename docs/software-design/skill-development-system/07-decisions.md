@@ -41,7 +41,7 @@ Last updated: 2026-08-30
 
 **Rejected:** One aggregate model score. It obscures hard failures and allows the evaluated behavior to influence its own acceptance.
 
-## ADR-004 — Python orchestrator with a pinned Codex CLI adapter
+## ADR-004 — Python orchestrator with a Codex CLI adapter
 
 **Decision:** Implement repository tooling in Python 3.12 and initially execute behavioral cases through the documented JSONL interface of `codex exec --ephemeral --json`.
 

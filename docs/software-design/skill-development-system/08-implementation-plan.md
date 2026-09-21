@@ -137,9 +137,9 @@ uv run ruff check src tests
 
 ### SLICE-003 — Isolated execution and deterministic observation
 
-**Outcome:** Execute a fixture through a pinned Codex process in a fresh conversation/workspace and produce normalized observations suitable for deterministic assertions.
+**Outcome:** Execute a fixture through the Codex process in a fresh conversation/workspace and produce normalized observations suitable for deterministic assertions.
 
-**Dependencies:** SLICE-002; Codex CLI 0.139.0 assumptions must pass contract preflight.
+**Dependencies:** SLICE-002; required Codex CLI capabilities must pass contract preflight.
 
 **Files:** Create proposed `src/devquitect_quality/fixtures.py`, `codex_adapter.py`, `observations.py`, `assertions.py`, `redaction.py`, `tests/unit/test_observations.py`, `tests/unit/test_assertions.py`, `tests/integration/test_fixture_isolation.py`, `tests/integration/test_fake_codex_run.py`, and `tests/contract/test_codex_cli_contract.py`. Add safe fixture repositories and fake JSONL streams under `tests/fixtures/`.
 
@@ -364,7 +364,7 @@ uv run devquitect check --source HEAD --behavioral --report .devquitect-reports/
 |---|---|---|
 | Candidate contaminates stable author | SLICE-001 content-addressed baseline and SLICE-005 isolated discovery roots | Digest mismatch or unexpected discovered skill makes run ineligible |
 | Model variability masks regression | Fixed repetitions, paired comparisons, hard deterministic invariants | Variable/inconclusive classifications and calibrated suite report |
-| Codex CLI event contract changes | Pinned version identity and SLICE-003 contract tests | Preflight or event parser failure uses exit `3` |
+| Codex CLI event contract changes | Capability checks and SLICE-003 contract tests | Preflight or event parser failure uses exit `3` |
 | Credentials leak to fixtures/evidence | Subprocess scoping, redaction, trusted execution policy | Secret-pattern test and redaction manifest |
 | Reproducible package differs across environments | Normalized archive plus clean two-root rebuild | Entry or artifact digest mismatch blocks release |
 | Baseline definition becomes stale | Immutable baseline records and explicit promotion records | New successor requires a new reviewed baseline record |
