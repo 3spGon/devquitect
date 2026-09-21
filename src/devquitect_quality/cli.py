@@ -12,11 +12,11 @@ import uuid
 from collections import Counter
 from pathlib import Path
 
+from .auth_policy import AuthPolicyError, resolve_auth
 from .cases import CaseError, load_cases, select_cases
 from .codex_adapter import (
     DEFAULT_TEST_MODEL,
     DEFAULT_TEST_REASONING_EFFORT,
-    discover_auth_cache,
     preflight_codex,
 )
 from .comparison import freeze_pair, pair_records
@@ -76,6 +76,7 @@ def _parser() -> argparse.ArgumentParser:
         default=DEFAULT_TEST_REASONING_EFFORT,
     )
     evaluate.add_argument("--report", type=Path)
+    _add_auth_options(evaluate)
     compare = commands.add_parser("compare", help="compare stable and candidate behavior")
     compare.add_argument("--stable", required=True)
     compare.add_argument("--candidate", required=True)
@@ -83,6 +84,7 @@ def _parser() -> argparse.ArgumentParser:
     comparison_selection.add_argument("--suite")
     comparison_selection.add_argument("--case")
     compare.add_argument("--report", type=Path)
+    _add_auth_options(compare)
     calibrate = commands.add_parser(
         "calibrate", help="write optional behavior-calibration evidence"
     )
@@ -97,6 +99,7 @@ def _parser() -> argparse.ArgumentParser:
         default=DEFAULT_TEST_REASONING_EFFORT,
     )
     calibrate.add_argument("--report", required=True, type=Path)
+    _add_auth_options(calibrate)
     compare.add_argument("--model", default=DEFAULT_TEST_MODEL)
     compare.add_argument(
         "--reasoning-effort",
@@ -124,7 +127,25 @@ def _parser() -> argparse.ArgumentParser:
         default=DEFAULT_TEST_REASONING_EFFORT,
     )
     check.add_argument("--report", type=Path)
+    _add_auth_options(check)
     return parser
+
+
+def _add_auth_options(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--auth-mode", choices=("credential-free", "api-key", "chatgpt-cache-local")
+    )
+    parser.add_argument("--auth-cache", type=Path)
+    parser.add_argument("--allow-subscription-auth", action="store_true")
+
+
+def _resolve_behavioral_auth(args: argparse.Namespace, *, execution_context: str):
+    return resolve_auth(
+        args.auth_mode,
+        execution_context=execution_context,
+        auth_cache=args.auth_cache,
+        allow_subscription_auth=args.allow_subscription_auth,
+    )
 
 
 def _source_identity(
@@ -200,6 +221,7 @@ def _run_eval(args: argparse.Namespace) -> int:
         repository = _repository_root()
         source = SkillSource.from_selector(args.source, repository)
         inputs = load_validation_inputs(source)
+        auth = _resolve_behavioral_auth(args, execution_context="interactive-behavioral")
         cases = select_cases(
             load_cases(repository / "evals/cases", repository / "schemas/eval-case.schema.json"),
             suite=args.suite,
@@ -220,14 +242,15 @@ def _run_eval(args: argparse.Namespace) -> int:
                     repository,
                     model=args.model,
                     reasoning_effort=args.reasoning_effort,
-                    auth_cache=discover_auth_cache(),
+                    auth_cache=auth.auth_cache,
+                    environment=auth.environment,
                     validation_inputs=inputs,
                 )
             ]
         report = build_evaluation_report(
             source=_source_identity(source, snapshot.snapshot_id), records=records
         )
-    except (SourceError, CaseError, ValueError) as error:
+    except (SourceError, CaseError, AuthPolicyError, ValueError) as error:
         sys.stderr.write(f"evaluation configuration error: {error}\n")
         return 2
     if args.report:
@@ -246,7 +269,7 @@ def _run_compare(args: argparse.Namespace) -> int:
             suite=args.suite,
             case_id=args.case,
         )
-        auth_cache = discover_auth_cache()
+        auth = _resolve_behavioral_auth(args, execution_context="interactive-behavioral")
         stable_inputs = load_validation_inputs(stable_source)
         candidate_inputs = load_validation_inputs(candidate_source)
         with tempfile.TemporaryDirectory(prefix="devquitect-compare-") as temporary:
@@ -260,7 +283,8 @@ def _run_compare(args: argparse.Namespace) -> int:
                     repository,
                     model=args.model,
                     reasoning_effort=args.reasoning_effort,
-                    auth_cache=auth_cache,
+                    auth_cache=auth.auth_cache,
+                    environment=auth.environment,
                     validation_inputs=stable_inputs,
                 )
             ]
@@ -273,7 +297,8 @@ def _run_compare(args: argparse.Namespace) -> int:
                     repository,
                     model=args.model,
                     reasoning_effort=args.reasoning_effort,
-                    auth_cache=auth_cache,
+                    auth_cache=auth.auth_cache,
+                    environment=auth.environment,
                     validation_inputs=candidate_inputs,
                 )
             ]
@@ -283,7 +308,7 @@ def _run_compare(args: argparse.Namespace) -> int:
             candidate=_source_identity(candidate_source, pair.candidate.snapshot_id),
             records=records,
         )
-    except (SourceError, CaseError, ValueError) as error:
+    except (SourceError, CaseError, AuthPolicyError, ValueError) as error:
         sys.stderr.write(f"comparison configuration error: {error}\n")
         return 2
     if args.report:
@@ -321,6 +346,7 @@ def _run_calibrate(args: argparse.Namespace) -> int:
         repository = _repository_root()
         source = SkillSource.from_selector(args.source, repository)
         inputs = load_validation_inputs(source)
+        auth = _resolve_behavioral_auth(args, execution_context="interactive-behavioral")
         cases = select_cases(
             load_cases(repository / "evals/cases", repository / "schemas/eval-case.schema.json"),
             suite=args.suite,
@@ -337,7 +363,8 @@ def _run_calibrate(args: argparse.Namespace) -> int:
                     repository,
                     model=args.model,
                     reasoning_effort=args.reasoning_effort,
-                    auth_cache=discover_auth_cache(),
+                    auth_cache=auth.auth_cache,
+                    environment=auth.environment,
                     validation_inputs=inputs,
                 )
             ]
@@ -357,7 +384,13 @@ def _run_calibrate(args: argparse.Namespace) -> int:
                 evidence_references=_calibration_evidence(records),
             )
         validate_calibration_report(report, inputs)
-    except (SourceError, CaseError, ValidationConfigurationError, ValueError) as error:
+    except (
+        SourceError,
+        CaseError,
+        AuthPolicyError,
+        ValidationConfigurationError,
+        ValueError,
+    ) as error:
         sys.stderr.write(f"calibration configuration error: {error}\n")
         return 2
     write_report_atomic(args.report, report)
@@ -444,6 +477,11 @@ def _check_record(code: str, path: str, message: str, *, passed: bool) -> dict[s
 
 
 def _run_check(args: argparse.Namespace) -> int:
+    if not args.behavioral and any(
+        (args.auth_mode is not None, args.auth_cache is not None, args.allow_subscription_auth)
+    ):
+        sys.stderr.write("authentication options require --behavioral\n")
+        return 2
     records: list[dict[str, str]] = []
     evidence: list[dict[str, object]] = []
     result = "pass"
@@ -455,6 +493,13 @@ def _run_check(args: argparse.Namespace) -> int:
         records.append(_check_record("check.source", "skills", str(error), passed=False))
         result, exit_code = "fail", 2
     else:
+        auth = None
+        if args.behavioral:
+            try:
+                auth = _resolve_behavioral_auth(args, execution_context="unattended-behavioral")
+            except AuthPolicyError as error:
+                sys.stderr.write(f"behavioral authentication configuration error: {error}\n")
+                return 2
         validation = _nested_command(
             repository, ["validate", "--source", args.source, "--format", "json"]
         )
@@ -521,19 +566,26 @@ def _run_check(args: argparse.Namespace) -> int:
                 result, exit_code = "fail", 1
 
         if exit_code == 0 and args.behavioral:
+            assert auth is not None
+            behavioral_args = [
+                "eval",
+                "--source",
+                args.source,
+                "--suite",
+                "critical",
+                "--model",
+                args.model,
+                "--reasoning-effort",
+                args.reasoning_effort,
+                "--auth-mode",
+                auth.mode,
+            ]
+            if args.auth_cache is not None:
+                behavioral_args.extend(["--auth-cache", str(args.auth_cache)])
+            if args.allow_subscription_auth:
+                behavioral_args.append("--allow-subscription-auth")
             evaluation = _nested_command(
-                repository,
-                [
-                    "eval",
-                    "--source",
-                    args.source,
-                    "--suite",
-                    "critical",
-                    "--model",
-                    args.model,
-                    "--reasoning-effort",
-                    args.reasoning_effort,
-                ],
+                repository, behavioral_args
             )
             if evaluation.returncode != 0:
                 result = "inconclusive" if evaluation.returncode == 3 else "fail"

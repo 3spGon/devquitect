@@ -42,27 +42,55 @@ class CodexPreflight:
     errors: tuple[str, ...]
 
 
-def discover_auth_cache(environment: Mapping[str, str] | None = None) -> Path | None:
-    """Locate the standard file-backed login cache without reading its contents."""
-
-    values = environment or os.environ
-    codex_home = Path(values.get("CODEX_HOME", Path.home() / ".codex")).expanduser()
-    candidate = codex_home / "auth.json"
-    return candidate if candidate.is_file() and not candidate.is_symlink() else None
-
-
 def _stage_auth_cache(source: Path, codex_home: Path) -> Path:
-    source_stat = source.lstat()
-    if not stat.S_ISREG(source_stat.st_mode) or source.is_symlink():
-        raise ValueError("Codex authentication cache must be a regular file")
-    if source_stat.st_mode & 0o077:
-        raise ValueError("Codex authentication cache must not be accessible by group or others")
+    source_descriptor = -1
+    target_descriptor = -1
+    target_created = False
     target = codex_home / "auth.json"
-    if target.exists():
-        raise ValueError("isolated Codex home already contains authentication")
-    shutil.copyfile(source, target)
-    target.chmod(0o600)
-    return target
+    try:
+        source_descriptor = os.open(
+            source,
+            os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0),
+        )
+        source_stat = os.fstat(source_descriptor)
+        if not stat.S_ISREG(source_stat.st_mode):
+            raise ValueError("Codex authentication cache must be a regular file")
+        getuid = getattr(os, "getuid", None)
+        if getuid is not None and source_stat.st_uid != getuid():
+            raise ValueError("Codex authentication cache must be owned by the current user")
+        if stat.S_IMODE(source_stat.st_mode) & 0o077:
+            raise ValueError("Codex authentication cache must not be accessible by group or others")
+        codex_home_stat = codex_home.lstat()
+        if (
+            not stat.S_ISDIR(codex_home_stat.st_mode)
+            or codex_home.is_symlink()
+            or (getuid is not None and codex_home_stat.st_uid != getuid())
+        ):
+            raise ValueError("isolated Codex home must be an owned directory")
+        codex_home.chmod(0o700)
+        target_descriptor = os.open(
+            target,
+            os.O_WRONLY | os.O_CREAT | os.O_EXCL,
+            0o600,
+        )
+        target_created = True
+        os.fchmod(target_descriptor, 0o600)
+        with os.fdopen(source_descriptor, "rb") as source_handle:
+            source_descriptor = -1
+            with os.fdopen(target_descriptor, "wb") as target_handle:
+                target_descriptor = -1
+                shutil.copyfileobj(source_handle, target_handle)
+        if stat.S_IMODE(target.stat().st_mode) & 0o077:
+            raise ValueError("staged Codex authentication must be owner-only")
+        return target
+    except BaseException:
+        if source_descriptor != -1:
+            os.close(source_descriptor)
+        if target_descriptor != -1:
+            os.close(target_descriptor)
+        if target_created:
+            target.unlink(missing_ok=True)
+        raise
 
 
 def preflight_codex(executable: str = "codex") -> CodexPreflight:
@@ -173,8 +201,10 @@ def run_codex(
         for key, value in process_environment.items()
         if any(marker in key.upper() for marker in ("TOKEN", "SECRET", "PASSWORD", "API_KEY"))
     )
-    staged_auth = _stage_auth_cache(auth_cache, attempt.codex_home) if auth_cache else None
+    staged_auth: Path | None = None
     try:
+        if auth_cache is not None:
+            staged_auth = _stage_auth_cache(auth_cache, attempt.codex_home)
         try:
             process = subprocess.run(
                 command,

@@ -5,7 +5,7 @@ from pathlib import Path
 from devquitect_quality.app_server_adapter import run_app_server
 from devquitect_quality.fixtures import materialize_attempt
 from devquitect_quality.models import SkillSource
-from devquitect_quality.sources import freeze_source
+from devquitect_quality.sources import freeze_source, thaw_snapshot
 from devquitect_quality.validate import load_validation_inputs
 
 ROOT = Path(__file__).parents[2]
@@ -20,6 +20,8 @@ def _fake_codex(path: Path) -> Path:
         """#!/usr/bin/env python3
 import json
 import os
+import pathlib
+import stat
 import sys
 
 mode = os.environ.get('FAKE_MODE', '')
@@ -32,6 +34,11 @@ if len(sys.argv) > 1 and sys.argv[1] == 'plugin':
         print(os.environ.get('FAKE_SECRET', 'setup failure'), file=sys.stderr)
         raise SystemExit(7)
     raise SystemExit(0)
+
+if os.environ.get('FAKE_REQUIRE_AUTH'):
+    auth = pathlib.Path(os.environ['CODEX_HOME']) / 'auth.json'
+    assert auth.is_file()
+    assert stat.S_IMODE(auth.stat().st_mode) == 0o600
 
 def emit(value):
     sys.stdout.write(json.dumps(value) + '\\n')
@@ -135,3 +142,29 @@ def test_plugin_setup_failure_is_redacted(tmp_path: Path) -> None:
 
     assert observation.runtime_status.classification == "infrastructure-error"
     assert secret not in " ".join(observation.runtime_status.errors)
+
+
+def test_app_server_cleans_staged_auth_after_protocol_failure(tmp_path: Path) -> None:
+    source = SkillSource.from_selector("working-tree", ROOT)
+    inputs = load_validation_inputs(source)
+    snapshot = freeze_source(source, tmp_path / "snapshot")
+    fake = _fake_codex(tmp_path / "fake-codex")
+    auth_cache = tmp_path / "auth.json"
+    auth_cache.write_text('{"tokens":"not-a-real-secret"}', encoding="utf-8")
+    auth_cache.chmod(0o600)
+    try:
+        with materialize_attempt(snapshot, ROOT / "evals/fixtures/compaction-recovery") as attempt:
+            observation = run_app_server(
+                attempt,
+                SCENARIO,
+                snapshot=snapshot,
+                validation_inputs=inputs,
+                executable=str(fake),
+                timeout_seconds=1,
+                auth_cache=auth_cache,
+                environment={"FAKE_MODE": "malformed", "FAKE_REQUIRE_AUTH": "1"},
+            )
+            assert observation.runtime_status.classification == "infrastructure-error"
+            assert not (attempt.codex_home / "auth.json").exists()
+    finally:
+        thaw_snapshot(tmp_path / "snapshot")

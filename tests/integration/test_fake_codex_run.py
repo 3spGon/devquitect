@@ -36,13 +36,24 @@ def fake_codex(path: Path) -> Path:
     path.write_text(
         """#!/usr/bin/env python3
 import json, os, pathlib, sys
+import stat
+import time
 if '--version' in sys.argv:
     print('codex-cli 9.9.9')
 elif '--help' in sys.argv:
     print('--ephemeral --json --cd --sandbox --ignore-user-config --ignore-rules')
 else:
     workspace = pathlib.Path(sys.argv[sys.argv.index('--cd') + 1])
-    assert (pathlib.Path(os.environ['CODEX_HOME']) / 'auth.json').is_file()
+    auth = pathlib.Path(os.environ['CODEX_HOME']) / 'auth.json'
+    assert auth.is_file()
+    assert stat.S_IMODE(auth.stat().st_mode) == 0o600
+    if os.environ.get('FAKE_MODE') == 'nonzero':
+        raise SystemExit(7)
+    if os.environ.get('FAKE_MODE') == 'timeout':
+        time.sleep(2)
+    if os.environ.get('FAKE_MODE') == 'malformed':
+        print('not-json')
+        raise SystemExit(0)
     (workspace / 'unexpected.txt').write_text('write despite read-only')
     print(json.dumps({'type': 'thread.started', 'thread_id': 'fake'}))
     print(json.dumps({'type': 'item.completed', 'item': {'type': 'agent_message', 'text': 'done'}}))
@@ -82,5 +93,31 @@ def test_fake_adapter_run_is_normalized_and_read_only_violation_fails(tmp_path: 
         assert assertion.status == "fail"
         assert "unexpected.txt" in assertion.observed["violations"]
         assert not (attempt.codex_home / "auth.json").exists()
+    finally:
+        thaw_snapshot(snapshot_root)
+
+
+def test_fake_adapter_cleans_auth_after_child_failure_timeout_and_malformed_output(
+    tmp_path: Path, monkeypatch
+) -> None:
+    source, snapshot_root = snapshot(tmp_path)
+    fixture = tmp_path / "fixture"
+    fixture.mkdir()
+    executable = fake_codex(tmp_path / "fake-codex")
+    auth_cache = tmp_path / "auth.json"
+    auth_cache.write_text('{"tokens":"not-a-real-secret"}', encoding="utf-8")
+    auth_cache.chmod(0o600)
+    try:
+        for mode, timeout in (("nonzero", 1), ("timeout", 0.1), ("malformed", 1)):
+            with materialize_attempt(source, fixture) as attempt:
+                run_codex(
+                    attempt,
+                    ["Inspect only"],
+                    executable=os.fspath(executable),
+                    auth_cache=auth_cache,
+                    environment={"FAKE_MODE": mode},
+                    timeout_seconds=timeout,
+                )
+                assert not (attempt.codex_home / "auth.json").exists()
     finally:
         thaw_snapshot(snapshot_root)

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import uuid
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +27,7 @@ def run_case(
     model: str | None = None,
     reasoning_effort: str | None = None,
     auth_cache: Path | None = None,
+    environment: Mapping[str, str] | None = None,
     runner: Runner = run_codex,
     validation_inputs: ValidationInputs | None = None,
     scenario_runner: Runner = run_app_server,
@@ -49,6 +50,7 @@ def run_case(
                     model=selected_model,
                     reasoning_effort=selected_effort,
                     auth_cache=auth_cache,
+                    environment=environment,
                 )
             else:
                 observation = runner(
@@ -58,6 +60,7 @@ def run_case(
                     model=selected_model,
                     reasoning_effort=selected_effort,
                     auth_cache=auth_cache,
+                    environment=environment,
                 )
             checks = evaluate_assertions(tuple(case.data["assertions"]), observation)
             verdict: Verdict = grade_observation(

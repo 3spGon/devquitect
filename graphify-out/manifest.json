@@ -72,15 +72,15 @@
     "semantic_hash": ""
   },
   "src/devquitect_quality/cli.py": {
-    "mtime": 1789969392.0347724,
-    "seen": 1789970528.231412,
-    "ast_hash": "6b94d7a30a8e6d5c600bc844b3472972",
+    "mtime": 1790018368.0413065,
+    "seen": 1790018474.494389,
+    "ast_hash": "302689f973430a647e80186f0be09528",
     "semantic_hash": ""
   },
   "src/devquitect_quality/codex_adapter.py": {
-    "mtime": 1790011891.3858044,
-    "seen": 1790012235.461684,
-    "ast_hash": "2e4138f47b558b838d0fc41c850a83bd",
+    "mtime": 1790024247.4465635,
+    "seen": 1790024460.6001742,
+    "ast_hash": "867190321ad350a8217728dda1c6188c",
     "semantic_hash": ""
   },
   "src/devquitect_quality/comparison.py": {
@@ -90,16 +90,16 @@
     "semantic_hash": "fb2afa9bc7129c3edcbde62324930e80"
   },
   "src/devquitect_quality/evaluation.py": {
-    "mtime": 1789969746.1091537,
-    "seen": 1789970528.231413,
-    "ast_hash": "7e53e227663c6baeaf0898d36026e650",
+    "mtime": 1790017656.2392988,
+    "seen": 1790018474.494391,
+    "ast_hash": "a0cc2ad8610a6dcbf3e43e1c3190b60f",
     "semantic_hash": ""
   },
   "src/devquitect_quality/fixtures.py": {
-    "mtime": 1789011242.035085,
-    "seen": 1789082872.150767,
-    "ast_hash": "eb54933f23c3e2627d9f502d22c805e6",
-    "semantic_hash": "eb54933f23c3e2627d9f502d22c805e6"
+    "mtime": 1790024666.4276078,
+    "seen": 1790024752.454263,
+    "ast_hash": "8b48e381137373af084581dafc0ad3eb",
+    "semantic_hash": ""
   },
   "src/devquitect_quality/grading.py": {
     "mtime": 1789011242.0352435,
@@ -198,15 +198,15 @@
     "semantic_hash": "57ff88643df9716e78f188ebbc3d18c3"
   },
   "tests/integration/test_calibrate_command.py": {
-    "mtime": 1789404318.1433933,
-    "seen": 1789422262.647681,
-    "ast_hash": "ed9e3f2575d2d6d0a866695875fab558",
-    "semantic_hash": "ed9e3f2575d2d6d0a866695875fab558"
+    "mtime": 1790017718.0251875,
+    "seen": 1790018474.4944031,
+    "ast_hash": "522e7970e5c89d6030731a191713c9d8",
+    "semantic_hash": ""
   },
   "tests/integration/test_check_command.py": {
-    "mtime": 1790011891.4983766,
-    "seen": 1790012235.461699,
-    "ast_hash": "56de9f45106c0b70a86c11dc5e6b46c9",
+    "mtime": 1790018368.0996895,
+    "seen": 1790018474.494404,
+    "ast_hash": "d8ad3160acba1c36b72bf1ab94631c6d",
     "semantic_hash": ""
   },
   "tests/integration/test_compare_command.py": {
@@ -222,9 +222,9 @@
     "semantic_hash": ""
   },
   "tests/integration/test_fake_codex_run.py": {
-    "mtime": 1790010348.2769732,
-    "seen": 1790010356.6374662,
-    "ast_hash": "0bbe6b954d0c2f838c4f62eacdec7a70",
+    "mtime": 1790024421.8589654,
+    "seen": 1790024460.60019,
+    "ast_hash": "4893343305387afbca1aca7a6857dc0d",
     "semantic_hash": ""
   },
   "tests/integration/test_fixture_isolation.py": {
@@ -384,9 +384,9 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1789404318.1406724,
-    "seen": 1789422262.6476958,
-    "ast_hash": "4e05e876c9fc4130e330dbacd69c1b64",
+    "mtime": 1790012330.4847202,
+    "seen": 1790018474.494421,
+    "ast_hash": "a001583acb8eed5e4e9d24c9bd165d61",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1110,15 +1110,15 @@
     "semantic_hash": ""
   },
   "src/devquitect_quality/app_server_adapter.py": {
-    "mtime": 1790012047.8251905,
-    "seen": 1790012235.4616818,
-    "ast_hash": "c4268b0e24c328bfea5efb22a6115a26",
+    "mtime": 1790024234.49097,
+    "seen": 1790024460.60017,
+    "ast_hash": "6c6ecef55c353dcc07d9d8f7cd0db6c0",
     "semantic_hash": ""
   },
   "tests/integration/test_app_server_adapter.py": {
-    "mtime": 1789976775.3582954,
-    "seen": 1789976790.203294,
-    "ast_hash": "f7857cf12dbc35d7eab59fb8bdbdeb86",
+    "mtime": 1790024351.285994,
+    "seen": 1790024460.6001868,
+    "ast_hash": "c509a944ad6beea76cac92454a70a8fc",
     "semantic_hash": ""
   },
   "docs/software-design/compaction-recovery/slices/SLICE-004.md": {
@@ -1161,6 +1161,96 @@
     "mtime": 1789969577.4427793,
     "seen": 1789970528.231482,
     "ast_hash": "7e0fbb45740f442d5187114e62384d2f",
+    "semantic_hash": ""
+  },
+  "src/devquitect_quality/auth_policy.py": {
+    "mtime": 1790017770.7861977,
+    "seen": 1790018474.4943879,
+    "ast_hash": "928ad67b71b1189e51a8db6277d3eb0b",
+    "semantic_hash": ""
+  },
+  "tests/unit/test_auth_policy.py": {
+    "mtime": 1790017743.879664,
+    "seen": 1790018474.494408,
+    "ast_hash": "de621f01a6b2d7fad3dcf6631d2f2d37",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/00-status.md": {
+    "mtime": 1790022210.537158,
+    "seen": 1790024460.600218,
+    "ast_hash": "10ef2922dc146495ff8646f437a99339",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/01-concept.md": {
+    "mtime": 1790016693.7167082,
+    "seen": 1790018474.494432,
+    "ast_hash": "014fbafca219f57b864efa68bc0a2b3a",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/02-requirements.md": {
+    "mtime": 1790016693.773431,
+    "seen": 1790018474.494432,
+    "ast_hash": "d842318b279a0833171f011da8393303",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/03-domain.md": {
+    "mtime": 1790016719.9579751,
+    "seen": 1790018474.494433,
+    "ast_hash": "beef30a827a86febd2f7f3e61f61ddd6",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/04-architecture.md": {
+    "mtime": 1790016720.0201552,
+    "seen": 1790018474.494433,
+    "ast_hash": "2211ce742dc4950399455cfa9d94d51e",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/06-api-contracts.md": {
+    "mtime": 1790016720.0778275,
+    "seen": 1790018474.494434,
+    "ast_hash": "97842ab1f97eafcc98484de319e449f0",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/07-decisions.md": {
+    "mtime": 1790016665.29441,
+    "seen": 1790018474.494434,
+    "ast_hash": "f51d2a0b8b86206520d0303dc9ba0183",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/08-implementation-plan.md": {
+    "mtime": 1790022145.5255744,
+    "seen": 1790024460.6002219,
+    "ast_hash": "baa9032440adc5067efdb988bb3babcf",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/brainstorm.md": {
+    "mtime": 1790017083.472577,
+    "seen": 1790018474.494435,
+    "ast_hash": "d70280b6e8de7f77f51937fba5ab4ce2",
+    "semantic_hash": ""
+  },
+  "tests/unit/test_auth_lifecycle.py": {
+    "mtime": 1790024421.9265525,
+    "seen": 1790024460.600193,
+    "ast_hash": "836f6c2bfd2a09a5e012b3a49077cab8",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/09-delivery-status.md": {
+    "mtime": 1790024129.2030413,
+    "seen": 1790024460.600223,
+    "ast_hash": "d84c4ebdd924507b35e857acc7304c16",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/slices/SLICE-EAG-001.md": {
+    "mtime": 1790022379.921005,
+    "seen": 1790024460.600224,
+    "ast_hash": "7f320325a14be0e7970b366820589abc",
+    "semantic_hash": ""
+  },
+  "docs/software-design/evaluation-auth-governance/slices/SLICE-EAG-002.md": {
+    "mtime": 1790024129.3606262,
+    "seen": 1790024460.600224,
+    "ast_hash": "25a44b73ca548392f46bda7a724e8c99",
     "semantic_hash": ""
   }
 }

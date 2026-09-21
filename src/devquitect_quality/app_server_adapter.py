@@ -96,7 +96,7 @@ def _stage_plugin(
 def _command_environment(attempt: FixtureAttempt) -> dict[str, str]:
     environment = dict(os.environ)
     environment["CODEX_HOME"] = str(attempt.codex_home)
-    attempt.codex_home.chmod(0o755)
+    attempt.codex_home.chmod(0o700)
     skills_root = attempt.codex_home / "skills"
     if skills_root.exists():
         skills_root.chmod(0o755)

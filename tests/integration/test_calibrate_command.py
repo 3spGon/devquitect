@@ -33,6 +33,8 @@ def test_calibrate_writes_review_only_report_without_a_model_call(
                 "working-tree",
                 "--case",
                 "self-hosting",
+                "--auth-mode",
+                "credential-free",
                 "--report",
                 str(report),
             ]

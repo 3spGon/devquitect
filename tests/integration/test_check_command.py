@@ -77,6 +77,42 @@ def test_check_invalid_source_returns_two_and_still_writes_report(tmp_path: Path
     assert json.loads(report.read_text(encoding="utf-8"))["result"] == "fail"
 
 
+def test_structural_check_does_not_need_a_login_cache(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setenv("CODEX_HOME", str(tmp_path))
+    (tmp_path / "auth.json").write_text("not a credential the check may use", encoding="utf-8")
+    process = subprocess.run(
+        [sys.executable, "-m", "devquitect_quality.cli", "check", "--source", "working-tree"],
+        cwd=REPOSITORY,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert process.returncode == 0, process.stderr
+
+
+def test_behavioral_eval_without_auth_mode_returns_migration_error() -> None:
+    process = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "devquitect_quality.cli",
+            "eval",
+            "--source",
+            "working-tree",
+            "--case",
+            "self-hosting",
+        ],
+        cwd=REPOSITORY,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert process.returncode == 2
+    assert "authentication is explicit" in process.stderr
+
+
 def test_git_ref_check_report_is_accepted_by_release_check(tmp_path: Path) -> None:
     repository = tmp_path / "repository"
     shutil.copytree(
@@ -97,7 +133,9 @@ def test_git_ref_check_report_is_accepted_by_release_check(tmp_path: Path) -> No
         subprocess.run(["git", *args], cwd=repository, check=True, capture_output=True)
     manifest = repository / ".codex-plugin/plugin.json"
     value = json.loads(manifest.read_text(encoding="utf-8"))
-    value["version"] = "0.3.1"
+    major, minor, patch = (int(part) for part in value["version"].split("."))
+    candidate_version = f"{major}.{minor}.{patch + 1}"
+    value["version"] = candidate_version
     manifest.write_text(json.dumps(value), encoding="utf-8")
     subprocess.run(["git", "add", str(manifest)], cwd=repository, check=True, capture_output=True)
     subprocess.run(
@@ -124,7 +162,9 @@ def test_git_ref_check_report_is_accepted_by_release_check(tmp_path: Path) -> No
     )
 
     assert process.returncode == 0, process.stderr
-    _, proposal = release_check(repository, "HEAD", "0.3.1", evidence, tmp_path / "release")
+    _, proposal = release_check(
+        repository, "HEAD", candidate_version, evidence, tmp_path / "release"
+    )
     assert proposal["source_commit"] == subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=repository,
