@@ -12,7 +12,6 @@
     "activation",
     "fixture",
     "sandbox",
-    "turns",
     "assertions",
     "forbidden_effects",
     "repetitions",
@@ -31,6 +30,34 @@
       "type": "array",
       "minItems": 1,
       "items": {"type": "string", "minLength": 1}
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "steps"],
+      "properties": {
+        "version": {"const": 1},
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["prompt"],
+                "properties": {"prompt": {"type": "string", "minLength": 1}}
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["compact"],
+                "properties": {"compact": {"type": "object", "maxProperties": 0}}
+              }
+            ]
+          }
+        }
+      }
     },
     "assertions": {
       "type": "array",
@@ -52,5 +79,9 @@
       "items": {"type": "string", "minLength": 1},
       "uniqueItems": true
     }
-  }
+  },
+  "oneOf": [
+    {"required": ["turns"], "not": {"required": ["scenario"]}},
+    {"required": ["scenario"], "not": {"required": ["turns"]}}
+  ]
 }

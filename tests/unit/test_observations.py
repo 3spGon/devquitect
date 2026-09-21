@@ -42,6 +42,24 @@ def test_unknown_optional_event_does_not_invalidate_contract() -> None:
     )
 
 
+def test_app_server_compaction_lifecycle_is_bounded_and_terminal() -> None:
+    events, final, terminal, errors, _ = parse_jsonl_events(
+        "\n".join(
+            [
+                '{"method":"item/started","params":{"threadId":"thr","item":{"id":"cmp","type":"contextCompaction","status":"inProgress"}}}',
+                '{"method":"item/completed","params":{"threadId":"thr","item":{"id":"cmp","type":"contextCompaction","status":"completed"}}}',
+                '{"method":"item/completed","params":{"threadId":"thr","item":{"type":"agent_message","text":"done"}}}',
+                '{"method":"turn/completed","params":{"threadId":"thr","turn":{"id":"turn"}}}',
+            ]
+        )
+    )
+
+    assert [event.category for event in events].count("compaction") == 2
+    assert final == "done"
+    assert terminal is True
+    assert errors == ()
+
+
 def test_filesystem_manifest_records_content_and_does_not_follow_symlinks(tmp_path: Path) -> None:
     (tmp_path / "file.txt").write_text("content", encoding="utf-8")
     (tmp_path / "link").symlink_to("file.txt")

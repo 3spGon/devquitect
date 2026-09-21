@@ -63,6 +63,20 @@ Raw JSONL is treated as untrusted data. Normalized evidence bounds event count a
 
 Adapter, authentication, service, invalid-JSONL, truncated-stream, and missing-terminal-event failures are inconclusive and exit `3`; they never pass and are not automatically retried. Start troubleshooting with `codex --version` and `codex exec --help`, then verify that CLI `0.154.0` exposes the required isolation flags and that model authentication is available only to the trusted subprocess.
 
+Lifecycle cases use a versioned `scenario` instead of `turns` when they must exercise the real
+App Server. Each step is exactly one non-empty `prompt` or `{compact: {}}`. The adapter sends
+`thread/compact/start`, requires its immediate `{}` response, and requires the same thread's
+`contextCompaction` `item/started` and `item/completed` events before continuing. It never uses
+`thread/shellCommand`; repository inspection stays inside the model's configured sandbox.
+
+Before a lifecycle attempt, freeze validation inputs from the selected source, validate them, and
+stage only the manifest, the two declared hook files, and the frozen skills into a temporary
+plugin. Add that plugin through a one-entry local marketplace under the attempt's isolated
+`CODEX_HOME`. Never reuse the user's plugin configuration or mix stable and candidate inputs.
+Setup, authentication, wrong-thread, timeout, malformed-message, hook, and cleanup failures are
+inconclusive; inspect the bounded runtime errors and redaction labels before retrying after the
+underlying cause changes.
+
 ## Author behavioral cases
 
 Cases live in `evals/cases/*.yaml`, validate against `schemas/eval-case.schema.json`, and reference a repository fixture under `evals/fixtures/`. Give every case a stable unique ID, fixed repetition count, minimum sandbox, positive or negative activation type, deterministic assertions, forbidden effects, and optional rubric under `evals/rubrics/`.

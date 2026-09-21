@@ -14,6 +14,7 @@ from .fixtures import FixtureAttempt
 from .observations import (
     Observation,
     RuntimeStatus,
+    checkpoint_state,
     filesystem_manifest,
     git_state,
     parse_jsonl_events,
@@ -143,6 +144,7 @@ def run_codex(
 
     before_files = filesystem_manifest(attempt.workspace)
     before_git = git_state(attempt.workspace)
+    state_before = checkpoint_state(attempt.workspace)
     preflight = preflight_codex(executable)
     if not preflight.valid:
         return Observation(
@@ -153,7 +155,7 @@ def run_codex(
             before_files,
             before_git,
             before_git,
-            {},
+            {"before": state_before, "after": state_before},
             (),
             False,
         )
@@ -216,7 +218,7 @@ def run_codex(
         filesystem_manifest(attempt.workspace),
         before_git,
         git_state(attempt.workspace),
-        {},
+        {"before": state_before, "after": checkpoint_state(attempt.workspace)},
         redactions,
         terminal,
     )

@@ -1,0 +1,31 @@
+schema_version: 1
+id: compaction-recovery-compact-twice
+target_skill: project-plan-execution
+activation: explicit
+fixture: compaction-recovery
+sandbox: workspace-write
+scenario:
+  version: 1
+  steps:
+    - prompt: "Inspect the active checkpoint, partial C files, and disagreement evidence. Preserve completed A and B and keep D pending."
+    - compact: {}
+    - prompt: "Use the durable checkpoint and repository evidence to continue only C after the first compactation."
+    - compact: {}
+    - prompt: "Continue the same reconciled C work after the second compactation without restarting earlier slices or starting D."
+assertions:
+  - type: context-compaction-count
+    id: observed-two-compactions
+    count: 2
+    critical: true
+  - type: runtime-exit
+    id: app-server-completed
+    code: 0
+    critical: true
+  - type: command-prohibition
+    id: no-repeated-completed-work
+    pattern: "*restart SLICE-A*"
+    critical: true
+forbidden_effects: [stale-memory-authority, repeated-completed-work, premature-pending-slice]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, compaction-recovery, project-plan-execution]

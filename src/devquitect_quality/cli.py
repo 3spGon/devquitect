@@ -199,6 +199,7 @@ def _run_eval(args: argparse.Namespace) -> int:
     try:
         repository = _repository_root()
         source = SkillSource.from_selector(args.source, repository)
+        inputs = load_validation_inputs(source)
         cases = select_cases(
             load_cases(repository / "evals/cases", repository / "schemas/eval-case.schema.json"),
             suite=args.suite,
@@ -206,6 +207,10 @@ def _run_eval(args: argparse.Namespace) -> int:
         )
         with tempfile.TemporaryDirectory(prefix="devquitect-eval-") as temporary:
             snapshot = freeze_source(source, Path(temporary) / "snapshot")
+            if any(case.is_scenario for case in cases):
+                errors = validate_snapshot(snapshot, inputs)
+                if errors:
+                    raise ValueError(f"scenario source validation failed: {errors[0]['message']}")
             records = [
                 record
                 for case in cases
@@ -216,6 +221,7 @@ def _run_eval(args: argparse.Namespace) -> int:
                     model=args.model,
                     reasoning_effort=args.reasoning_effort,
                     auth_cache=discover_auth_cache(),
+                    validation_inputs=inputs,
                 )
             ]
         report = build_evaluation_report(
@@ -241,6 +247,8 @@ def _run_compare(args: argparse.Namespace) -> int:
             case_id=args.case,
         )
         auth_cache = discover_auth_cache()
+        stable_inputs = load_validation_inputs(stable_source)
+        candidate_inputs = load_validation_inputs(candidate_source)
         with tempfile.TemporaryDirectory(prefix="devquitect-compare-") as temporary:
             pair = freeze_pair(stable_source, candidate_source, Path(temporary))
             stable_records = [
@@ -253,6 +261,7 @@ def _run_compare(args: argparse.Namespace) -> int:
                     model=args.model,
                     reasoning_effort=args.reasoning_effort,
                     auth_cache=auth_cache,
+                    validation_inputs=stable_inputs,
                 )
             ]
             candidate_records = [
@@ -265,6 +274,7 @@ def _run_compare(args: argparse.Namespace) -> int:
                     model=args.model,
                     reasoning_effort=args.reasoning_effort,
                     auth_cache=auth_cache,
+                    validation_inputs=candidate_inputs,
                 )
             ]
         records = pair_records(stable_records, candidate_records)
@@ -328,6 +338,7 @@ def _run_calibrate(args: argparse.Namespace) -> int:
                     model=args.model,
                     reasoning_effort=args.reasoning_effort,
                     auth_cache=discover_auth_cache(),
+                    validation_inputs=inputs,
                 )
             ]
             suite_digest = hashlib.sha256(

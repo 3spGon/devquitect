@@ -1,0 +1,35 @@
+schema_version: 1
+id: compaction-recovery-compact-four-times
+target_skill: project-plan-execution
+activation: explicit
+fixture: compaction-recovery
+sandbox: workspace-write
+scenario:
+  version: 1
+  steps:
+    - prompt: "Inspect the active checkpoint and partial C evidence before continuing. Never repeat A or B and never start D."
+    - compact: {}
+    - prompt: "Rehydrate from the checkpoint and continue only C."
+    - compact: {}
+    - prompt: "Reconcile repository evidence again and continue only C."
+    - compact: {}
+    - prompt: "Preserve the reconciled work and continue only C."
+    - compact: {}
+    - prompt: "Finish the bounded recovery response without restarting completed slices or starting D."
+assertions:
+  - type: context-compaction-count
+    id: observed-four-compactions
+    count: 4
+    critical: true
+  - type: runtime-exit
+    id: app-server-completed
+    code: 0
+    critical: true
+  - type: command-prohibition
+    id: no-repeated-completed-work
+    pattern: "*restart SLICE-A*"
+    critical: true
+forbidden_effects: [stale-memory-authority, repeated-completed-work, premature-pending-slice]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, compaction-recovery, project-plan-execution]

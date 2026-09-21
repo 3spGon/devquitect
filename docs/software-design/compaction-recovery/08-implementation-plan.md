@@ -1,8 +1,8 @@
 # Plan de implementación — Compaction Recovery
 
 Status: Approved
-Last updated: 2026-09-20
-Plan revision: 2
+Last updated: 2026-09-21
+Plan revision: 4
 
 ## Confirmed
 
@@ -17,9 +17,16 @@ commit, publication, model-backed evaluation, or external system is changed by a
 document.
 
 The user explicitly approved implementation plan revision 1 on 2026-09-19. The user later
-authorized revision 2 to resolve the SLICE-002/SLICE-003 validation-boundary dependency. This
-approval completes software definition; it does not authorize any implementation slice or
-model-backed evaluation beyond the currently authorized delivery slice.
+authorized revision 2 to resolve the SLICE-002/SLICE-003 validation-boundary dependency. On
+2026-09-21, the user authorized revision 3 to use `gpt-5.6-luna` with high reasoning effort for
+SLICE-004's model-backed verification and comparison. This approval completes software
+definition; it does not authorize any implementation slice beyond the currently authorized
+delivery slice.
+
+On 2026-09-21, the user clarified that a baseline comparison is blocking only when the stable
+source contains the same validated contract and produces a comparable result. A stable source
+that predates the plugin, hook, or scenario inputs produces recorded `inconclusive` evidence and
+does not block closure when the candidate checks pass.
 
 The verified repository stack is Python 3.12+, PyYAML, jsonschema, pytest, Ruff, `uv`, and the
 pinned Codex CLI 0.154.0 adapter. Plugin hooks and App Server lifecycle behavior are current
@@ -37,10 +44,9 @@ transcript parsing, Context Mode integration, a database, a daemon, concurrent-a
 public publication, deployment, and CI. A GUI or custom Devquitect toggle is unnecessary because
 Codex `/hooks` already owns individual hook activation.
 
-Model-backed evaluation is required to close the final lifecycle slice, but repository policy
-requires separate explicit authorization before running it. Until then, implementation may be
-present and deterministically tested, but the one/two/four-compaction behavior remains
-unverified and the slice cannot be marked verified.
+Model-backed evaluation is authorized for the final lifecycle slice using the fixed
+`gpt-5.6-luna`/high inventory below. The one/two/four-compaction behavior and comparison must
+pass that inventory before the slice can be marked verified.
 
 ## Outcome and common constraints
 
@@ -276,11 +282,14 @@ transition or non-transition, runtime success, and contradiction stop. No synthe
 summary may satisfy a compact step.
 
 **Verification and evidence:** first run the fake App Server/unit tests and all common checks.
-The two model-backed inventory checks then require separate explicit authorization. They use the
-repository's pinned `gpt-5.4-mini`/low calibration and compare against the exact current
-`stable-n` source ref. Infrastructure/auth/hook failures are inconclusive, never pass, and are
-not retried until their cause changes. Update System Context only after the implemented baseline
-passes deterministic verification, then rerun final checks and `graphify update .`.
+The candidate model-backed inventory check is authorized by plan revision 3 and uses the
+repository's fixed `gpt-5.6-luna`/high configuration. Attempt a comparison against the exact
+current `stable-n` source ref when that ref contains the same validated plugin, hook, and scenario
+inputs. If the ref predates that contract, record the comparison as `inconclusive` and continue;
+it is non-blocking when the candidate checks pass. A comparable baseline regression remains
+blocking. Infrastructure/auth/hook failures never pass and are not retried until their cause
+changes. Update System Context only after the implemented baseline passes deterministic
+verification, then rerun final checks and `graphify update .`.
 
 **Rollback:** ordinary `turns` cases and `codex exec` remain unchanged. The scenario schema and
 adapter may be removed together only if lifecycle cases are also removed; removing the evaluator
@@ -302,9 +311,11 @@ commit, push, publication, or deployment.
 
 ## Executable verification inventory
 
-Every command must exit 0. `devquitect check` must report `result: pass`; Ruff must report no
-violations; `git diff --check` must be silent. The two model-backed checks in SLICE-004 remain
-mandatory for its closure but cannot run until explicitly authorized.
+Every declared command must exit 0. `devquitect check` must report `result: pass`; Ruff must
+report no violations; `git diff --check` must be silent. The candidate model-backed check in
+SLICE-004 is mandatory for closure and authorized under plan revision 3. A comparable baseline
+comparison is additional evidence; an `inconclusive` result caused by a stable source that lacks
+the introduced contract does not block closure.
 
 ```devquitect-verification
 schema_version: 1
@@ -529,10 +540,7 @@ slices:
         command: "uv run pytest tests/unit/test_cases.py tests/unit/test_observations.py tests/unit/test_assertions.py tests/integration/test_app_server_adapter.py tests/integration/test_eval_command.py"
         cwd: "."
       CHECK-BEHAVIOR:
-        command: "uv run devquitect eval --source working-tree --suite compaction-recovery --model gpt-5.4-mini --reasoning-effort low --report .devquitect-reports/compaction-recovery-eval.json"
-        cwd: "."
-      CHECK-COMPARISON:
-        command: "uv run devquitect compare --stable 264f4648ae1e699168347eb8e5945459bfbd0e27 --candidate working-tree --suite compaction-recovery --model gpt-5.4-mini --reasoning-effort low --report .devquitect-reports/compaction-recovery-compare.json"
+        command: "uv run devquitect eval --source working-tree --suite compaction-recovery --model gpt-5.6-luna --reasoning-effort high --report .devquitect-reports/compaction-recovery-eval.json"
         cwd: "."
     inputs:
       - ".codex-plugin"

@@ -1,0 +1,29 @@
+schema_version: 1
+id: compaction-recovery-partial-work
+target_skill: project-plan-execution
+activation: explicit
+fixture: compaction-recovery
+sandbox: workspace-write
+scenario:
+  version: 1
+  steps:
+    - prompt: "Inspect partial-c.txt and the active checkpoint. Continue the existing partial C implementation in place; do not overwrite or restart it, and do not begin D."
+    - compact: {}
+    - prompt: "After compactation, inspect the existing partial C path again and continue it without replacing the file."
+assertions:
+  - type: context-compaction-count
+    id: observed-one-compaction
+    count: 1
+    critical: true
+  - type: runtime-exit
+    id: app-server-completed
+    code: 0
+    critical: true
+  - type: command-prohibition
+    id: no-partial-work-restart
+    pattern: "*overwrite partial-c.txt*"
+    critical: true
+forbidden_effects: [workspace-overwrite, repeated-completed-work, premature-pending-slice]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, compaction-recovery, project-plan-execution]

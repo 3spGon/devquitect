@@ -1,16 +1,16 @@
-# Graph Report - devquitect-instruction-governance  (2026-09-20)
+# Graph Report - devquitect-instruction-governance  (2026-09-21)
 
 ## Corpus Check
-- 156 files · ~94,163 words
+- 159 files · ~98,755 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1500 nodes · 2352 edges · 146 communities (118 shown, 24 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 89 edges (avg confidence: 0.93)
+- 1564 nodes · 2560 edges · 141 communities (112 shown, 26 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 110 edges (avg confidence: 0.94)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6626efa0`
+- Built from commit: `fd6c8e68`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -20,17 +20,15 @@
 - build_package
 - properties
 - properties
-- Proposed architecture
+- app_server_adapter.py
 - SLICE-001.md
 - schemas/authority-map.schema.json
 - valid-plugin/schemas/authority-map.schema.json
-- reporting.py
 - type
 - slice-verification/README.md
-- models.py
 - properties
 - compatibility
-- assertions.py
+- Observation
 - Compaction Recovery decisions
 - properties
 - type
@@ -38,7 +36,6 @@
 - schemas/eval-case.schema.json
 - items
 - schemas/promotion-record.schema.json
-- evaluation.py
 - Compaction Recovery concept
 - valid-plugin/schemas/calibration-report.schema.json
 - valid-plugin/schemas/eval-case.schema.json
@@ -47,7 +44,7 @@
 - What You Must Do When Invoked
 - fixture
 - id
-- repetitions
+- scenario
 - tags
 - target_skill
 - approved_at
@@ -119,11 +116,11 @@
 - extraction-spec.md
 - basic/README.md
 - runtime-workspace/README.md
-- software-design/system-context.md
+- Targeted Refactoring
 - Compaction Recovery brainstorm
 - Devquitect system context
 - SLICE-002.md
-- fixtures.py
+- SkillSnapshot
 - fixtures/slice-verification/00-status.md
 - fixtures/slice-verification/08-implementation-plan.md
 - fixtures/slice-verification/09-delivery-status.md
@@ -132,16 +129,14 @@
 - Plan de implementación — Compaction Recovery
 - Contributing skills
 - compaction-recovery/08-implementation-plan.md
-- test_validate.py
-- observations.py
 - Compaction Recovery requirements
 - Compaction Recovery data model
 - Functional requirements
 - Delivery checkpoint
-- parse_jsonl_events
+- evaluation.py
 - Q: How does Devquitect recover delivery execution after Codex context compaction?
 - compaction_recovery.py
-- redact_value
+- parse_jsonl_events
 - test_compaction_recovery_hook.py
 - Commands
 - validate.py
@@ -154,46 +149,47 @@
 - repository-disagreement.md
 - stale-conversation.md
 - compaction-recovery/README.md
-- test_fake_codex_run.py
 - SLICE-003.md
 - valid-plugin/hooks/compaction_recovery.py
+- software-design/system-context.md
+- SLICE-004.md
 
 ## God Nodes (most connected - your core abstractions)
-1. `freeze_source()` - 33 edges
+1. `freeze_source()` - 36 edges
 2. `build_package()` - 30 edges
-3. `SourceError` - 28 edges
-4. `release_check()` - 27 edges
-5. `SkillSource` - 25 edges
+3. `SkillSource` - 28 edges
+4. `SourceError` - 28 edges
+5. `release_check()` - 27 edges
 6. `_run_calibrate()` - 23 edges
-7. `ValidationConfigurationError` - 20 edges
-8. `_run_compare()` - 19 edges
-9. `run()` - 19 edges
-10. `make_session()` - 19 edges
+7. `run_app_server()` - 21 edges
+8. `load_validation_inputs()` - 21 edges
+9. `_run_eval()` - 20 edges
+10. `_run_compare()` - 20 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `test_pair_freezes_both_sources_before_candidate_edits_and_uses_distinct_roots()` --uses--> `SkillSource`  [INFERRED]
-  tests/integration/test_compare_command.py → src/devquitect_quality/models.py
+- `_run()` --uses--> `SkillSource`  [INFERRED]
+  tests/integration/test_app_server_adapter.py → src/devquitect_quality/models.py
+- `test_plugin_setup_failure_is_redacted()` --uses--> `SkillSource`  [INFERRED]
+  tests/integration/test_app_server_adapter.py → src/devquitect_quality/models.py
+- `test_run_case_routes_turns_and_scenarios_to_their_separate_runners()` --uses--> `SkillSource`  [INFERRED]
+  tests/integration/test_eval_command.py → src/devquitect_quality/models.py
 - `test_current_skills_and_plugin_metadata_are_valid()` --uses--> `SkillSource`  [INFERRED]
   tests/unit/test_validate.py → src/devquitect_quality/models.py
 - `test_git_ref_hook_inputs_validate_from_the_selected_commit()` --uses--> `SkillSource`  [INFERRED]
   tests/unit/test_validate.py → src/devquitect_quality/models.py
-- `test_critical_suite_has_fixed_repetitions_and_non_overridable_policy()` --uses--> `RuntimeStatus`  [INFERRED]
-  tests/integration/test_eval_command.py → src/devquitect_quality/observations.py
-- `observation()` --uses--> `RuntimeStatus`  [INFERRED]
-  tests/unit/test_assertions.py → src/devquitect_quality/observations.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (146 total, 24 thin omitted)
+## Communities (141 total, 26 thin omitted)
 
 ### Community 0 - "freeze_source"
-Cohesion: 0.10
-Nodes (42): skipif, Quality tooling for the Devquitect skill bundle., One normalized file in a frozen source snapshot., Content identity for one discovered skill., SnapshotFile, SnapshotSkill, _canonical_digest(), _ensure_repository() (+34 more)
+Cohesion: 0.08
+Nodes (56): skipif, Quality tooling for the Devquitect skill bundle., Path, One normalized file in a frozen source snapshot., Content identity for one discovered skill., SnapshotFile, SnapshotSkill, _canonical_digest() (+48 more)
 
 ### Community 1 - "cli.py"
-Cohesion: 0.13
-Nodes (39): ArgumentParser, Namespace, Runner, _calibration_dimensions(), _calibration_evidence(), _check_record(), _configuration_failure(), _emit() (+31 more)
+Cohesion: 0.05
+Nodes (84): ArgumentParser, ComparisonClass, Namespace, CaseError, EvalCase, load_cases(), Path, ValueError (+76 more)
 
 ### Community 2 - "build_package"
 Cohesion: 0.08
@@ -207,9 +203,9 @@ Nodes (45): additionalProperties, type, maxItems, type, format, type, $id, minLe
 Cohesion: 0.04
 Nodes (44): additionalProperties, minLength, type, type, format, type, $id, type (+36 more)
 
-### Community 5 - "Proposed architecture"
-Cohesion: 0.40
-Nodes (5): Contextual integrations, Normative Change Profile reference, Proposed architecture, Quality evidence, Workflow orchestrator
+### Community 5 - "app_server_adapter.py"
+Cohesion: 0.19
+Nodes (25): Popen, AppServerError, _command_environment(), _drive(), compact(), record(), request(), wait_for_turn() (+17 more)
 
 ### Community 7 - "schemas/authority-map.schema.json"
 Cohesion: 0.09
@@ -219,17 +215,9 @@ Nodes (26): additionalProperties, items, type, $id, minLength, type, additionalP
 Cohesion: 0.09
 Nodes (24): additionalProperties, items, type, minLength, type, additionalProperties, properties, required (+16 more)
 
-### Community 9 - "reporting.py"
-Cohesion: 0.11
-Nodes (24): build_artifact_report(), build_calibration_report(), build_comparison_report(), build_evaluation_report(), build_validation_report(), calibration_comparability(), normalize_relative_path(), Any (+16 more)
-
 ### Community 10 - "type"
 Cohesion: 0.22
 Nodes (11): items, type, uniqueItems, minLength, type, forbidden_effects, turns, items (+3 more)
-
-### Community 12 - "models.py"
-Cohesion: 0.16
-Nodes (15): ComparisonClass, classify_results(), FrozenPair, pair_records(), Any, Stable/candidate pairing and safety-dominant comparison classification., Immutable source and snapshot records., Immutable materialized skill source and its provenance manifest. (+7 more)
 
 ### Community 13 - "properties"
 Cohesion: 0.20
@@ -239,17 +227,17 @@ Nodes (10): type, type, properties, accepted_deltas, approved_by, schema_version
 Cohesion: 0.20
 Nodes (10): additionalProperties, properties, required, type, enum, items, type, compatibility (+2 more)
 
-### Community 15 - "assertions.py"
-Cohesion: 0.20
-Nodes (16): AssertionResult, evaluate_assertion(), evaluate_assertions(), _matches(), Any, Side-effect-free deterministic assertions over normalized observations., Evaluate one immutable specification without invoking tools or modifying…, grade_observation() (+8 more)
+### Community 15 - "Observation"
+Cohesion: 0.22
+Nodes (18): evaluate_assertion(), _matches(), Evaluate one immutable specification without invoking tools or modifying…, FileRecord, NormalizedEvent, Observation, RuntimeStatus, Path (+10 more)
 
 ### Community 16 - "Compaction Recovery decisions"
 Cohesion: 0.13
 Nodes (14): Assumptions, Compaction Recovery decisions, Confirmed, DEC-CR-001 — Recover at the native compactation continuation boundary, DEC-CR-002 — Adopt delivery checkpoint schema version 3, DEC-CR-003 — Keep hook state transient, DEC-CR-004 — Fail safe on ambiguity, not on ordinary absence, DEC-CR-005 — Use one standard-library discovery hook (+6 more)
 
 ### Community 17 - "properties"
-Cohesion: 0.22
-Nodes (9): enum, properties, activation, sandbox, schema_version, semantic_rubric, enum, const (+1 more)
+Cohesion: 0.17
+Nodes (12): enum, properties, activation, repetitions, sandbox, schema_version, semantic_rubric, minimum (+4 more)
 
 ### Community 18 - "type"
 Cohesion: 0.22
@@ -260,8 +248,8 @@ Cohesion: 0.07
 Nodes (29): 10. Reporting and CI adapter, 1. Source registry and snapshot manager, 2. Structural validator, 3. Fixture materializer, 4. Codex execution adapter, 5. Observation collector, 6. Deterministic assertion engine, 7. Independent semantic grader (+21 more)
 
 ### Community 20 - "schemas/eval-case.schema.json"
-Cohesion: 0.25
-Nodes (7): additionalProperties, $id, required, $schema, title, type, x-devquitect-schema-version
+Cohesion: 0.22
+Nodes (8): additionalProperties, $id, oneOf, required, $schema, title, type, x-devquitect-schema-version
 
 ### Community 21 - "items"
 Cohesion: 0.25
@@ -270,10 +258,6 @@ Nodes (8): items, type, properties, required, assertions, type, minLength, type
 ### Community 22 - "schemas/promotion-record.schema.json"
 Cohesion: 0.25
 Nodes (7): additionalProperties, $id, required, $schema, title, type, x-devquitect-schema-version
-
-### Community 23 - "evaluation.py"
-Cohesion: 0.19
-Nodes (13): CaseError, EvalCase, load_cases(), Path, ValueError, Versioned YAML behavioral case loading and selection., A case collection is invalid or cannot satisfy a selection., select_cases() (+5 more)
 
 ### Community 24 - "Compaction Recovery concept"
 Cohesion: 0.14
@@ -307,9 +291,9 @@ Nodes (3): minLength, type, fixture
 Cohesion: 0.67
 Nodes (3): pattern, type, id
 
-### Community 32 - "repetitions"
-Cohesion: 0.67
-Nodes (3): repetitions, minimum, type
+### Community 32 - "scenario"
+Cohesion: 0.17
+Nodes (12): oneOf, scenario, steps, version, additionalProperties, properties, required, type (+4 more)
 
 ### Community 33 - "tags"
 Cohesion: 0.67
@@ -341,7 +325,7 @@ Nodes (3): version, pattern, type
 
 ### Community 41 - "verify_slice.py"
 Cohesion: 0.18
-Nodes (36): datetime, MappingNode, RuntimeError, _check(), _close(), ConcurrentChangeError, _definition(), _detail() (+28 more)
+Nodes (36): datetime, MappingNode, _check(), _close(), ConcurrentChangeError, _definition(), _detail(), _digest() (+28 more)
 
 ### Community 42 - "Devquitect Skill Development System implementation plan"
 Cohesion: 0.10
@@ -408,8 +392,8 @@ Cohesion: 0.20
 Nodes (9): Constraints, Deferred, Goal, Instruction Governance Implementation Plan, SLICE-001 — Authority map validation, SLICE-002 — Calibration report contract, SLICE-003 — Promotion separation and documentation, Slices (+1 more)
 
 ### Community 58 - "Proportional Change Profile architecture"
-Cohesion: 0.20
-Nodes (10): Assumptions, Compatibility and boundaries, Confirmed, Current architecture, Data and control flow, Failure and recovery behavior, Gate transition contract, Open decisions (+2 more)
+Cohesion: 0.13
+Nodes (15): Assumptions, Compatibility and boundaries, Confirmed, Contextual integrations, Current architecture, Data and control flow, Failure and recovery behavior, Gate transition contract (+7 more)
 
 ### Community 59 - "Plan de implementación — Slice verification"
 Cohesion: 0.20
@@ -444,7 +428,7 @@ Cohesion: 0.22
 Nodes (9): Apply approval gates, Elevate and invalidate safely, Establish and confirm the profile, Present the profile, Preserve cross-skill boundaries, Profile model, Proportional Change Profile, Purpose and ownership (+1 more)
 
 ### Community 68 - "Proportional Change Profile data model"
-Cohesion: 0.25
+Cohesion: 0.16
 Nodes (8): Assumptions, Checkpoint extension, Compatibility, Confirmed, Invariants, Lifecycle, Open decisions, Proportional Change Profile data model
 
 ### Community 69 - "Historial — Slice verification"
@@ -540,8 +524,8 @@ Cohesion: 0.25
 Nodes (4): Checkpoint actual, Notas de continuidad, Objetivo actual, Último trabajo completado
 
 ### Community 94 - "codex_adapter.py"
-Cohesion: 0.20
-Nodes (13): build_command(), CodexPreflight, preflight_codex(), Path, Pinned Codex CLI adapter with explicit isolation and failure classification., Run one fresh attempt; adapter/auth/service failures remain inconclusive., Verify the exact runtime version and flags assumed by the approved adapter., run_codex() (+5 more)
+Cohesion: 0.14
+Nodes (21): build_command(), CodexPreflight, preflight_codex(), Path, Pinned Codex CLI adapter with explicit isolation and failure classification., Run one fresh attempt; adapter/auth/service failures remain inconclusive., Verify the exact runtime version and flags assumed by the approved adapter., run_codex() (+13 more)
 
 ### Community 95 - "Adaptive Implementation Planning"
 Cohesion: 0.40
@@ -567,9 +551,9 @@ Nodes (3): Confirmed, Instruction Governance Interfaces, Open decisions
 Cohesion: 0.50
 Nodes (3): Confirmed, Instruction Governance Decisions, Open decisions
 
-### Community 107 - "software-design/system-context.md"
-Cohesion: 0.17
-Nodes (9): Devquitect, Local definition of done, Choose the smallest safe workflow, Define the refactor contract, Establish intent and evidence, Implement a minimal coherent refactor, Report the result, Targeted Refactoring (+1 more)
+### Community 107 - "Targeted Refactoring"
+Cohesion: 0.29
+Nodes (7): Choose the smallest safe workflow, Define the refactor contract, Establish intent and evidence, Implement a minimal coherent refactor, Report the result, Targeted Refactoring, Verify parity and scope
 
 ### Community 108 - "Compaction Recovery brainstorm"
 Cohesion: 0.17
@@ -579,9 +563,9 @@ Nodes (11): 2026-09-19 — Direction refined, 2026-09-19 — External evidence, 
 Cohesion: 0.17
 Nodes (12): Actors and external systems, Authoritative references, Current capabilities, Current lifecycle, Development and verification, Devquitect system context, Known limitations and context gaps, Preserved behavior (+4 more)
 
-### Community 111 - "fixtures.py"
+### Community 111 - "SkillSnapshot"
 Cohesion: 0.22
-Nodes (10): FixtureAttempt, _initialize_git(), materialize_attempt(), Path, Fresh fixture, skill-discovery, configuration, and evidence namespaces., Create one isolated attempt. The caller owns cleanup unless used as a context…, git(), make_snapshot() (+2 more)
+Nodes (8): FixtureAttempt, _initialize_git(), materialize_attempt(), Path, Fresh fixture, skill-discovery, configuration, and evidence namespaces., Create one isolated attempt. The caller owns cleanup unless used as a context…, Immutable materialized skill source and its provenance manifest., SkillSnapshot
 
 ### Community 116 - "Compaction Recovery interface contracts"
 Cohesion: 0.18
@@ -599,14 +583,6 @@ Nodes (10): Author behavioral cases, Command and evidence matrix, Compare stable
 Cohesion: 0.20
 Nodes (4): Current checkpoint, Current objective, Handoff notes, Last completed work
 
-### Community 120 - "test_validate.py"
-Cohesion: 0.42
-Nodes (14): _codes(), _copy_fixture(), _path_parts(), parametrize, Path, test_git_ref_hook_inputs_validate_from_the_selected_commit(), test_hook_contract_rejects_unsafe_variants(), test_malformed_case_and_missing_fixture_are_reported() (+6 more)
-
-### Community 121 - "observations.py"
-Cohesion: 0.25
-Nodes (12): FileRecord, filesystem_manifest(), git_state(), GitState, Path, Normalize process, runtime, filesystem, Git, and checkpoint evidence., Capture status and HEAD diff when the fixture is a Git worktree., Capture a portable, content-addressed manifest without following symlinks. (+4 more)
-
 ### Community 122 - "Compaction Recovery requirements"
 Cohesion: 0.25
 Nodes (8): Acceptance scenarios, Assumptions, Compaction Recovery requirements, Confirmed, Non-goals, Open decisions, Quality requirements, Verification requirements
@@ -623,9 +599,9 @@ Nodes (6): Delivery state, Functional requirements, Operator interaction, Packag
 Cohesion: 0.33
 Nodes (5): Current objective, Delivery checkpoint, Handoff notes, Last completed work, Slice evidence
 
-### Community 126 - "parse_jsonl_events"
-Cohesion: 0.22
-Nodes (10): _event_detail(), NormalizedEvent, parse_jsonl_events(), Any, Parse untrusted JSONL as data and return bounded normalized evidence., Path, test_filesystem_manifest_records_content_and_does_not_follow_symlinks(), test_success_stream_normalizes_commands_final_message_and_terminal_event() (+2 more)
+### Community 126 - "evaluation.py"
+Cohesion: 0.16
+Nodes (18): Runner, AssertionResult, evaluate_assertions(), Any, Side-effect-free deterministic assertions over normalized observations., Any, Path, Behavioral case orchestration over immutable skill snapshots. (+10 more)
 
 ### Community 127 - "Q: How does Devquitect recover delivery execution after Codex context compaction?"
 Cohesion: 0.40
@@ -635,9 +611,9 @@ Nodes (4): Answer, Outcome, Q: How does Devquitect recover delivery execution af
 Cohesion: 0.25
 Nodes (15): _bounded_output(), _candidate_paths(), _classify(), _context(), _frontmatter(), HookError, _load_event(), main() (+7 more)
 
-### Community 130 - "redact_value"
-Cohesion: 0.31
-Nodes (9): Any, Bounded, deterministic secret redaction for retained evaluation evidence., Mask known values and common credential shapes without retaining the secret., Recursively redact a JSON-compatible evidence value., redact_text(), redact_value(), visit(), RedactionResult (+1 more)
+### Community 130 - "parse_jsonl_events"
+Cohesion: 0.14
+Nodes (19): _event_detail(), parse_jsonl_events(), Any, Parse untrusted JSONL as data and return bounded normalized evidence., Any, Bounded, deterministic secret redaction for retained evaluation evidence., Mask known values and common credential shapes without retaining the secret., Recursively redact a JSON-compatible evidence value. (+11 more)
 
 ### Community 131 - "test_compaction_recovery_hook.py"
 Cohesion: 0.41
@@ -648,36 +624,32 @@ Cohesion: 0.29
 Nodes (7): Commands, `devquitect check`, `devquitect compare`, `devquitect eval`, `devquitect package`, `devquitect release-check`, `devquitect validate`
 
 ### Community 133 - "validate.py"
-Cohesion: 0.14
-Nodes (35): Create one stable, machine-readable structural-validation record., validation_record(), _authority_map_paths(), _authority_path(), _git(), load_directory_inputs(), load_validation_inputs(), _local_references() (+27 more)
+Cohesion: 0.10
+Nodes (51): Create one stable, machine-readable structural-validation record., validation_record(), Remove a temporary snapshot after restoring cleanup permissions., remove_snapshot(), _authority_map_paths(), _authority_path(), _git(), load_directory_inputs() (+43 more)
 
 ### Community 134 - "Compaction recovery contract"
 Cohesion: 0.40
 Nodes (4): Compaction recovery contract, Hook limits, Outcomes and operator messages, Recovery sequence
 
-### Community 143 - "test_fake_codex_run.py"
-Cohesion: 0.73
-Nodes (5): fake_codex(), git(), Path, snapshot(), test_fake_adapter_run_is_normalized_and_read_only_violation_fails()
-
 ## Knowledge Gaps
-- **738 isolated node(s):** `devquitect-quality`, `$schema`, `$id`, `x-devquitect-schema-version`, `title` (+733 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 899 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **747 isolated node(s):** `devquitect-quality`, `$schema`, `$id`, `x-devquitect-schema-version`, `title` (+742 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 917 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `build_package()` connect `build_package` to `freeze_source`, `cli.py`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `freeze_source()` connect `freeze_source` to `cli.py`, `build_package`, `validate.py`, `models.py`, `fixtures.py`, `test_fake_codex_run.py`, `test_validate.py`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
-- **Why does `release_check()` connect `build_package` to `freeze_source`, `cli.py`, `validate.py`?**
+- **Why does `EvalCase` connect `cli.py` to `evaluation.py`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `ValidationInputs` connect `validate.py` to `build_package`, `app_server_adapter.py`, `evaluation.py`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Are the 8 inferred relationships involving `freeze_source()` (e.g. with `SkillSource` and `snapshot()`) actually correct?**
   _`freeze_source()` has 8 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `build_package()` (e.g. with `SkillSource` and `SourceError`) actually correct?**
   _`build_package()` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 18 inferred relationships involving `SkillSource` (e.g. with `_configuration_failure()` and `_run_calibrate()`) actually correct?**
+  _`SkillSource` has 18 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 9 inferred relationships involving `SourceError` (e.g. with `_configuration_failure()` and `_run_calibrate()`) actually correct?**
   _`SourceError` has 9 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 3 inferred relationships involving `release_check()` (e.g. with `SkillSource` and `SourceError`) actually correct?**
-  _`release_check()` has 3 INFERRED edges - model-reasoned connections that need verification._

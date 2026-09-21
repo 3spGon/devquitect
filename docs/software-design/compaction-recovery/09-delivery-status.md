@@ -3,15 +3,16 @@ schema_version: 3
 skill: project-plan-execution
 project: Compaction Recovery
 session: compaction-recovery
-revision: 12
-last_updated: '2026-09-21T05:32:00Z'
+revision: 17
+last_updated: '2026-09-21T14:50:53.632220Z'
 plan: 08-implementation-plan.md
-plan_revision: 2
+plan_revision: 4
 completion_scope: implementation-only
 authorized_slices:
 - SLICE-001
 - SLICE-002
 - SLICE-003
+- SLICE-004
 delivery_status: complete
 current_slice: null
 next_action: null
@@ -48,31 +49,40 @@ slices:
     status: verified
     acceptance: not-required
     evidence: slices/SLICE-003.md
+  SLICE-004:
+    status: verified
+    acceptance: not-required
+    evidence: slices/SLICE-004.md
 ---
 
 # Delivery checkpoint
 
 ## Current objective
 
-SLICE-001 through SLICE-003 are implemented and verified within the revised approved plan scope.
+SLICE-004 is implemented and functionally verified with gpt-5.6-luna/high within the revised
+approved plan scope. The stable comparison is recorded as inconclusive and non-blocking because
+the ref predates the plugin, hook, and scenario contract. All authorized slices are verified.
 
 ## Last completed work
 
-SLICE-001, SLICE-002, and SLICE-003 are verified. The plugin now declares the trusted hook,
-validates and packages only its approved inputs, documents native activation, and preserves
-source-commit evidence binding.
+SLICE-001 through SLICE-004 are verified. The plugin now declares the trusted hook, validates and
+packages only its approved inputs, documents native activation, preserves source-commit evidence
+binding, and exercises real App Server compactation scenarios with Luna high.
 
 ## Slice evidence
 
-Evidence is recorded in `slices/SLICE-001.md`, `slices/SLICE-002.md`, and `slices/SLICE-003.md`.
+Evidence is recorded in `slices/SLICE-001.md`, `slices/SLICE-002.md`, `slices/SLICE-003.md`, and
+`slices/SLICE-004.md`.
 
 ## Handoff notes
 
-The authorized implementation scope is complete. Model-backed evaluation, SLICE-004 changes,
-commits, pushes, publication, deployment, and installation remain out of scope.
+The user explicitly authorized SLICE-004 implementation and its applicable gpt-5.6-luna/high
+functional verification. Plan revision 4 defines an incompatible stable baseline comparison as
+inconclusive and non-blocking when candidate checks pass. Commits, pushes, publication,
+deployment, and installation remain out of scope.
 
 <!-- devquitect:slice-close:start -->
 
-Verified SLICE-003 at 2026-09-21T05:31:34.310960Z; evidence: `slices/SLICE-003.md`.
+Verified SLICE-004 at 2026-09-21T14:50:53.632220Z; evidence: `slices/SLICE-004.md`.
 
 <!-- devquitect:slice-close:end -->

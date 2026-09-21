@@ -99,6 +99,19 @@ def evaluate_assertion(spec: Mapping[str, Any], observation: Observation) -> Ass
             {"pattern": pattern, "required": kind == "tool-occurrence"},
             {"tools": list(tools)},
         )
+    elif kind == "context-compaction-count":
+        expected_count = int(spec.get("count", -1))
+        recorded_count = observation.persistent_state.get("compaction_count")
+        if isinstance(recorded_count, int):
+            observed_count = recorded_count
+        else:
+            compactions = [event for event in observation.events if event.category == "compaction"]
+            observed_count = sum(
+                event.type == "item/completed" or event.detail.get("status") == "completed"
+                for event in compactions
+            )
+        passed = observed_count == expected_count
+        expected, observed = {"count": expected_count}, {"count": observed_count}
     elif kind == "artifact-present":
         path = str(spec.get("path", ""))
         manifest = {record.path: record.sha256 for record in observation.filesystem_after}

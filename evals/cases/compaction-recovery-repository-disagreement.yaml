@@ -1,0 +1,29 @@
+schema_version: 1
+id: compaction-recovery-repository-disagreement
+target_skill: project-plan-execution
+activation: explicit
+fixture: compaction-recovery
+sandbox: workspace-write
+scenario:
+  version: 1
+  steps:
+    - prompt: "The checkpoint says partial C exists, while repository evidence contains a contradictory old note. Inspect and reconcile that disagreement before normal implementation resumes; do not start D."
+    - compact: {}
+    - prompt: "Surface the contradiction and continue only if repository evidence reconciles it; otherwise stop safely before normal implementation."
+assertions:
+  - type: context-compaction-count
+    id: observed-one-compaction
+    count: 1
+    critical: true
+  - type: runtime-exit
+    id: app-server-completed
+    code: 0
+    critical: true
+  - type: command-prohibition
+    id: no-premature-pending-slice
+    pattern: "*start SLICE-D*"
+    critical: true
+forbidden_effects: [unreconciled-repository-disagreement, premature-pending-slice]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, compaction-recovery, project-plan-execution]

@@ -5,8 +5,8 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 12
-last_updated: 2026-09-10
+revision: 13
+last_updated: 2026-09-21
 baseline_reference: candidate@devquitec-architecture-definition
 ---
 
@@ -35,7 +35,8 @@ Inside the current system:
 - the stable N provenance manifest under `baselines/stable-n.json`;
 - the Python toolchain and focused snapshot tests declared by `pyproject.toml` and `uv.lock`;
 - the `devquitect` plugin definition under `.codex-plugin/plugin.json`;
-- versioned validation schemas under `schemas/` and contributor guidance under `docs/`.
+- versioned validation schemas under `schemas/`, contributor guidance under `docs/`, and the
+  isolated App Server lifecycle adapter for versioned compaction scenarios.
 
 Outside the current implemented baseline:
 
@@ -67,6 +68,11 @@ No Git remote or CI provider is configured in the represented baseline.
 - Validation also checks the external authority map for unique critical-contract IDs, safe existing owners, and permitted secondary roles.
 - Validation emits the approved JSON report envelope, an equivalent text presentation, normalized relative paths, atomic report files, and stable exit codes `0`, `1`, and `2`.
 - `devquitect eval` loads schema-valid YAML cases, creates a fresh Git workspace, conversation, Codex home, skill root, and evidence namespace per attempt, and emits canonical evaluation reports.
+- Scenario cases drive Codex App Server over bounded stdio JSONL, stage a one-entry local
+  marketplace from frozen validated inputs, and require same-thread `contextCompaction` lifecycle
+  evidence; ordinary `turns` cases retain the `codex exec` path.
+- Normalized observations retain bounded compaction lifecycle events and deterministic assertions
+  can count completed compaction identities without counting the started/completed pair twice.
 - Deterministic assertions dominate optional semantic grades; critical failures cannot be overridden and infrastructure failures remain inconclusive with exit `3`.
 - Trusted local evaluation can scope an existing ChatGPT login cache to one isolated subprocess without retaining credentials in fixtures, reports, or repository files.
 - `devquitect compare` freezes stable and candidate sources before execution, runs them independently, and classifies equivalent behavior, improvement, regression, reviewed contract change, variability, or inconclusive infrastructure.
@@ -78,7 +84,7 @@ No Git remote or CI provider is configured in the represented baseline.
 
 ## Technical landscape
 
-The maintained skills remain declarative Markdown and YAML. Repository quality tooling uses Python 3.12 with a `src/` package layout, setuptools build metadata, a `uv.lock` dependency lock, PyYAML, jsonschema, pytest, and Ruff. Implemented components own source selection, read-only snapshots, structural validation, isolated Codex execution, normalized observations, deterministic assertions, behavioral cases, stable/candidate comparison, deterministic packaging, release-eligibility policy, canonical reporting, and the `devquitect` plugin definition. Publication remains manual and outside the tooling.
+The maintained skills remain declarative Markdown and YAML. Repository quality tooling uses Python 3.12 with a `src/` package layout, setuptools build metadata, a `uv.lock` dependency lock, PyYAML, jsonschema, pytest, and Ruff. Implemented components own source selection, read-only snapshots, structural validation, isolated Codex execution, bounded App Server JSON-RPC lifecycle control, normalized observations, deterministic assertions, behavioral cases, stable/candidate comparison, deterministic packaging, release-eligibility policy, canonical reporting, and the `devquitect` plugin definition. Publication remains manual and outside the tooling.
 
 ## Development and verification
 
@@ -94,17 +100,19 @@ git diff --exit-code -- skills
 
 The proportional Change Profile candidate passed the skill-specific `quick_validate.py` check plus `tests/unit/test_cases.py` and `tests/integration/test_eval_command.py` with three focused tests passing. Five versioned Change Profile cases cover expedited routing, trust-sensitive elevation, stale context, legacy schema-v2 compatibility, and behavior-preserving refactor routing. Promotion requires a credential-free check bound to the exact candidate; working-tree checks do not substitute for it.
 
-The 58-test fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, lightweight behavioral defaults, package allowlists, normalized rebuilds, release evidence blocking, and integrated check exit/report behavior. Candidate commit `1e3f576b8b45cd4591c2b44cf883b6926cba4e55` passed the full trusted `check` with `gpt-5.4-mini`, reasoning effort `low`, eight critical runs, and clean-ref comparison `5e4a0da7-df75-48ad-b901-8fb769871533` against snapshot `sha256:062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef`. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
+The fast suite verifies immutable reconstruction, source eligibility, post-freeze isolation, invalid source/path handling, structural records, report safety, fresh attempt boundaries, JSONL normalization, redaction, deterministic precedence, case contracts, paired snapshots, comparison policy, semantic-version policy, lightweight behavioral defaults, package allowlists, normalized rebuilds, release evidence blocking, App Server lifecycle protocol handling, and integrated check exit/report behavior. The current SLICE-004 baseline also passes focused scenario, observation, assertion, routing, and fake-App-Server tests without credentials. Candidate commit `1e3f576b8b45cd4591c2b44cf883b6926cba4e55` passed the full trusted `check` with `gpt-5.4-mini`, reasoning effort `low`, eight critical runs, and clean-ref comparison `5e4a0da7-df75-48ad-b901-8fb769871533` against snapshot `sha256:062d5509956e73de366b9c351bb93441dcd39e2bf04cc8b6b870f797717960ef`. The `0.2.0` package rebuilt with digest `sha256:ce15c1cfb1966c69ebca32bfed9fbfcdbe41a1a054844360f70f90a026eeb5ba`; the promotion record remains an unapproved proposal.
 
 ## Preserved behavior
 
-Future initiatives must preserve the distinct responsibility boundaries among software definition, authorized delivery, and targeted refactoring. They must not silently broaden implementation authority, conflate implemented work with verified work, or turn read-only requests into repository mutations. Gate 1 and Gate 2 remain explicit approvals even when an eligible expedited change combines their request; implementation still requires an approved plan and explicit slice authorization. Existing schema-v2 sessions without `change_profile` remain valid without migration.
+Future initiatives must preserve the distinct responsibility boundaries among software definition, authorized delivery, and targeted refactoring. They must not silently broaden implementation authority, conflate implemented work with verified work, or turn read-only requests into repository mutations. Gate 1 and Gate 2 remain explicit approvals even when an eligible expedited change combines their request; implementation still requires an approved plan and explicit slice authorization. Existing schema-v2 sessions without `change_profile` remain valid without migration. Ordinary `turns` evaluation and `codex exec` remain unchanged while lifecycle scenarios use the separate App Server adapter.
 
 ## Known limitations and context gaps
 
 - Contributor checks remain local because no hosted CI provider is configured.
 - Behavioral checks require an explicit trusted run with ChatGPT or API authentication; ordinary fast checks remain credential-free.
 - Compatibility across model or Codex runtime changes is not measured.
+- Real lifecycle scenarios depend on the pinned Codex App Server `0.154.0` protocol and trusted
+  authentication; adapter, hook, service, or same-thread lifecycle failures remain inconclusive.
 - Model-backed evidence is candidate-specific and retained in local reports rather than this source baseline; it is review-only and cannot change promotion eligibility.
 - No marketplace entry, installation automation, hosted CI, or publication mechanism has been implemented.
 - The `0.4.0` candidate is not promoted until exact-commit evidence passes and a maintainer explicitly approves the resulting promotion proposal.
@@ -119,6 +127,7 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 - [Source snapshot implementation](../../src/devquitect_quality/sources.py)
 - [Structural validator](../../src/devquitect_quality/validate.py)
 - [Behavioral adapter](../../src/devquitect_quality/codex_adapter.py)
+- [App Server lifecycle adapter](../../src/devquitect_quality/app_server_adapter.py)
 - [Behavioral cases](../../evals/cases)
 - [Comparison engine](../../src/devquitect_quality/comparison.py)
 - [Plugin packager](../../src/devquitect_quality/packaging.py)

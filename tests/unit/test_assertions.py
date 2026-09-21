@@ -67,3 +67,61 @@ def test_invalid_checkpoint_transition_fails_and_unknown_assertion_is_not_evalua
 
     assert transition.status == "fail"
     assert unknown.status == "not-evaluated"
+
+
+def test_context_compaction_count_counts_one_lifecycle_pair_once() -> None:
+    observed = observation()
+    observed = Observation(
+        observed.runtime_status,
+        (
+            NormalizedEvent(
+                "item/started", "compaction", {"item_id": "cmp", "status": "inProgress"}
+            ),
+            NormalizedEvent(
+                "item/completed", "compaction", {"item_id": "cmp", "status": "completed"}
+            ),
+        ),
+        observed.final_response,
+        observed.filesystem_before,
+        observed.filesystem_after,
+        observed.git_before,
+        observed.git_after,
+        observed.persistent_state,
+        observed.redactions,
+        observed.terminal_event_seen,
+    )
+
+    assert evaluate_assertion(
+        {"type": "context-compaction-count", "count": 1}, observed
+    ).status == "pass"
+    assert evaluate_assertion(
+        {"type": "context-compaction-count", "count": 2}, observed
+    ).status == "fail"
+
+
+def test_context_compaction_count_allows_reused_item_ids_across_lifecycles() -> None:
+    observed = observation()
+    events = tuple(
+        event
+        for _ in range(2)
+        for event in (
+            NormalizedEvent("item/started", "compaction", {"item_id": "cmp"}),
+            NormalizedEvent("item/completed", "compaction", {"item_id": "cmp"}),
+        )
+    )
+    observed = Observation(
+        observed.runtime_status,
+        events,
+        observed.final_response,
+        observed.filesystem_before,
+        observed.filesystem_after,
+        observed.git_before,
+        observed.git_after,
+        observed.persistent_state,
+        observed.redactions,
+        observed.terminal_event_seen,
+    )
+
+    assert evaluate_assertion(
+        {"type": "context-compaction-count", "count": 2}, observed
+    ).status == "pass"

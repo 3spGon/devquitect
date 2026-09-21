@@ -31,6 +31,10 @@ class EvalCase:
     def repetitions(self) -> int:
         return int(self.data["repetitions"])
 
+    @property
+    def is_scenario(self) -> bool:
+        return "scenario" in self.data
+
 
 def load_cases(root: Path, schema_path: Path) -> tuple[EvalCase, ...]:
     schema = json.loads(schema_path.read_text(encoding="utf-8"))

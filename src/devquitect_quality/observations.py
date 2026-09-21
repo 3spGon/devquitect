@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Literal
 
+import yaml
+
 from .redaction import redact_value
 
 RuntimeClass = Literal["success", "quality-failure", "infrastructure-error"]
@@ -68,6 +70,28 @@ class Observation:
         )
 
 
+def checkpoint_state(root: Path) -> dict[str, str]:
+    """Read the active delivery checkpoint's current slice and status."""
+
+    for path in sorted(root.rglob("09-delivery-status.md")):
+        try:
+            text = path.read_text(encoding="utf-8")
+            _, _, frontmatter = text.partition("---\n")
+            raw, _, _ = frontmatter.partition("\n---")
+            value = yaml.safe_load(raw)
+        except (OSError, UnicodeDecodeError, yaml.YAMLError):
+            continue
+        if not isinstance(value, Mapping) or value.get("delivery_status") != "active":
+            continue
+        current = value.get("current_slice")
+        slices = value.get("slices")
+        if isinstance(current, str) and isinstance(slices, Mapping):
+            state = slices.get(current)
+            if isinstance(state, Mapping) and isinstance(state.get("status"), str):
+                return {"slice": current, "status": str(state["status"])}
+    return {}
+
+
 def filesystem_manifest(
     root: Path, *, ignored: Iterable[str] = (".git",)
 ) -> tuple[FileRecord, ...]:
@@ -123,10 +147,20 @@ def git_state(root: Path) -> GitState | None:
 
 
 def _event_detail(item: Mapping[str, Any]) -> tuple[str, str, dict[str, Any]]:
-    event_type = str(item.get("type", "unknown"))
-    payload = item.get("item") if isinstance(item.get("item"), Mapping) else item
+    event_type = str(item.get("type", item.get("method", "unknown")))
+    params = item.get("params") if isinstance(item.get("params"), Mapping) else item
+    payload = params.get("item") if isinstance(params.get("item"), Mapping) else params
     assert isinstance(payload, Mapping)
     item_type = str(payload.get("type", event_type))
+    thread_id = payload.get("threadId", params.get("threadId"))
+    if item_type == "contextCompaction":
+        detail: dict[str, Any] = {
+            "item_id": payload.get("id", item.get("itemId")),
+            "status": payload.get("status"),
+        }
+        if thread_id is not None:
+            detail["thread_id"] = thread_id
+        return event_type, "compaction", detail
     if item_type in {"agent_message", "assistant_message", "message"}:
         return event_type, "message", {"text": str(payload.get("text", payload.get("content", "")))}
     if item_type in {"command_execution", "command"}:
@@ -155,10 +189,11 @@ def _event_detail(item: Mapping[str, Any]) -> tuple[str, str, dict[str, Any]]:
     if item_type in {"web_search", "search"}:
         return event_type, "search", {"query": str(payload.get("query", ""))}
     if event_type in {"error", "turn.failed"}:
+        error = params.get("error") if isinstance(params.get("error"), Mapping) else params
         return (
             event_type,
             "runtime-error",
-            {"message": str(item.get("message", item.get("error", "runtime error")))},
+            {"message": str(error.get("message", error) if isinstance(error, Mapping) else error)},
         )
     return event_type, "optional", {"item_type": item_type}
 
@@ -194,7 +229,14 @@ def parse_jsonl_events(
             final_response = str(redacted.value["text"])
         if category == "runtime-error":
             errors.append(str(redacted.value["message"]))
-        if event_type in {"turn.completed", "turn.failed", "thread.completed"}:
+        if event_type in {
+            "turn.completed",
+            "turn.failed",
+            "thread.completed",
+            "turn/completed",
+            "turn/failed",
+            "thread/completed",
+        }:
             terminal = True
     if not terminal:
         errors.append("runtime stream has no terminal event")

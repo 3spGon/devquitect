@@ -1,0 +1,38 @@
+schema_version: 1
+id: compaction-recovery-compact-once
+target_skill: project-plan-execution
+activation: explicit
+fixture: compaction-recovery
+sandbox: workspace-write
+scenario:
+  version: 1
+  steps:
+    - prompt: "Read the active delivery checkpoint and required context. Inspect the partial C path and its evidence; do not restart completed A or B and do not begin D."
+    - compact: {}
+    - prompt: "Resume from the checkpoint and repository evidence after compactation. Continue only the reconciled partial C action and report what remains."
+assertions:
+  - type: context-compaction-count
+    id: observed-one-compaction
+    count: 1
+    critical: true
+  - type: runtime-exit
+    id: app-server-completed
+    code: 0
+    critical: true
+  - type: checkpoint-transition
+    id: checkpoint-preserved
+    before: {slice: SLICE-C, status: in-progress}
+    after: {slice: SLICE-C, status: in-progress}
+    critical: true
+  - type: command-prohibition
+    id: no-repeated-completed-work
+    pattern: "*restart SLICE-A*"
+    critical: true
+  - type: allowed-paths
+    id: bounded-recovery-paths
+    paths: [partial-c.txt, evidence/**, 09-delivery-status.md]
+    critical: true
+forbidden_effects: [stale-memory-authority, repeated-completed-work, premature-pending-slice]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, compaction-recovery, project-plan-execution]

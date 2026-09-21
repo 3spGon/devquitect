@@ -7,12 +7,14 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from .app_server_adapter import run_app_server
 from .assertions import evaluate_assertions
 from .cases import EvalCase
 from .codex_adapter import DEFAULT_TEST_MODEL, DEFAULT_TEST_REASONING_EFFORT, run_codex
 from .fixtures import materialize_attempt
 from .grading import Verdict, grade_observation
 from .models import SkillSnapshot
+from .validate import ValidationInputs
 
 Runner = Callable[..., Any]
 
@@ -26,6 +28,8 @@ def run_case(
     reasoning_effort: str | None = None,
     auth_cache: Path | None = None,
     runner: Runner = run_codex,
+    validation_inputs: ValidationInputs | None = None,
+    scenario_runner: Runner = run_app_server,
 ) -> list[dict[str, Any]]:
     selected_model = model or DEFAULT_TEST_MODEL
     selected_effort = reasoning_effort or DEFAULT_TEST_REASONING_EFFORT
@@ -33,14 +37,28 @@ def run_case(
     records: list[dict[str, Any]] = []
     for repetition in range(1, case.repetitions + 1):
         with materialize_attempt(snapshot, fixture) as attempt:
-            observation = runner(
-                attempt,
-                tuple(case.data["turns"]),
-                sandbox=str(case.data["sandbox"]),
-                model=selected_model,
-                reasoning_effort=selected_effort,
-                auth_cache=auth_cache,
-            )
+            if case.is_scenario:
+                if validation_inputs is None:
+                    raise ValueError("scenario evaluation requires frozen validation inputs")
+                observation = scenario_runner(
+                    attempt,
+                    case.data["scenario"],
+                    snapshot=snapshot,
+                    validation_inputs=validation_inputs,
+                    sandbox=str(case.data["sandbox"]),
+                    model=selected_model,
+                    reasoning_effort=selected_effort,
+                    auth_cache=auth_cache,
+                )
+            else:
+                observation = runner(
+                    attempt,
+                    tuple(case.data["turns"]),
+                    sandbox=str(case.data["sandbox"]),
+                    model=selected_model,
+                    reasoning_effort=selected_effort,
+                    auth_cache=auth_cache,
+                )
             checks = evaluate_assertions(tuple(case.data["assertions"]), observation)
             verdict: Verdict = grade_observation(
                 observation,

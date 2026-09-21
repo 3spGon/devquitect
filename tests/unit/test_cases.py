@@ -89,3 +89,33 @@ def test_compaction_recovery_cases_pin_conservative_policy() -> None:
     assert any(
         item.get("id") == "reject-stale-memory-repetition" for item in negative["assertions"]
     )
+
+
+def test_scenario_cases_use_versioned_prompt_and_empty_compact_steps(tmp_path: Path) -> None:
+    cases = load_cases(ROOT / "evals/cases", ROOT / "schemas/eval-case.schema.json")
+    scenario = next(case for case in cases if case.id == "compaction-recovery-compact-once")
+    assert scenario.is_scenario
+    assert scenario.data["scenario"]["version"] == 1
+    assert scenario.data["scenario"]["steps"][1] == {"compact": {}}
+    old_case = next(case for case in cases if case.id == "compaction-recovery-resume-positive")
+    assert not old_case.is_scenario
+
+    invalid = tmp_path / "invalid.yaml"
+    invalid.write_text(
+        """schema_version: 1
+id: invalid-scenario
+target_skill: project-plan-execution
+activation: explicit
+fixture: compaction-recovery
+sandbox: read-only
+turns: [old]
+scenario: {version: 1, steps: [{prompt: new}]}
+assertions: []
+forbidden_effects: [x]
+repetitions: 1
+tags: [x]
+""",
+        encoding="utf-8",
+    )
+    with pytest.raises(CaseError):
+        load_cases(tmp_path, ROOT / "schemas/eval-case.schema.json")
