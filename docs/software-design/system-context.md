@@ -5,9 +5,9 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 13
+revision: 14
 last_updated: 2026-09-21
-baseline_reference: candidate@devquitec-architecture-definition
+baseline_reference: working-tree@evaluation-auth-governance-slice-eag-004
 ---
 
 # Devquitect system context
@@ -74,13 +74,32 @@ No Git remote or CI provider is configured in the represented baseline.
 - Normalized observations retain bounded compaction lifecycle events and deterministic assertions
   can count completed compaction identities without counting the started/completed pair twice.
 - Deterministic assertions dominate optional semantic grades; critical failures cannot be overridden and infrastructure failures remain inconclusive with exit `3`.
-- Trusted local evaluation can scope an existing ChatGPT login cache to one isolated subprocess without retaining credentials in fixtures, reports, or repository files.
+- Behavioral authentication is explicit: credential-free structural checks do not inspect a login cache, API-key runs use the supported environment boundary, and `chatgpt-cache-local` requires an explicit cache path plus acknowledgement for a supervised local run.
+- Unattended, recurring, promotion, and publication contexts refuse `chatgpt-cache-local` before credential staging or Codex launch; the refusal is `chatgpt-cache-local is supervised-only and cannot run unattended`.
 - `devquitect compare` freezes stable and candidate sources before execution, runs them independently, and classifies equivalent behavior, improvement, regression, reviewed contract change, variability, or inconclusive infrastructure.
 - `devquitect calibrate` writes bounded, redacted, versioned behavior-calibration evidence for review; absent reports are unknown and only matching model, runtime, suite, and repetition configurations are comparable.
 - `devquitect package` reads an exact Git commit, enforces the committed semantic version and package allowlist, and emits a normalized plugin ZIP with entry and artifact SHA-256 identities.
 - `devquitect release-check` rebuilds in two fresh roots, requires a passing credential-free check bound to the same snapshot, ignores model-backed evidence for promotion eligibility, applies compatibility and migration policy, and emits an explicitly unapproved promotion proposal.
 - `devquitect check` composes structural validation with the credential-free unit, integration, and CLI contract suite; `--behavioral` explicitly adds trusted critical evaluation and clean-ref self-hosting comparison.
 - Real behavioral commands default to Codex CLI `gpt-5.6-luna` at `high` reasoning effort as a convenience, retain runtime identity in evidence, and allow explicit model and effort overrides; fast checks invoke no model.
+
+## Evaluation Authentication Governance baseline
+
+The implemented baseline after verified slices `SLICE-EAG-001` through `SLICE-EAG-003`, and this
+documentation refresh, keeps the credential-free structural path unchanged while affecting the
+behavioral command boundary, local credential staging, non-secret report metadata, contributor
+migration guidance, and the shared context record. Behavioral callers select `credential-free`,
+`api-key`, or `chatgpt-cache-local` explicitly; implicit `~/.codex/auth.json` discovery is not part
+of the baseline. Local subscription authentication remains supervised-only and is refused in
+unattended contexts before staging.
+
+Verification evidence for this baseline is the current `.devquitect-reports/check.json` produced by
+`uv run devquitect check --source working-tree --report .devquitect-reports/check.json`, together
+with `uv run ruff check src tests` and `git diff --check`; the credential-free check passed with
+exit code `0` and no behavioral/model-backed evaluation was run. Rollback is to revert the
+documentation and explicit-auth implementation together while retaining the previous structural
+check behavior. A forcibly killed parent can leave temporary material until bounded stale recovery
+or operator cleanup; the baseline makes no SIGKILL-proof deletion claim.
 
 ## Technical landscape
 

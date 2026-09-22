@@ -57,7 +57,16 @@ JSON output and atomic report files use the versioned canonical envelope in `sch
 
 Every behavioral attempt uses a fresh temporary Git workspace, Codex conversation, `CODEX_HOME`, installed-skill root, and evidence namespace. The supported adapter records the detected Codex CLI version and requires `codex exec --ephemeral --json` with an explicit working directory, `read-only` or `workspace-write` sandbox, `--ignore-user-config`, and `--ignore-rules`. `danger-full-access` is never release-eligible.
 
-The isolated `CODEX_HOME` contains no user configuration. For trusted local execution, the runner may stage the existing file-backed ChatGPT login cache with permissions `0600` only for the lifetime of the subprocess, then removes it immediately. The cache never enters the fixture workspace, evidence namespace, repository, or report. Environment-provided authentication follows the same subprocess-only boundary. Known credential values and common secret patterns are masked before normalized evidence is retained.
+The isolated `CODEX_HOME` contains no user configuration. Behavioral authentication is explicit:
+use `--auth-mode api-key` with the supported `OPENAI_API_KEY` environment boundary, or use
+`--auth-mode chatgpt-cache-local --auth-cache <path> --allow-subscription-auth` for an explicitly
+launched, local, supervised diagnostic. The local subscription mode is supervised-only: it is
+refused for CI, cron, schedulers, daemons, automatic retries, recurring loops, promotion, and
+publication before credentials are staged or Codex starts, with the actionable error
+`chatgpt-cache-local is supervised-only and cannot run unattended`. The cache is staged with
+permissions `0600` only for the lifetime of the subprocess, then removed; it never enters the
+fixture workspace, evidence namespace, repository, or report. Known credential values and common
+secret patterns are masked before normalized evidence is retained.
 
 Raw JSONL is treated as untrusted data. Normalized evidence bounds event count and records process status, messages, commands, tools, searches, file manifests, Git status/diff, and declared checkpoint transitions. Local raw streams should be retained only long enough to diagnose a run and must not be committed. Add `.devquitect-reports/` or another caller-selected evidence directory to local ignore policy when retaining reports.
 
@@ -90,6 +99,25 @@ uv run devquitect validate --source working-tree
 uv run pytest
 uv run ruff check src tests
 ```
+
+### Migrate behavioral authentication
+
+Implicit discovery of `~/.codex/auth.json` is no longer supported. Select the mode explicitly for
+each behavioral command (`eval`, `compare`, `calibrate`, or `check --behavioral`):
+
+```text
+--auth-mode api-key
+--auth-mode chatgpt-cache-local --auth-cache <path> --allow-subscription-auth
+```
+
+The first mode requires `OPENAI_API_KEY`. The second requires an existing regular cache file and
+an explicit acknowledgement, and is valid only for a supervised local run. Do not put the local
+subscription mode in unattended jobs; the command fails closed before staging credentials. Keep
+`check` without `--behavioral` credential-free and do not pass behavioral authentication flags to
+it. To roll back this migration, revert the documentation and explicit-auth implementation
+together while preserving the credential-free structural check; a forcibly killed parent can
+still leave temporary material until bounded stale recovery or operator cleanup, so this workflow
+does not claim SIGKILL-proof deletion.
 
 Trusted maintainers can explicitly execute real behavior with either ChatGPT subscription authentication or an API key:
 
