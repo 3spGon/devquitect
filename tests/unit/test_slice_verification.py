@@ -152,6 +152,42 @@ def test_snapshot_and_check_accept_valid_detail(tmp_path: Path) -> None:
     assert json.loads(result.stdout)["result"] == "PASS"
 
 
+def test_snapshot_rejects_localized_status_without_writing(tmp_path: Path) -> None:
+    session, _ = make_session(tmp_path)
+    tracker = session / "09-delivery-status.md"
+    before = tracker.read_bytes()
+    plan = session / "08-implementation-plan.md"
+    plan.write_text(
+        plan.read_text(encoding="utf-8").replace("Status: Approved", "**Estado:** Approved"),
+        encoding="utf-8",
+    )
+
+    result = run(session.parents[2], "snapshot", "--session", str(session), "--slice", "SLICE-001")
+
+    assert result.returncode == 2
+    assert "plan is not Approved" in result.stdout
+    assert tracker.read_bytes() == before
+    assert not (session / "slices").exists()
+
+
+def test_snapshot_rejects_input_paths_without_writing(tmp_path: Path) -> None:
+    session, _ = make_session(tmp_path)
+    tracker = session / "09-delivery-status.md"
+    before = tracker.read_bytes()
+    plan = session / "08-implementation-plan.md"
+    plan.write_text(
+        plan.read_text(encoding="utf-8").replace("    inputs:\n", "    input_paths:\n"),
+        encoding="utf-8",
+    )
+
+    result = run(session.parents[2], "snapshot", "--session", str(session), "--slice", "SLICE-001")
+
+    assert result.returncode == 2
+    assert "inputs must be a list" in result.stdout
+    assert tracker.read_bytes() == before
+    assert not (session / "slices").exists()
+
+
 def test_snapshot_rejects_plan_slice_missing_from_inventory(tmp_path: Path) -> None:
     session, _ = make_session(tmp_path)
     plan = session / "08-implementation-plan.md"
@@ -165,6 +201,38 @@ def test_snapshot_rejects_plan_slice_missing_from_inventory(tmp_path: Path) -> N
     assert result.returncode == 2
     assert "plan slice inventory mismatch" in result.stdout
     assert "missing from inventory: SLICE-002" in result.stdout
+
+
+def test_snapshot_rejects_inventory_slice_missing_from_headings(tmp_path: Path) -> None:
+    session, _ = make_session(tmp_path)
+    plan = session / "08-implementation-plan.md"
+    plan.write_text(
+        plan.read_text(encoding="utf-8").replace(
+            "    inputs:\n      - src\n",
+            """    inputs:
+      - src
+  SLICE-002:
+    depends_on: []
+    criteria:
+      AC-002:
+        text: works
+        requirement: REQ-002
+    checks:
+      CHECK-002:
+        command: python -c pass
+        cwd: .
+    inputs:
+      - src
+""",
+        ),
+        encoding="utf-8",
+    )
+
+    result = run(session.parents[2], "snapshot", "--session", str(session), "--slice", "SLICE-001")
+
+    assert result.returncode == 2
+    assert "plan slice inventory mismatch" in result.stdout
+    assert "missing from plan headings: SLICE-002" in result.stdout
 
 
 def test_check_rejects_stale_inputs_and_fail_evidence(tmp_path: Path) -> None:

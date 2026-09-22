@@ -36,6 +36,40 @@ prose explains it and must not duplicate a second normative criteria table. Befo
 in `Review`, ensure its `SLICE-*` headings and inventory keys are an exact match; do not omit a
 prose slice or add an inventory-only slice.
 
+The machine-readable syntax is literal and case-sensitive. Use the exact field names
+`Status`, `Plan revision`, `schema_version`, `slices`, `depends_on`, `criteria`, `checks`,
+`command`, `cwd`, and `inputs`. Do not translate, bold, or rename these fields; for example,
+`**Estado:** Approved` and `input_paths` are unsupported variants. The minimum shape is:
+
+````text
+Status: Review
+Plan revision: 1
+
+## SLICE-001 — Short outcome
+
+```devquitect-verification
+schema_version: 1
+slices:
+  SLICE-001:
+    depends_on: []
+    criteria:
+      AC-001:
+        text: "Observable acceptance behavior."
+        requirement: REQ-001
+    checks:
+      CHECK-001:
+        command: "command copied from repository evidence"
+        cwd: "."
+    inputs:
+      - "path/to/relevant/input"
+```
+````
+
+Create the plan with the literal `Status: Review` and `Plan revision: 1`. After explicit user
+approval, change the status to the literal `Status: Approved`; do not use Markdown emphasis,
+localized labels, or alternative YAML keys. The exact inventory contract is documented in
+[`project-plan-execution`'s slice verification reference](../../project-plan-execution/references/slice-verification.md).
+
 - outcome and observable acceptance criteria;
 - dependencies and prerequisites;
 - files to create or modify, distinguishing verified from proposed paths;
