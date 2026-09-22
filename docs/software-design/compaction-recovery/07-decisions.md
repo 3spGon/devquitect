@@ -123,9 +123,7 @@ Evidence:
 
 - official Codex hook documentation says `/hooks` can inspect sources, trust changed hooks, and
   disable individual non-managed hooks;
-- the current Graphify Codex hook is a normal `.codex/hooks.json` handler subject to that same
-  runtime control, while its separate `graphify hook install/uninstall/status` commands manage
-  Git hooks rather than Codex lifecycle hooks.
+- optional local developer tooling is outside the Devquitect plugin activation contract.
 
 Rejected alternatives: a Devquitect marker file, environment flag, mutable installed plugin
 configuration, or custom enable/disable CLI. Each creates another source of state and can drift

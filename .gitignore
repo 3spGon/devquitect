@@ -6,6 +6,10 @@ __pycache__/
 .ruff_cache/
 .venv/
 .devquitect-reports/
+graphify-out/
+.codex/hooks.json
+.codex/skills/
+skills-lock.json
 dist/
 *.zip
 *.tar.gz

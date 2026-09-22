@@ -2,6 +2,12 @@
 
 Devquitect skills are packaged together but retain separate, focused responsibilities. Structural validation is offline and must pass before behavioral evaluation or packaging.
 
+## Optional local tooling
+
+Graphify is optional developer tooling for navigating the repository. Its graph, cache, reports,
+memory, and other output under `graphify-out/` are local generated state and must not be committed.
+The plugin and its validation workflow do not require Graphify.
+
 ## Required structure
 
 Create a skill at `skills/<skill-name>/` where `<skill-name>` is unique, kebab-case, and exactly matches the `name` in `SKILL.md` frontmatter. The frontmatter also requires a non-empty `description` that states both when to use the skill and when not to use it.

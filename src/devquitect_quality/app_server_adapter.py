@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from .codex_adapter import (
+    CREDENTIAL_CLEANUP_FAILURE,
     DEFAULT_TEST_MODEL,
     DEFAULT_TEST_REASONING_EFFORT,
     _stage_auth_cache,
@@ -417,6 +418,7 @@ def run_app_server(
     messages: list[dict[str, Any]] = []
     compaction_count = 0
     redactions: tuple[str, ...] = ()
+    cleanup_failed = False
     status = RuntimeStatus(None, "infrastructure-error", ("App Server attempt did not complete",))
     process_environment = _command_environment(attempt)
     if environment:
@@ -476,7 +478,10 @@ def run_app_server(
         )
     finally:
         if staged_auth is not None:
-            staged_auth.unlink(missing_ok=True)
+            try:
+                staged_auth.unlink(missing_ok=True)
+            except OSError:
+                cleanup_failed = True
         if process is not None:
             if process.poll() is None:
                 process.terminate()
@@ -494,6 +499,12 @@ def run_app_server(
                         status.classification,
                         status.errors + (str(redacted.value)[:2_000],),
                     )
+    if cleanup_failed:
+        status = RuntimeStatus(
+            None,
+            "infrastructure-error",
+            status.errors + (CREDENTIAL_CLEANUP_FAILURE,),
+        )
     events, final, terminal, parse_errors, event_redactions = parse_jsonl_events(
         "\n".join(json.dumps(message) for message in messages), secrets=secrets
     )

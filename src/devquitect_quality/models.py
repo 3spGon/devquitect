@@ -2,11 +2,64 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
 SourceKind = Literal["git-ref", "working-tree"]
+AuthMode = Literal["credential-free", "api-key", "chatgpt-cache-local", "unknown"]
+ExecutionContext = Literal[
+    "structural", "interactive-behavioral", "unattended-behavioral", "unknown"
+]
+AuthPolicy = Literal["allowed", "refused", "missing", "invalid", "unknown"]
+CredentialState = Literal[
+    "not-needed", "injected", "staged", "cleaned", "stale", "cleanup-failed", "unknown"
+]
+CleanupClass = Literal["not_applicable", "handled", "stale_recovered", "failed", "unknown"]
+
+
+@dataclass(frozen=True, slots=True)
+class AuthenticationEvidence:
+    """Non-secret authentication and credential-lifecycle report metadata."""
+
+    mode: AuthMode
+    execution_context: ExecutionContext
+    policy: AuthPolicy
+    credential_state: CredentialState
+    cleanup: CleanupClass
+
+    @classmethod
+    def unknown(cls) -> AuthenticationEvidence:
+        return cls("unknown", "unknown", "unknown", "unknown", "unknown")
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, object] | None) -> AuthenticationEvidence:
+        if value is None:
+            return cls.unknown()
+        expected = cls.unknown().as_dict()
+        if any(value.get(key) not in allowed for key, allowed in {
+            "mode": {"credential-free", "api-key", "chatgpt-cache-local", "unknown"},
+            "execution_context": {
+                "structural", "interactive-behavioral", "unattended-behavioral", "unknown"
+            },
+            "policy": {"allowed", "refused", "missing", "invalid", "unknown"},
+            "credential_state": {
+                "not-needed", "injected", "staged", "cleaned", "stale", "cleanup-failed", "unknown"
+            },
+            "cleanup": {"not_applicable", "handled", "stale_recovered", "failed", "unknown"},
+        }.items()):
+            return cls.unknown()
+        return cls(**{key: value[key] for key in expected})  # type: ignore[arg-type]
+
+    def as_dict(self) -> dict[str, str]:
+        return {
+            "mode": self.mode,
+            "execution_context": self.execution_context,
+            "policy": self.policy,
+            "credential_state": self.credential_state,
+            "cleanup": self.cleanup,
+        }
 
 
 @dataclass(frozen=True, slots=True)

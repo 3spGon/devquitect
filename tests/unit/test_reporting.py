@@ -5,8 +5,13 @@ from pathlib import Path
 
 import pytest
 
+from devquitect_quality.auth_policy import AuthSelection
+from devquitect_quality.cli import _auth_evidence
 from devquitect_quality.reporting import (
+    authentication_metadata,
     build_calibration_report,
+    build_evaluation_report,
+    build_policy_failure_report,
     build_validation_report,
     calibration_comparability,
     normalize_relative_path,
@@ -54,6 +59,97 @@ def test_json_and_text_present_the_same_verdict() -> None:
     assert "validation: fail" in text
     assert "frontmatter.invalid" in text
     assert serialized["records"][0]["message"] in text
+
+
+def test_authentication_metadata_is_non_secret_and_legacy_reports_are_unknown() -> None:
+    metadata = authentication_metadata(
+        {
+            "mode": "api-key",
+            "execution_context": "unattended-behavioral",
+            "policy": "allowed",
+            "credential_state": "injected",
+            "cleanup": "not_applicable",
+            "token": "must-not-survive",
+        }
+    )
+
+    assert metadata["mode"] == "api-key"
+    assert "must-not-survive" not in json.dumps(metadata)
+    assert authentication_metadata(None)["policy"] == "unknown"
+
+
+def test_policy_failure_report_is_non_passing_and_contains_no_raw_error() -> None:
+    report = build_policy_failure_report(
+        report_type="check",
+        inputs={"source": "working-tree"},
+        authentication={
+            "mode": "chatgpt-cache-local",
+            "execution_context": "unattended-behavioral",
+            "policy": "refused",
+            "credential_state": "not-needed",
+            "cleanup": "not_applicable",
+        },
+    )
+
+    serialized = json.dumps(report)
+    assert report["result"] == "fail"
+    assert report["authentication"]["policy"] == "refused"
+    assert "auth.json" not in serialized
+    assert "token" not in serialized
+
+
+def test_evaluation_report_collapses_auth_errors_without_retaining_paths_or_tokens() -> None:
+    report = build_evaluation_report(
+        source={"kind": "working-tree", "selector": "working-tree"},
+        records=[
+            {
+                "case_id": "case-1",
+                "repetition": 1,
+                "classification": "inconclusive",
+                "runtime_errors": [
+                    "authentication failed with token=supersecret at /private/operator/auth.json"
+                ],
+                "redactions": [],
+            }
+        ],
+        authentication={
+            "mode": "api-key",
+            "execution_context": "interactive-behavioral",
+            "policy": "allowed",
+            "credential_state": "injected",
+            "cleanup": "not_applicable",
+        },
+    )
+
+    serialized = json.dumps(report)
+    assert "supersecret" not in serialized
+    assert "/private/operator/auth.json" not in serialized
+    assert report["records"][0]["runtime_errors"] == ["authentication runtime failure"]
+    assert "authentication-error" in report["redactions"]
+
+
+def test_cleanup_failure_is_recorded_as_non_passing_auth_evidence() -> None:
+    report = build_evaluation_report(
+        source={"kind": "working-tree", "selector": "working-tree"},
+        records=[
+            {
+                "case_id": "case-1",
+                "repetition": 1,
+                "classification": "inconclusive",
+                "runtime_errors": ["credential cleanup failed"],
+                "redactions": [],
+            }
+        ],
+        authentication=_auth_evidence(
+            AuthSelection("chatgpt-cache-local", "interactive-behavioral"),
+            execution_context="interactive-behavioral",
+            cleanup_failed=True,
+        ),
+    )
+
+    assert report["result"] == "inconclusive"
+    assert report["authentication"]["credential_state"] == "cleanup-failed"
+    assert report["authentication"]["cleanup"] == "failed"
 
 
 def test_atomic_report_replaces_target_and_leaves_no_temporary_file(tmp_path: Path) -> None:

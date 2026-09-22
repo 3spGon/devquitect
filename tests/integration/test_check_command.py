@@ -39,6 +39,13 @@ def test_check_runs_fast_composed_definition_of_done_and_writes_atomic_report(
     assert payload["result"] == "pass"
     assert payload["inputs"]["model"] == "gpt-5.6-luna"
     assert payload["inputs"]["reasoning_effort"] == "high"
+    assert payload["authentication"] == {
+        "mode": "credential-free",
+        "execution_context": "structural",
+        "policy": "allowed",
+        "credential_state": "not-needed",
+        "cleanup": "not_applicable",
+    }
     assert {record["code"] for record in payload["records"]} == {
         "check.validation",
         "check.tests",
@@ -111,6 +118,38 @@ def test_behavioral_eval_without_auth_mode_returns_migration_error() -> None:
 
     assert process.returncode == 2
     assert "authentication is explicit" in process.stderr
+
+
+def test_behavioral_check_auth_refusal_is_reported_without_secret_details(tmp_path: Path) -> None:
+    report = tmp_path / "auth-refusal.json"
+    process = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "devquitect_quality.cli",
+            "check",
+            "--source",
+            "working-tree",
+            "--behavioral",
+            "--auth-mode",
+            "chatgpt-cache-local",
+            "--auth-cache",
+            "/private/operator/auth.json",
+            "--allow-subscription-auth",
+            "--report",
+            str(report),
+        ],
+        cwd=REPOSITORY,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    assert process.returncode == 2
+    assert payload["result"] == "fail"
+    assert payload["authentication"]["policy"] == "refused"
+    assert "/private/operator/auth.json" not in json.dumps(payload)
 
 
 def test_git_ref_check_report_is_accepted_by_release_check(tmp_path: Path) -> None:

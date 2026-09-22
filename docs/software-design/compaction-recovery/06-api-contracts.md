@@ -55,9 +55,8 @@ considers that exact hook definition trusted and enabled. The operator uses Code
 - disable this handler independently of Graphify and other hooks;
 - re-enable it after review, including after an update changes its trust hash.
 
-This is the same Codex-level control available to the repository's Graphify `PreToolUse` hook;
-it is distinct from Graphify's Git `post-commit` install/uninstall commands. No Devquitect CLI,
-environment variable, repository marker, or mutable plugin file is introduced for activation.
+This control is independent of optional local developer tooling. No Devquitect CLI, environment
+variable, repository marker, or mutable plugin file is introduced for activation.
 The product documentation must state that disabled/untrusted means manual recovery remains
 available but automatic compactation recovery does not.
 

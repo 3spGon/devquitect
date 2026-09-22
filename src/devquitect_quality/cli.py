@@ -12,16 +12,17 @@ import uuid
 from collections import Counter
 from pathlib import Path
 
-from .auth_policy import AuthPolicyError, resolve_auth
+from .auth_policy import AuthPolicyError, AuthSelection, resolve_auth
 from .cases import CaseError, load_cases, select_cases
 from .codex_adapter import (
+    CREDENTIAL_CLEANUP_FAILURE,
     DEFAULT_TEST_MODEL,
     DEFAULT_TEST_REASONING_EFFORT,
     preflight_codex,
 )
 from .comparison import freeze_pair, pair_records
 from .evaluation import run_case
-from .models import SkillSource
+from .models import AuthenticationEvidence, SkillSource
 from .packaging import PackageError, build_package
 from .promotion import PromotionError, release_check
 from .reporting import (
@@ -29,6 +30,7 @@ from .reporting import (
     build_calibration_report,
     build_comparison_report,
     build_evaluation_report,
+    build_policy_failure_report,
     build_validation_report,
     render_text,
     serialize_json,
@@ -148,6 +150,77 @@ def _resolve_behavioral_auth(args: argparse.Namespace, *, execution_context: str
     )
 
 
+def _auth_evidence(
+    auth: AuthSelection | None,
+    *,
+    execution_context: str,
+    policy: str = "allowed",
+    cleanup_failed: bool = False,
+) -> AuthenticationEvidence:
+    """Convert a validated selection into bounded, non-secret report metadata."""
+
+    if auth is None:
+        return AuthenticationEvidence(
+            (
+                "credential-free"
+                if execution_context == "structural" and policy == "allowed"
+                else "unknown"
+            ),
+            execution_context,
+            policy,
+            "not-needed",
+            "not_applicable",
+        )
+    if cleanup_failed:
+        return AuthenticationEvidence(
+            auth.mode, auth.execution_context, policy, "cleanup-failed", "failed"
+        )
+    if auth.mode == "credential-free":
+        state, cleanup = "not-needed", "not_applicable"
+    elif auth.mode == "api-key":
+        state, cleanup = "injected", "not_applicable"
+    else:
+        state, cleanup = "cleaned", "handled"
+    return AuthenticationEvidence(auth.mode, auth.execution_context, policy, state, cleanup)
+
+
+def _policy_failure_kind(args: argparse.Namespace, error: AuthPolicyError) -> str:
+    message = str(error)
+    if args.auth_mode is None or "requires" in message:
+        return "missing"
+    if "supervised-only" in message:
+        return "refused"
+    return "invalid"
+
+
+def _auth_failure_report(
+    *, report_type: str, inputs: dict[str, object], args: argparse.Namespace, error: AuthPolicyError
+) -> dict[str, object]:
+    policy = _policy_failure_kind(args, error)
+    mode = (
+        args.auth_mode
+        if args.auth_mode in {"credential-free", "api-key", "chatgpt-cache-local"}
+        else "unknown"
+    )
+    authentication = AuthenticationEvidence(
+        mode, "unattended-behavioral" if report_type == "check" else "interactive-behavioral",
+        policy, "not-needed", "not_applicable"
+    )
+    return build_policy_failure_report(
+        report_type=report_type,
+        inputs=inputs,
+        authentication=authentication,
+    )
+
+
+def _has_cleanup_failure(records: list[dict[str, object]]) -> bool:
+    return any(
+        error == CREDENTIAL_CLEANUP_FAILURE
+        for record in records
+        for error in record.get("runtime_errors", [])
+    )
+
+
 def _source_identity(
     source: SkillSource,
     snapshot_id: str | None = None,
@@ -248,9 +321,27 @@ def _run_eval(args: argparse.Namespace) -> int:
                 )
             ]
         report = build_evaluation_report(
-            source=_source_identity(source, snapshot.snapshot_id), records=records
+            source=_source_identity(source, snapshot.snapshot_id),
+            records=records,
+            authentication=_auth_evidence(
+                auth,
+                execution_context="interactive-behavioral",
+                cleanup_failed=_has_cleanup_failure(records),
+            ),
         )
-    except (SourceError, CaseError, AuthPolicyError, ValueError) as error:
+    except AuthPolicyError as error:
+        sys.stderr.write(f"evaluation configuration error: {error}\n")
+        report = _auth_failure_report(
+            report_type="evaluation",
+            inputs={"source": {"selector": args.source}},
+            args=args,
+            error=error,
+        )
+        if args.report:
+            write_report_atomic(args.report, report)
+        sys.stdout.write(serialize_json(report))
+        return 2
+    except (SourceError, CaseError, ValueError) as error:
         sys.stderr.write(f"evaluation configuration error: {error}\n")
         return 2
     if args.report:
@@ -307,8 +398,28 @@ def _run_compare(args: argparse.Namespace) -> int:
             stable=_source_identity(stable_source, pair.stable.snapshot_id),
             candidate=_source_identity(candidate_source, pair.candidate.snapshot_id),
             records=records,
+            authentication=_auth_evidence(
+                auth,
+                execution_context="interactive-behavioral",
+                cleanup_failed=_has_cleanup_failure(records),
+            ),
         )
-    except (SourceError, CaseError, AuthPolicyError, ValueError) as error:
+    except AuthPolicyError as error:
+        sys.stderr.write(f"comparison configuration error: {error}\n")
+        report = _auth_failure_report(
+            report_type="comparison",
+            inputs={
+                "stable": {"selector": args.stable},
+                "candidate": {"selector": args.candidate},
+            },
+            args=args,
+            error=error,
+        )
+        if args.report:
+            write_report_atomic(args.report, report)
+        sys.stdout.write(serialize_json(report))
+        return 2
+    except (SourceError, CaseError, ValueError) as error:
         sys.stderr.write(f"comparison configuration error: {error}\n")
         return 2
     if args.report:
@@ -382,6 +493,11 @@ def _run_calibrate(args: argparse.Namespace) -> int:
                 repetitions=len(records),
                 dimensions=_calibration_dimensions(records),
                 evidence_references=_calibration_evidence(records),
+                authentication=_auth_evidence(
+                    auth,
+                    execution_context="interactive-behavioral",
+                    cleanup_failed=_has_cleanup_failure(records),
+                ),
             )
         validate_calibration_report(report, inputs)
     except (
@@ -481,6 +597,22 @@ def _run_check(args: argparse.Namespace) -> int:
         (args.auth_mode is not None, args.auth_cache is not None, args.allow_subscription_auth)
     ):
         sys.stderr.write("authentication options require --behavioral\n")
+        report = build_policy_failure_report(
+            report_type="check",
+            inputs={"source": args.source, "behavioral": False},
+            authentication=AuthenticationEvidence(
+                args.auth_mode
+                if args.auth_mode in {"credential-free", "api-key", "chatgpt-cache-local"}
+                else "unknown",
+                "structural",
+                "invalid",
+                "not-needed",
+                "not_applicable",
+            ),
+        )
+        if args.report:
+            write_report_atomic(args.report, report)
+        sys.stdout.write(serialize_json(report))
         return 2
     records: list[dict[str, str]] = []
     evidence: list[dict[str, object]] = []
@@ -499,6 +631,15 @@ def _run_check(args: argparse.Namespace) -> int:
                 auth = _resolve_behavioral_auth(args, execution_context="unattended-behavioral")
             except AuthPolicyError as error:
                 sys.stderr.write(f"behavioral authentication configuration error: {error}\n")
+                report = _auth_failure_report(
+                    report_type="check",
+                    inputs={"source": args.source, "behavioral": True},
+                    args=args,
+                    error=error,
+                )
+                if args.report:
+                    write_report_atomic(args.report, report)
+                sys.stdout.write(serialize_json(report))
                 return 2
         validation = _nested_command(
             repository, ["validate", "--source", args.source, "--format", "json"]
@@ -680,6 +821,11 @@ def _run_check(args: argparse.Namespace) -> int:
         },
         records=records,
         evidence_manifest=evidence,
+        authentication=_auth_evidence(
+            auth,
+            execution_context="unattended-behavioral" if args.behavioral else "structural",
+            cleanup_failed=_has_cleanup_failure(records),
+        ),
         result=result,
     )
     if args.report:

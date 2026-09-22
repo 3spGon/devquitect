@@ -58,7 +58,7 @@ durable delivery state and the working tree remains implementation reality.
 All slices preserve unrelated working-tree changes and the single-writer revision protocol.
 No slice installs dependencies into the user's environment, changes the plugin version, commits,
 tags, pushes, publishes, deploys, or bypasses hook trust outside a fresh disposable evaluator.
-The Graphify hook and `.codex/hooks.json` are not modified.
+Optional local tooling and its generated state are not part of this delivery.
 
 The normative acceptance criteria are only in the `devquitect-verification` block below. Slice
 prose explains implementation and evidence without maintaining a second criteria list.
@@ -95,7 +95,7 @@ operation and never derives facts from conversation.
 
 **Verification and evidence:** run the slice-specific state tests and all common checks from the
 inventory. Inspect rejected-operation bytes to prove no write, and a successful v3 close to
-prove unrelated fields/body survive. After code changes, run `graphify update .`, then repeat
+prove unrelated fields/body survive. If Graphify is available, run `graphify update .`, then repeat
 the final checks over the updated tree. Delivery evidence belongs in `slices/SLICE-001.md` only
 after this plan is approved and the slice is authorized.
 
@@ -157,7 +157,7 @@ authorization, acceptance, deferral, completion, or verification.
 
 **Verification and evidence:** run hook subprocess tests, case loading, structural validation,
 the validator-boundary tests, and common checks. Do not execute the YAML behavioral cases with a
-model without separate authorization. Run `graphify update .` after code changes and before final
+model without separate authorization. If Graphify is available, run `graphify update .` after code changes and before final
 evidence capture.
 
 **Rollback:** removing the runtime handler before it is packaged does not alter checkpoint
@@ -211,8 +211,8 @@ untrusted, missing-Python, timeout, and process failure states never claim autom
 
 **Verification and evidence:** run hook, validation, packaging, release-check, and common checks.
 Package tests use temporary Git repositories; do not create a release artifact from this working
-tree, bump a version, install the plugin, or run release-check against a candidate commit. Run
-`graphify update .` before final checks.
+tree, bump a version, install the plugin, or run release-check against a candidate commit. If
+Graphify is available, run `graphify update .` before final checks.
 
 **Rollback:** remove the manifest hook declaration and packaged hook inputs together. Leave v3
 and manual recovery compatibility intact. A plugin cache already installed elsewhere is outside
@@ -289,7 +289,7 @@ inputs. If the ref predates that contract, record the comparison as `inconclusiv
 it is non-blocking when the candidate checks pass. A comparable baseline regression remains
 blocking. Infrastructure/auth/hook failures never pass and are not retried until their cause
 changes. Update System Context only after the implemented baseline passes deterministic
-verification, then rerun final checks and `graphify update .`.
+verification, then rerun final checks and, when available, `graphify update .`.
 
 **Rollback:** ordinary `turns` cases and `codex exec` remain unchanged. The scenario schema and
 adapter may be removed together only if lifecycle cases are also removed; removing the evaluator

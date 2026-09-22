@@ -10,7 +10,81 @@ from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+from .models import AuthenticationEvidence
+from .redaction import redact_value
+
 REPORT_SCHEMA_VERSION = 1
+_AUTH_ERROR_MARKERS = ("auth", "credential", "token", "secret", "password", "api_key")
+
+
+def _sanitize_report_value(value: Any) -> tuple[Any, set[str]]:
+    """Redact untrusted report data and collapse authentication errors to a safe class."""
+
+    redacted = redact_value(value)
+    labels = set(redacted.redactions)
+
+    def visit(item: Any) -> Any:
+        if isinstance(item, Mapping):
+            sanitized: dict[str, Any] = {}
+            for key, nested in item.items():
+                if str(key) == "runtime_errors" and isinstance(nested, Sequence):
+                    errors: list[str] = []
+                    for error in nested[:10]:
+                        text = str(error)
+                        if any(marker in text.lower() for marker in _AUTH_ERROR_MARKERS):
+                            errors.append("authentication runtime failure")
+                            labels.add("authentication-error")
+                        else:
+                            errors.append(text[:500])
+                    sanitized[str(key)] = errors
+                else:
+                    sanitized[str(key)] = visit(nested)
+            return sanitized
+        if isinstance(item, Sequence) and not isinstance(item, (str, bytes, bytearray)):
+            return [visit(nested) for nested in item]
+        return item
+
+    return visit(redacted.value), labels
+
+
+def authentication_metadata(
+    value: Mapping[str, Any] | AuthenticationEvidence | None,
+) -> dict[str, str]:
+    """Normalize report auth metadata; historical reports resolve to unknown."""
+
+    if isinstance(value, AuthenticationEvidence):
+        return value.as_dict()
+    return AuthenticationEvidence.from_mapping(value).as_dict()
+
+
+def build_policy_failure_report(
+    *,
+    report_type: str,
+    inputs: Mapping[str, Any],
+    authentication: Mapping[str, Any] | AuthenticationEvidence,
+    generated_at: str | None = None,
+) -> dict[str, Any]:
+    """Build a safe non-passing report for refusal before credential staging."""
+
+    if report_type not in {"evaluation", "comparison", "check"}:
+        raise ValueError(f"unsupported policy-failure report type: {report_type}")
+    report = build_artifact_report(
+        report_type=report_type,
+        inputs=inputs,
+        records=[
+            {
+                "code": "authentication.policy",
+                "severity": "error",
+                "path": "authentication",
+                "message": "authentication policy rejected the request before credential staging",
+            }
+        ],
+        evidence_manifest=[],
+        authentication=authentication,
+        result="fail",
+        generated_at=generated_at,
+    )
+    return report
 
 
 def normalize_relative_path(path: str | Path) -> str:
@@ -59,6 +133,7 @@ def build_evaluation_report(
     *,
     source: Mapping[str, Any],
     records: Sequence[Mapping[str, Any]],
+    authentication: Mapping[str, Any] | AuthenticationEvidence | None = None,
     generated_at: str | None = None,
 ) -> dict[str, Any]:
     """Build a canonical evaluation report without retaining raw transcripts."""
@@ -70,8 +145,12 @@ def build_evaluation_report(
         else ("inconclusive" if "inconclusive" in classifications else "pass")
     )
     normalized = []
+    report_redactions = {
+        label for record in records for label in record.get("redactions", [])
+    }
     for record in records:
-        item = dict(record)
+        item, redactions = _sanitize_report_value(dict(record))
+        report_redactions.update(redactions)
         item.update(
             code=f"evaluation.{item['classification']}",
             severity="info" if item["classification"] == "pass" else "error",
@@ -81,7 +160,7 @@ def build_evaluation_report(
             ),
         )
         normalized.append(item)
-    return {
+    report = {
         "schema_version": REPORT_SCHEMA_VERSION,
         "report_type": "evaluation",
         "generated_at": generated_at or datetime.now(UTC).isoformat(),
@@ -90,10 +169,11 @@ def build_evaluation_report(
         "result": result,
         "records": normalized,
         "evidence_manifest": [],
-        "redactions": sorted(
-            {label for record in records for label in record.get("redactions", [])}
-        ),
+        "redactions": sorted(report_redactions),
     }
+    if authentication is not None:
+        report["authentication"] = authentication_metadata(authentication)
+    return report
 
 
 def build_calibration_report(
@@ -108,6 +188,7 @@ def build_calibration_report(
     repetitions: int,
     dimensions: Mapping[str, Any],
     evidence_references: Sequence[Mapping[str, Any]],
+    authentication: Mapping[str, Any] | AuthenticationEvidence | None = None,
     summary_score: float | None = None,
     generated_at: str | None = None,
 ) -> dict[str, Any]:
@@ -115,6 +196,13 @@ def build_calibration_report(
 
     if len(evidence_references) > 100:
         raise ValueError("calibration evidence is limited to 100 references")
+    safe_references = []
+    for reference in evidence_references:
+        safe_reference, redactions = _sanitize_report_value(dict(reference))
+        safe_reference["redactions"] = sorted(
+            set(safe_reference.get("redactions", [])) | redactions
+        )
+        safe_references.append(safe_reference)
     report: dict[str, Any] = {
         "schema_version": REPORT_SCHEMA_VERSION,
         "report_type": "behavior-calibration",
@@ -128,10 +216,12 @@ def build_calibration_report(
         "repetitions": repetitions,
         "dimensions": dict(dimensions),
         "generated_at": generated_at or datetime.now(UTC).isoformat(),
-        "evidence_references": [dict(item) for item in evidence_references],
+        "evidence_references": safe_references,
     }
     if summary_score is not None:
         report["summary_score"] = summary_score
+    if authentication is not None:
+        report["authentication"] = authentication_metadata(authentication)
     return report
 
 
@@ -157,6 +247,7 @@ def build_comparison_report(
     stable: Mapping[str, Any],
     candidate: Mapping[str, Any],
     records: Sequence[Mapping[str, Any]],
+    authentication: Mapping[str, Any] | AuthenticationEvidence | None = None,
     generated_at: str | None = None,
 ) -> dict[str, Any]:
     classifications = {str(record["classification"]) for record in records}
@@ -168,7 +259,7 @@ def build_comparison_report(
         result = "pass"
     normalized = []
     for record in records:
-        item = dict(record)
+        item, _ = _sanitize_report_value(dict(record))
         item.update(
             code=f"comparison.{item['classification']}",
             severity="error"
@@ -178,7 +269,7 @@ def build_comparison_report(
             message=f"case {item['case_id']}: {item['classification']}",
         )
         normalized.append(item)
-    return {
+    report = {
         "schema_version": REPORT_SCHEMA_VERSION,
         "report_type": "comparison",
         "generated_at": generated_at or datetime.now(UTC).isoformat(),
@@ -189,6 +280,9 @@ def build_comparison_report(
         "evidence_manifest": [],
         "redactions": [],
     }
+    if authentication is not None:
+        report["authentication"] = authentication_metadata(authentication)
+    return report
 
 
 def build_artifact_report(
@@ -197,14 +291,15 @@ def build_artifact_report(
     inputs: Mapping[str, Any],
     records: Sequence[Mapping[str, Any]],
     evidence_manifest: Sequence[Mapping[str, Any]],
+    authentication: Mapping[str, Any] | AuthenticationEvidence | None = None,
     result: str = "pass",
     generated_at: str | None = None,
 ) -> dict[str, Any]:
     """Build a package or release-check canonical report envelope."""
 
-    if report_type not in {"package", "release-check", "check"}:
+    if report_type not in {"evaluation", "comparison", "package", "release-check", "check"}:
         raise ValueError(f"unsupported artifact report type: {report_type}")
-    return {
+    report = {
         "schema_version": REPORT_SCHEMA_VERSION,
         "report_type": report_type,
         "generated_at": generated_at or datetime.now(UTC).isoformat(),
@@ -215,6 +310,9 @@ def build_artifact_report(
         "evidence_manifest": [dict(item) for item in evidence_manifest],
         "redactions": [],
     }
+    if authentication is not None:
+        report["authentication"] = authentication_metadata(authentication)
+    return report
 
 
 def serialize_json(report: Mapping[str, Any]) -> str:

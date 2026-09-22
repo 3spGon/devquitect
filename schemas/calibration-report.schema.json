@@ -19,6 +19,18 @@
     "dimensions": {"type": "object"},
     "summary_score": {"type": "number"},
     "generated_at": {"type": "string", "format": "date-time"},
-    "evidence_references": {"type": "array", "maxItems": 100}
+    "evidence_references": {"type": "array", "maxItems": 100},
+    "authentication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "execution_context", "policy", "credential_state", "cleanup"],
+      "properties": {
+        "mode": {"enum": ["credential-free", "api-key", "chatgpt-cache-local", "unknown"]},
+        "execution_context": {"enum": ["structural", "interactive-behavioral", "unattended-behavioral", "unknown"]},
+        "policy": {"enum": ["allowed", "refused", "missing", "invalid", "unknown"]},
+        "credential_state": {"enum": ["not-needed", "injected", "staged", "cleaned", "stale", "cleanup-failed", "unknown"]},
+        "cleanup": {"enum": ["not_applicable", "handled", "stale_recovered", "failed", "unknown"]}
+      }
+    }
   }
 }

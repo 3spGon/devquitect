@@ -9,7 +9,8 @@ The initiative requests robust continuation of long `project-plan-execution` run
 - `skills/project-plan-execution/references/delivery-state.md` already makes `09-delivery-status.md` the durable delivery checkpoint and defines conservative resume and repository reconciliation behavior.
 - The checkpoint already owns `current_slice`, `next_action`, `required_context`, blockers, per-slice status, evidence, and a coherent-update revision protocol.
 - The current contract does not explicitly model the finer execution frontier requested by the initiative and does not name compactation as a recovery event.
-- `.codex/hooks.json` contains only Graphify's `PreToolUse` hook for Bash. No Devquitect compactation hook or packaged hook implementation exists.
+- A developer checkout may contain an optional Graphify `PreToolUse` hook for Bash. It is not part
+  of the public Devquitect plugin; no Devquitect compactation hook or packaged hook implementation exists.
 - `.codex-plugin/plugin.json` declares only the skills root. `src/devquitect_quality/packaging.py` currently allows only that manifest and files under `skills/`, so a runtime hook cannot be shipped without an explicit package-contract change.
 - Existing deterministic tests cover slice evidence and close behavior, not one, two, or four compactations.
 
@@ -62,10 +63,11 @@ second execution state was added to the design. Gate 2 is awaiting explicit appr
 
 ## 2026-09-19 — Native hook activation clarified
 
-The user asked for activation/deactivation comparable to Graphify. Inspection showed that
-Graphify's Codex `PreToolUse` handler is simply declared in `.codex/hooks.json`; its
-`graphify hook install/uninstall/status` commands instead control Git hooks. Official Codex
-behavior already provides the needed individual lifecycle-hook toggle through `/hooks`.
+The user asked for activation/deactivation comparable to Graphify. Inspection of a local
+Graphify installation showed that its Codex `PreToolUse` handler was declared in
+`.codex/hooks.json`; its `graphify hook install/uninstall/status` commands instead control Git
+hooks. Official Codex behavior already provides the needed individual lifecycle-hook toggle
+through `/hooks`.
 
 The design therefore uses native per-hook enable/disable and trust review. Disabled means
 automatic compactation recovery is unavailable while manual skill recovery remains. No custom

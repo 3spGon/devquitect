@@ -91,7 +91,7 @@ y Git ausente como errores de soporte, no resultados satisfactorios.
 **Verificación:** ejecutar CHECK-GUARD, CHECK-PACKAGE y todos los checks comunes declarados
 en el bloque. CHECK-GUARD apunta a un archivo propuesto: solo se ejecuta después de crearlo.
 Los tests de packaging usan repositorios temporales, sin construir ni promover un release real.
-Después de cambiar código, ejecutar `graphify update .` según AGENTS.md y revisar el diff.
+Después de cambiar código, ejecutar `graphify update .` si Graphify está disponible y revisar el diff.
 
 **Documentación y reversión:** registrar capacidad standalone en System Context; no afirmar
 que el segundo slice esté entregado. Para revertir, conservar evidencia de sesiones y retirar
@@ -154,7 +154,7 @@ nuevos tipos de aserción o una infraestructura de evaluación distinta para est
 
 **Verificación:** CHECK-GUARD, CHECK-PACKAGE, CHECK-CASES y checks comunes. Inspeccionar los
 contratos en su owner_path y las referencias secundarias para eliminar duplicación.
-Si el slice modifica código, ejecutar `graphify update .` antes de la comprobación final.
+Si el slice modifica código, ejecutar `graphify update .` si Graphify está disponible antes de la comprobación final.
 
 **Documentación y reversión:** actualizar System Context después de verificar la integración,
 conservando las limitaciones y la ausencia de publicación. Un retorno a una skill antigua

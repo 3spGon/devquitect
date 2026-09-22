@@ -23,6 +23,7 @@ from .redaction import redact_text
 
 DEFAULT_TEST_MODEL = "gpt-5.6-luna"
 DEFAULT_TEST_REASONING_EFFORT = "high"
+CREDENTIAL_CLEANUP_FAILURE = "credential cleanup failed"
 REQUIRED_FLAGS = (
     "--ephemeral",
     "--json",
@@ -202,6 +203,7 @@ def run_codex(
         if any(marker in key.upper() for marker in ("TOKEN", "SECRET", "PASSWORD", "API_KEY"))
     )
     staged_auth: Path | None = None
+    cleanup_failed = False
     try:
         if auth_cache is not None:
             staged_auth = _stage_auth_cache(auth_cache, attempt.codex_home)
@@ -236,7 +238,16 @@ def run_codex(
             status = RuntimeStatus(None, "infrastructure-error", (str(error),))
     finally:
         if staged_auth is not None:
-            staged_auth.unlink(missing_ok=True)
+            try:
+                staged_auth.unlink(missing_ok=True)
+            except OSError:
+                cleanup_failed = True
+    if cleanup_failed:
+        status = RuntimeStatus(
+            None,
+            "infrastructure-error",
+            status.errors + (CREDENTIAL_CLEANUP_FAILURE,),
+        )
     return Observation(
         status,
         events,
