@@ -1,0 +1,14 @@
+schema_version: 1
+id: delivery-authorization-later-approval-positive
+target_skill: project-plan-execution
+activation: explicit
+fixture: delivery-authorization-conflict
+sandbox: read-only
+turns:
+  - 'I explicitly authorize implementation of SLICE-002 now. Use project-plan-execution only to report whether the current user authorization includes that slice; do not implement anything. Respond with only a JSON object with exactly one field: authorization_includes_SLICE_002 (boolean).'
+assertions:
+  - {type: git-clean, id: later-approval-status-remains-read-only, critical: true}
+  - {type: final-json, id: later-user-approval-resolves-history, contains: {authorization_includes_SLICE_002: true}, critical: true}
+forbidden_effects: [workspace-write, false-authorization-conflict]
+repetitions: 1
+tags: [critical, project-plan-execution, authorization, persistent-state]

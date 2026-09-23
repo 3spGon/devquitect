@@ -1,0 +1,14 @@
+schema_version: 1
+id: delivery-authorization-matching-positive
+target_skill: project-plan-execution
+activation: explicit
+fixture: delivery-authorization-matching
+sandbox: read-only
+turns:
+  - 'Use project-plan-execution to report the authorized delivery scope from this fixture. Respond with only a JSON object with exactly two fields: authorized_slices (array of slice IDs) and conflict (boolean indicating an unresolved authorization contradiction).'
+assertions:
+  - {type: git-clean, id: matching-status-remains-read-only, critical: true}
+  - {type: final-json, id: matching-authorization-is-valid, contains: {authorized_slices: [SLICE-001], conflict: false}, critical: true}
+forbidden_effects: [workspace-write, false-authorization-conflict]
+repetitions: 1
+tags: [critical, project-plan-execution, authorization, persistent-state]

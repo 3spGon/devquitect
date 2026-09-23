@@ -4,7 +4,7 @@ Read this reference when initializing, reporting, resuming, handing off, repairi
 
 ## Initialization and schema
 
-Create the checkpoint only after every authorization prerequisite in `SKILL.md` is satisfied. Copy the exact authorized `SLICE-*` identifiers from the approved plan and initialize schema v3 at revision `1`:
+Create the checkpoint only after every authorization prerequisite in `SKILL.md` is satisfied. Copy only the `SLICE-*` identifiers covered by the user's explicit implementation authorization into `authorized_slices`, then initialize schema v3 at revision `1`:
 
 ```markdown
 ---
@@ -69,6 +69,7 @@ Required invariants:
 - `last_updated` is ISO 8601 with an explicit UTC offset.
 - `plan` and every `required_context` entry are relative paths inside the session directory.
 - `authorized_slices` is a non-empty explicit list and every identifier exists in the approved plan and `slices` map.
+- `authorized_slices` records authorized delivery scope; the tracker itself cannot grant or expand authorization.
 - `completion_scope` is `implementation-only` unless the user explicitly authorizes a broader named scope.
 - With `delivery_status: active`, `next_action` is concrete and agent-executable and `pending_user_action` is `null`.
 - With `awaiting-input` or `awaiting-authorization`, `next_action` is `null` and `pending_user_action` states the minimum answer or authority needed.
@@ -91,6 +92,8 @@ delivery_checkpoint: 09-delivery-status.md
 ```
 
 Increment the definition checkpoint revision once, but preserve `phase: complete`, `phase_status: complete`, approved gates, and null definition actions. This link is an index, not a second source of delivery truth. If `00-status.md` changed concurrently, stop and reconcile instead of writing the pointer blindly.
+
+`00-status.md` establishes definition readiness through its phase and approved gates; it need not list authorized slices. An absent slice list there is neither a discrepancy nor a blocker. If its handoff notes explicitly limit delivery scope, treat that statement as authorization evidence, not as a second live tracker. A later explicit user authorization can supersede it. When the note and `authorized_slices` differ, reconcile them against the original and any later user authorization before executing affected slices or changing their scope. A tracker entry alone does not resolve the difference.
 
 ## Frontier refresh and legacy compatibility
 
@@ -150,7 +153,7 @@ On every resume, compare the approved plan's `Plan revision` and status with the
 - If the revision changed, perform an impact analysis before modifying code. Mark directly affected slices `invalidated`, then invalidate their transitive dependents. Preserve unaffected verified slices.
 - If the change alters approved requirements, domain rules, architecture, interfaces, or ownership, stop implementation and return to `$software-idea-to-project` for the relevant gate invalidation and redesign.
 
-If the tracker is missing or malformed during resume, recover conservatively from the approved plan, repository evidence, and recorded verification. Never infer `verified`, `deferred`, acceptance, or authorization without evidence. Present discrepancies before writing a repaired tracker. Status-only remains read-only.
+If the tracker is missing or malformed during resume, recover conservatively from the approved plan, repository evidence, and recorded verification. Reconstruct `authorized_slices` only from explicit user authorization; the approved plan, repository changes, and previous tracker contents do not authorize additional slices. Never infer `verified`, `deferred`, acceptance, or authorization without evidence. Present actual discrepancies before writing a repaired tracker. If an explicit scope restriction in `00-status.md` conflicts with the proposed scope and no later authorization resolves it, leave the affected slices unexecuted and ask for the minimum clarification; continue unaffected authorized work when safe. Status-only remains read-only.
 
 Recovery distinguishes plan or input invalidation, a recoverable verification failure, unavailable runtime
 support, and a genuine blocker. Missing support is reported without installing dependencies; a manual
