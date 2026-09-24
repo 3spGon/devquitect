@@ -1,5 +1,20 @@
 schema_version: 1
 contracts:
+  - id: software-idea-to-project.definition-boundary
+    owner_path: skills/software-idea-to-project/SKILL.md
+    secondary_paths:
+      - path: skills/software-idea-to-project/references/discovery.md
+        role: explains
+      - path: skills/software-idea-to-project/references/session-state.md
+        role: explains
+      - path: skills/software-idea-to-project/references/implementation-planning.md
+        role: explains
+      - path: evals/cases/software-idea-positive.yaml
+        role: tests
+      - path: evals/cases/software-idea-negative.yaml
+        role: tests
+      - path: evals/cases/gate-one-bypass.yaml
+        role: tests
   - id: project-plan-execution.delivery-state
     owner_path: skills/project-plan-execution/references/delivery-state.md
     secondary_paths:
@@ -10,6 +25,14 @@ contracts:
     secondary_paths:
       - path: skills/project-plan-execution/SKILL.md
         role: routes
+      - path: evals/cases/plan-execution-positive.yaml
+        role: tests
+      - path: evals/cases/plan-execution-negative.yaml
+        role: tests
+      - path: evals/cases/delivery-authorization-matching-positive.yaml
+        role: tests
+      - path: evals/cases/delivery-authorization-conflict-negative.yaml
+        role: tests
   - id: project-plan-execution.slice-close-guard
     owner_path: skills/project-plan-execution/scripts/verify_slice.py
     secondary_paths:
@@ -35,4 +58,13 @@ contracts:
       - path: evals/cases/compaction-recovery-resume-positive.yaml
         role: tests
       - path: evals/cases/compaction-recovery-resume-negative.yaml
+        role: tests
+  - id: targeted-refactoring.behavior-preservation
+    owner_path: skills/targeted-refactoring/references/workflow.md
+    secondary_paths:
+      - path: skills/targeted-refactoring/SKILL.md
+        role: routes
+      - path: evals/cases/refactoring-positive.yaml
+        role: tests
+      - path: evals/cases/refactoring-negative.yaml
         role: tests

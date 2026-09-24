@@ -2,6 +2,12 @@
 
 Read this reference before implementing, resuming, verifying, or completing delivery slices.
 
+## Authorized handoff
+
+Start only from a persistent session whose `00-status.md` records Gate 1 and Gate 2 approved and definition complete, with an `08-implementation-plan.md` marked `Approved`, carrying a positive revision and stable slice IDs. The user must explicitly authorize the concrete slice list. An explicit request to implement the whole plan authorizes every slice; otherwise include only the slices the user named or whose outcome unambiguously selects them. A delivery checkpoint records authorization; it cannot grant or expand it.
+
+If any prerequisite is missing, do not change application files or initialize a delivery checkpoint. Report the missing condition or return to `$software-idea-to-project`.
+
 ## Preflight
 
 Before the first code mutation and on resume:
