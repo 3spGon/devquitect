@@ -14,7 +14,12 @@ def test_cases_are_schema_valid_unique_and_cover_each_skill_routing() -> None:
     routing = {(case.data["target_skill"], case.data["activation"]) for case in cases}
     identifiers = {case.id for case in cases}
 
-    for skill in ("software-idea-to-project", "project-plan-execution", "targeted-refactoring"):
+    for skill in (
+        "software-idea-to-project",
+        "project-plan-execution",
+        "quick-change",
+        "targeted-refactoring",
+    ):
         assert (skill, "implicit-negative") in routing
         assert any(pair[0] == skill and pair[1] != "implicit-negative" for pair in routing)
     assert select_cases(cases, suite="critical")

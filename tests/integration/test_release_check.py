@@ -10,7 +10,12 @@ from jsonschema import Draft202012Validator
 from devquitect_quality.packaging import build_package
 from devquitect_quality.promotion import PromotionError, release_check
 
-SKILLS = ("project-plan-execution", "software-idea-to-project", "targeted-refactoring")
+SKILLS = (
+    "project-plan-execution",
+    "quick-change",
+    "software-idea-to-project",
+    "targeted-refactoring",
+)
 SCHEMAS = (
     "eval-case.schema.json",
     "report.schema.json",

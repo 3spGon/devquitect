@@ -1,6 +1,6 @@
 {
   "name": "devquitect",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Define, execute, and improve software work through bounded, verifiable workflows.",
   "author": {
     "name": "Devquitect"
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "Devquitect",
     "shortDescription": "Design and deliver software with explicit boundaries",
-    "longDescription": "Reusable workflows for software definition, approved-plan execution, and targeted behavior-preserving refactoring.",
+    "longDescription": "Reusable workflows for software definition, QUICK local changes, approved-plan execution, and targeted behavior-preserving refactoring.",
     "developerName": "Devquitect",
     "category": "Developer Tools",
     "capabilities": [
@@ -19,6 +19,7 @@
     ],
     "defaultPrompt": [
       "Use Devquitect to define a software change before implementation.",
+      "Use Devquitect QUICK for an authorized, localized, reversible change with a direct verification path.",
       "Use Devquitect to execute an authorized implementation slice and retain verification evidence."
     ]
   }

@@ -68,3 +68,18 @@ contracts:
         role: tests
       - path: evals/cases/refactoring-negative.yaml
         role: tests
+  - id: quick-change.bounded-local-implementation
+    owner_path: skills/quick-change/SKILL.md
+    secondary_paths:
+      - path: skills/quick-change/agents/openai.yaml
+        role: routes
+      - path: .codex-plugin/plugin.json
+        role: routes
+      - path: evals/cases/quick-change-positive.yaml
+        role: tests
+      - path: evals/cases/quick-change-explicit-positive.yaml
+        role: tests
+      - path: evals/cases/quick-change-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-explicit-negative.yaml
+        role: tests

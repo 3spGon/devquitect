@@ -8,7 +8,12 @@ import pytest
 
 from devquitect_quality.packaging import PackageError, build_package
 
-SKILLS = ("project-plan-execution", "software-idea-to-project", "targeted-refactoring")
+SKILLS = (
+    "project-plan-execution",
+    "quick-change",
+    "software-idea-to-project",
+    "targeted-refactoring",
+)
 
 
 def git(repository: Path, *args: str) -> str:
