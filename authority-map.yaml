@@ -83,3 +83,15 @@ contracts:
         role: tests
       - path: evals/cases/quick-change-explicit-negative.yaml
         role: tests
+      - path: evals/cases/quick-change-adversarial-contract-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-migration-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-dependency-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-auth-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-irreversible-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-architecture-negative.yaml
+        role: tests
