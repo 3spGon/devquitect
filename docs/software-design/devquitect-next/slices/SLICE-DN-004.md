@@ -4,8 +4,8 @@ session: devquitect-next
 slice: SLICE-DN-004
 plan_revision: 2
 plan_digest: fe4e049a196667e91b59807f1fc2670b105fde5ea56c8daff0136b3bb0b33e3e
-verified_at: '2026-10-02T17:44:03Z'
-inputs_digest: 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974
+verified_at: '2026-10-02T18:28:49Z'
+inputs_digest: 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151
 environment:
   python: 3.14.7
   PyYAML: 6.0.3
@@ -28,7 +28,8 @@ criteria:
       Definition and execution metadata changed; QUICK and refactoring already matched the plan.
       Structural validation accepted metadata, ownership, packaging, and all cases. No universal
       router was introduced. This verifies the native configuration and contract, not a live
-      model-backed host selection; no behavioral run was authorized or claimed.
+      model-backed host selection in the initial verification. The separately authorized follow-up
+      passed all twelve candidate cases on gpt-5.6-luna/high with the corrected supervisor configuration.
     status: PASS
     evidence: CHECK-DN-010
   AC-DN-008:
@@ -53,7 +54,9 @@ criteria:
       for differing configurations, invented evidence, release approval, and adapter failures as passes.
       Three ledger groups bind immutable baseline dff146543c870a56b55d1ed339eeb95f6397653f to the actual
       candidate file hashes, all independently recomputed and matched. No row claims a behavioral
-      result: comparisons require separate authorization and are not a completion prerequisite
+      result in the initial inventory. Two separately authorized observed rows now retain both
+      supervisor configurations without pooling; the corrected row has ten equivalences and two improvements.
+      Comparisons require separate authorization and are not a completion prerequisite
       for this implementation slice under approved plan revision 2.
     status: PASS
     evidence: CHECK-DN-010
@@ -61,33 +64,33 @@ checks:
   CHECK-DN-010:
     command: uv run devquitect check --source working-tree --report .devquitect-reports/check.json
     cwd: .
-    started_at: '2026-10-02T17:43:10.069Z'
-    finished_at: '2026-10-02T17:43:26.359Z'
+    started_at: '2026-10-02T18:28:33.002Z'
+    finished_at: '2026-10-02T18:28:48.658Z'
     exit_code: 0
     status: PASS
     observed: Structural validation and fast credential-free suite passed; report result pass, behavioral false.
-    inputs_before: 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974
-    inputs_after: 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974
+    inputs_before: 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151
+    inputs_after: 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151
   CHECK-DN-011:
     command: uv run ruff check src tests
     cwd: .
-    started_at: '2026-10-02T17:43:26.898Z'
-    finished_at: '2026-10-02T17:43:26.923Z'
+    started_at: '2026-10-02T18:28:48.658Z'
+    finished_at: '2026-10-02T18:28:48.719Z'
     exit_code: 0
     status: PASS
     observed: All checks passed!
-    inputs_before: 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974
-    inputs_after: 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974
+    inputs_before: 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151
+    inputs_after: 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151
   CHECK-DN-012:
     command: git diff --check
     cwd: .
-    started_at: '2026-10-02T17:43:27.453Z'
-    finished_at: '2026-10-02T17:43:27.463Z'
+    started_at: '2026-10-02T18:28:48.719Z'
+    finished_at: '2026-10-02T18:28:48.730Z'
     exit_code: 0
     status: PASS
     observed: No output; the diff is whitespace-clean.
-    inputs_before: 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974
-    inputs_after: 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974
+    inputs_before: 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151
+    inputs_after: 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151
 ---
 
 # PASS — SLICE-DN-004 evidence
@@ -95,7 +98,7 @@ checks:
 Branch: `codex/slice-dn-004-invocation-matrix`. The user's 2026-10-02 authorization covers
 only local DN-004 implementation and verification. Definition gates and plan revision 2
 were approved; DN-003 was verified. DN-005, DN-006, behavioral comparisons, release actions,
-commits, and pushes were not authorized or performed.
+commits, and pushes were not authorized or performed during the original slice execution.
 
 ## Functional and cumulative review
 
@@ -124,3 +127,20 @@ Ruff found one 101-character test line; it was split and relevant checks rerun s
 There are no unresolved implementation failures or external acceptance blockers. Pending matrix
 rows intentionally supply no model comparison or release eligibility; future behavioral runs
 require separate user authorization and new observed rows.
+
+## Authorized v0.8.0 follow-up on 2026-10-02
+
+The user's later instruction authorized v0.8.0 preparation, local candidate/evidence commits,
+and relevant supervised comparisons. Candidate dc936180ed2a854c9f6ac65aa9e21559f4a7e2af
+contains the compared skill snapshot. BC-DN-004-001 appends two independent observed rows:
+the outer restricted supervisor had four shared functional failures; removing that outer restriction
+while preserving model sandboxes produced twelve candidate passes, ten equivalent pairs, two
+matrix improvements, and no regression. All 24 reports record credential cleanup handled/cleaned.
+One model, one repetition per source/case, and differing supervisor configurations support no
+cross-model or variance claim. The prior failures remain visible and are not counted as passes.
+
+The skill source, positive/negative cases, case-suite digest, verifier, and plan inventory did
+not change. Appending ledger evidence changed the declared input fingerprint, so current focused
+tests (9 passed), credential-free check, Ruff, and diff check were rerun with the new digest.
+The supported check/close path must accept this refreshed evidence before the final evidence commit.
+Release preparation and promotion provenance are recorded in docs/releases/v0.8.0.md.

@@ -192,3 +192,104 @@ rows:
     authorization: not-authorized
     verdict: not-run
 ```
+
+## BC-DN-004-001 — Authorized v0.8.0 comparison follow-up
+
+- **Authorization:** The user explicitly requested the remaining v0.8.0 preparation and relevant
+  model comparisons on 2026-10-02. These are supervised local runs, not unattended promotion jobs.
+- **Group:** `PC-DN-004-MATRIX`, with related invocation groups `PC-DN-004-DEL` and `PC-DN-004-DEF`.
+- **Stable:** `git:dff146543c870a56b55d1ed339eeb95f6397653f`, skill snapshot
+  `sha256:27f72b4312cbd65c0b656bb179366b52da20d898698f28a438fda9a340c9601f`.
+- **Candidate:** `git:dc936180ed2a854c9f6ac65aa9e21559f4a7e2af`, skill snapshot
+  `sha256:67a9177656aa136261d5aaa5935a0d89bd6a5155fe14d53ef8508e73622675aa`.
+- **Cases:** The same twelve representative cases and suite revision from the initial inventory.
+  All report source/snapshot identities, paired case digests, model IDs, effort, and repetitions
+  were checked. Every report records credential cleanup as handled and cleaned.
+- **Disposition:** retain. No skill wording was changed from one model miss or to compensate for
+  host infrastructure failures. The four other canonical model rows remain unexecuted.
+- **Evidence:** [v0.8.0 release review](releases/v0.8.0.md), plus the individual reports below.
+
+The two observed rows differ in the supervisor's sandbox. They are not pooled and support no
+cross-model claim. The model attempts retain their case-defined read-only/workspace-write sandbox.
+The first row returned `equivalent` for all pairs but had four critical functional failures on
+both sources: positive implicit/explicit QUICK and positive/negative matrix cases. It is diagnostic
+and inconclusive for functional acceptance. Sandbox warnings and a process-creation error were
+observed. Removing the supervisor's outer sandbox recovered QUICK; a full same-suite run under
+that configuration then passed every candidate case. That second row has ten equivalent pairs
+and two improvements (both matrix cases), with no candidate critical failure or regression.
+Non-fatal stderr notices remain in the reports; none is silently discarded or claimed as a pass.
+
+```devquitect-evaluation-matrix
+schema_version: 1
+prompt_change_group: PC-DN-004-MATRIX
+representative_cases:
+  - software-idea-positive
+  - software-idea-negative
+  - quick-change-positive
+  - quick-change-negative
+  - quick-change-explicit-positive
+  - quick-change-explicit-negative
+  - plan-execution-positive
+  - plan-execution-implicit-negative
+  - refactoring-positive
+  - refactoring-negative
+  - evaluation-matrix-positive
+  - evaluation-matrix-negative
+rows:
+  - model_id: gpt-5.6-luna
+    host:
+      name: Codex CLI
+      version: 0.154.0
+      supervisor_sandbox: workspace-write
+    runtime:
+      adapter: codex-exec
+      quality_tool: devquitect-quality 0.1.0
+      mode: supervised-local
+      model_sandbox: case-defined read-only or workspace-write
+    reasoning_effort: high
+    suite_revision: sha256:e6f14a59da173317677421a4d43456d58541e4fdbf8d79e148be7b7d044804d0
+    repetitions: 1
+    report_references:
+      - .devquitect-reports/v0.8.0-compare-software-idea-positive.json
+      - .devquitect-reports/v0.8.0-compare-software-idea-negative.json
+      - .devquitect-reports/v0.8.0-compare-quick-change-positive.json
+      - .devquitect-reports/v0.8.0-compare-quick-change-negative.json
+      - .devquitect-reports/v0.8.0-compare-quick-change-explicit-positive.json
+      - .devquitect-reports/v0.8.0-compare-quick-change-explicit-negative.json
+      - .devquitect-reports/v0.8.0-compare-plan-execution-positive.json
+      - .devquitect-reports/v0.8.0-compare-plan-execution-implicit-negative.json
+      - .devquitect-reports/v0.8.0-compare-refactoring-positive.json
+      - .devquitect-reports/v0.8.0-compare-refactoring-negative.json
+      - .devquitect-reports/v0.8.0-compare-evaluation-matrix-positive.json
+      - .devquitect-reports/v0.8.0-compare-evaluation-matrix-negative.json
+    authorization: supervised user authorization on 2026-10-02
+    verdict: inconclusive-functional-acceptance
+  - model_id: gpt-5.6-luna
+    host:
+      name: Codex CLI
+      version: 0.154.0
+      supervisor_sandbox: unconfined
+    runtime:
+      adapter: codex-exec
+      quality_tool: devquitect-quality 0.1.0
+      mode: supervised-local
+      model_sandbox: case-defined read-only or workspace-write
+    reasoning_effort: high
+    suite_revision: sha256:e6f14a59da173317677421a4d43456d58541e4fdbf8d79e148be7b7d044804d0
+    repetitions: 1
+    report_references:
+      - .devquitect-reports/v0.8.0-unconfined-compare-software-idea-positive.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-software-idea-negative.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-quick-change-positive.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-quick-change-negative.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-quick-change-explicit-positive.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-quick-change-explicit-negative.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-plan-execution-positive.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-plan-execution-implicit-negative.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-refactoring-positive.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-refactoring-negative.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-evaluation-matrix-positive.json
+      - .devquitect-reports/v0.8.0-unconfined-compare-evaluation-matrix-negative.json
+    authorization: supervised user authorization on 2026-10-02
+    verdict: no-regression-ten-equivalent-two-improvements
+```

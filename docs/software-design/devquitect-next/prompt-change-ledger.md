@@ -23,6 +23,16 @@ This append-only ledger makes each staged prompt simplification reviewable witho
 
 ## Entries
 
+### BC-DN-004-001 — Authorized v0.8.0 follow-up
+
+On 2026-10-02 the user authorized v0.8.0 preparation and relevant model comparisons.
+The append-only [observed rows](../../skill-change-ledger.md#bc-dn-004-001--authorized-v080-comparison-follow-up)
+retain the same source pair, twelve cases, and suite revision. Both rows use gpt-5.6-luna/high
+but differ in the supervisor sandbox, so their results remain separate. The restricted row
+has four shared functional failures; the corrected row passes all twelve candidate cases,
+with ten equivalent pairs and two matrix improvements. All credential cleanup passed.
+The [release review](../../releases/v0.8.0.md) records package and promotion provenance.
+
 ### PC-DN-004 — Invocation policies and independent evaluation rows
 
 The user authorized SLICE-DN-004 implementation on 2026-10-02, without behavioral comparisons.

@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 36
-last_updated: '2026-10-02T17:45:32Z'
+revision: 39
+last_updated: '2026-10-02T18:31:17Z'
 plan: 08-implementation-plan.md
 plan_revision: 2
 completion_scope: implementation-only
@@ -26,10 +26,24 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
-  - Verified DN-004 against AC-DN-007 and AC-DN-008 with nine passing focused tests and all required checks.
-  - Closed DN-004 through verify_slice.py at digest 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974 with no issues.
-  - Reviewed the cumulative diff; approved plan, verifier, inventory, and dependencies remain unchanged.
-  - Completed only the authorized scope DN-001 through DN-004; DN-005, DN-006, and behavioral comparisons are unauthorized.
+  - Refreshed and closed DN-004 after the separately authorized comparison ledger append at digest 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151.
+  - Current focused tests, credential-free check, Ruff, and diff check passed; no skill source or case changed during the follow-up.
+  - The user authorized v0.8.0 preparation and relevant supervised model comparisons
+    on 2026-10-02.
+  - Created immutable candidate dc936180ed2a854c9f6ac65aa9e21559f4a7e2af with plugin
+    version 0.8.0.
+  - Both independent twelve-case comparison rows are retained; the corrected supervisor
+    passed all candidate cases with ten equivalences and two improvements.
+  - Candidate commit check, deterministic package rebuilds, ZIP inspection, and release-check
+    passed.
+  - Verified DN-004 against AC-DN-007 and AC-DN-008 with nine passing focused tests
+    and all required checks.
+  - Closed DN-004 through verify_slice.py at digest 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974
+    with no issues.
+  - Reviewed the cumulative diff; approved plan, verifier, inventory, and dependencies
+    remain unchanged.
+  - Completed only the authorized scope DN-001 through DN-004; DN-005, DN-006, and
+    behavioral comparisons are unauthorized.
   - Implemented explicit-only delivery metadata and declared implicit definition policy;
     QUICK and refactoring retain true.
   - Added independent five-model pending inventory, fixed twelve-case suite digest,
@@ -127,9 +141,10 @@ slices:
 
 ## Current objective
 
-SLICE-DN-004 is implemented and verified on `codex/slice-dn-004-invocation-matrix`.
-The authorized DN-001 through DN-004 scope is complete. Behavioral comparisons, DN-005,
-and DN-006 remain outside this authorization; pending model rows assert no behavioral result.
+DN-004 is verified after the separately authorized v0.8.0 comparison follow-up. The authorized
+DN-001 through DN-004 implementation scope is complete. The compared skill snapshot is unchanged;
+only observed evidence was appended. DN-005 and DN-006 remain unauthorized. Local release preparation
+and promotion authority are recorded in `docs/releases/v0.8.0.md`.
 
 ## Last completed work
 
@@ -157,6 +172,11 @@ has current PASS evidence for both criteria and CHECK-DN-010 through CHECK-DN-01
 
 ## Handoff notes
 
+- The later user request authorized v0.8.0 preparation and supervised model comparisons. BC-DN-004-001
+  records twelve cases in each of two independent supervisor configurations; the corrected row has
+  twelve candidate passes, ten equivalents, and two improvements. The original restricted failures
+  remain diagnostic and are not treated as functional passes. All credential cleanup passed.
+
 - On 2026-10-02 the user authorized DN-004 and a new branch. The working tree was clean.
   No behavioral run is authorized for this task. Python 3.14.7 and PyYAML 6.0.3 are available;
   uv requires an accessible cache under /private/tmp in this sandbox.
@@ -173,6 +193,6 @@ has current PASS evidence for both criteria and CHECK-DN-010 through CHECK-DN-01
 
 <!-- devquitect:slice-close:start -->
 
-Verified SLICE-DN-004 at 2026-10-02T17:45:25.567280Z; evidence: `slices/SLICE-DN-004.md`.
+Verified SLICE-DN-004 at 2026-10-02T18:30:35.103164Z; evidence: `slices/SLICE-DN-004.md`.
 
 <!-- devquitect:slice-close:end -->
