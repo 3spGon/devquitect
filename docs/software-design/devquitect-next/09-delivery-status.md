@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 28
-last_updated: '2026-09-29T05:27:07Z'
+revision: 32
+last_updated: '2026-10-02T17:26:33Z'
 plan: 08-implementation-plan.md
 plan_revision: 2
 completion_scope: implementation-only
@@ -25,6 +25,12 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
+  - Created codex/slice-dn-003-revalidation as requested on 2026-10-02.
+  - Compared the existing DN-003 implementation with approved plan revision 2 and both acceptance criteria.
+  - Removed contradictory fixed-root artifact instructions and mapped the reference and two deterministic contract tests.
+  - Focused tests, credential-free check, Ruff, and git diff --check passed after correcting a long test line.
+  - Refreshed the stale plan fingerprint and recorded current manual/deterministic evidence separately from historical model reports.
+  - Closed DN-003 through verify_slice.py at input digest 2c4e05e24dc24a651106ec003ceb3e8777f507279f99b24d1f45637ed37f5d26 with no issues.
   - Confirmed the definition gates and approved plan revision 2.
   - Created the requested working branch.
   - Linked the delivery checkpoint from the definition checkpoint.
@@ -71,8 +77,10 @@ execution_frontier:
     candidates are completed sessions for different projects and slice plans.'
   - Ran the final credential-free check, Ruff, and diff check successfully; the default
     uv cache was inaccessible, so the passing rerun used an offline cache under /private/tmp.
-  - "Closed SLICE-DN-003 via verify_slice.py at input digest 9fc763ea5540062376a8a8fa86860b3ad8a4335d8c51af92ebd1bd53257a5a61; AC-DN-005, AC-DN-006, and CHECK-DN-007 through CHECK-DN-009 passed."
-  - Reran the required credential-free check, Ruff, and diff check after slice closure and the complete checkpoint update; all passed.
+  - Closed SLICE-DN-003 via verify_slice.py at input digest 9fc763ea5540062376a8a8fa86860b3ad8a4335d8c51af92ebd1bd53257a5a61;
+    AC-DN-005, AC-DN-006, and CHECK-DN-007 through CHECK-DN-009 passed.
+  - Reran the required credential-free check, Ruff, and diff check after slice closure
+    and the complete checkpoint update; all passed.
   in_progress: null
   do_not_repeat: []
   pending_verification: []
@@ -95,7 +103,7 @@ slices:
 
 ## Current objective
 
-`SLICE-DN-001`, `SLICE-DN-002`, and `SLICE-DN-003` are verified. The authorized implementation-only scope under plan revision 2 is complete on branch `codex/slice-dn-003`.
+SLICE-DN-003 is verified on `codex/slice-dn-003-revalidation`, with the fixed-root artifact contradiction corrected and current evidence accepted by the supported verifier. Previously verified SLICE-DN-001 and SLICE-DN-002 remain unchanged. DN-004 through DN-006 remain outside the authorized scope.
 
 ## Last completed work
 
@@ -117,6 +125,11 @@ slices:
 
 ## Handoff notes
 
+- On 2026-10-02 the user authorized DN-003 and a new branch. Revalidation found a stale plan hash
+  and a conflicting fixed-root artifact reference. The reference and authority mapping were
+  corrected; two positive/negative contract tests and all required repository checks passed.
+  Current evidence distinguishes deterministic/manual verification from historical model results.
+
 - The worktree already contained untracked `docs/software-design/devquitect-next/` definition artifacts; they are preserved.
 - The user authorized the model-backed follow-up on 2026-09-24. All nine representative cases returned `equivalent`; reports and runtime notes are recorded in the slice evidence and change ledger.
 - The user explicitly authorized only `SLICE-DN-002` for this execution, with implementation-only scope.
@@ -124,6 +137,6 @@ slices:
 
 <!-- devquitect:slice-close:start -->
 
-Verified SLICE-DN-003 at 2026-09-29T05:22:19.241402Z; evidence: `slices/SLICE-DN-003.md`.
+Verified SLICE-DN-003 at 2026-10-02T17:26:24.528605Z; evidence: `slices/SLICE-DN-003.md`.
 
 <!-- devquitect:slice-close:end -->

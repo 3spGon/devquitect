@@ -73,3 +73,15 @@ This versioned ledger records each named prompt rule group. Baselines use immuta
 - **Evidence:** `.devquitect-reports/slice-dn-003-definition-root-resume.json`, `.devquitect-reports/slice-dn-003-definition-root-ambiguity-final.json`, `.devquitect-reports/slice-dn-003-definition-root-invalid.json`, `.devquitect-reports/slice-dn-003-workflow-depth-legacy.json`, and [SLICE-DN-003 evidence](software-design/devquitect-next/slices/SLICE-DN-003.md).
 - **Verdict:** inconclusive
 - **Rationale:** All final candidate cases and credential-free repository checks passed. The ambiguity case now asserts the required user-selection state rather than a particular action label; results remain diagnostic-only without a paired baseline comparison.
+
+## PC-DN-003-ART — Artifact directory follows the durable root
+
+- **Baseline:** `git:b217d69797c9ce276ac0377ebafd00ead8a14248` — `skills/software-idea-to-project/references/artifacts.md`.
+- **Candidate:** `worktree-sha256:020d0d76be5171c8e7a86075cb7bea9950cbc416c5493ae162d009cf4a40e377` — `skills/software-idea-to-project/references/artifacts.md`.
+- **Scope:** Replace fixed-root artifact creation and discovery with the existing session-state root contract; preserve legacy locations and ambiguous-session selection.
+- **Disposition:** move
+- **Deterministic cases:** `test_artifact_creation_uses_configured_root` and `test_artifact_discovery_does_not_force_default_root` passed; existing root/depth evaluation cases remain unchanged.
+- **Behavioral configuration:** Not authorized for this task; no new model-backed evaluation or comparison.
+- **Evidence:** Current focused tests and credential-free checks in [SLICE-DN-003 evidence](software-design/devquitect-next/slices/SLICE-DN-003.md).
+- **Verdict:** inconclusive
+- **Rationale:** Deterministic contract verification passed. Prior behavioral reports describe the baseline snapshot; they do not establish behavioral equivalence for this correction or release eligibility.

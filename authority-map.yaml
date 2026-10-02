@@ -37,6 +37,10 @@ contracts:
   - id: software-idea-to-project.durable-root-continuity
     owner_path: skills/software-idea-to-project/references/session-state.md
     secondary_paths:
+      - path: skills/software-idea-to-project/references/artifacts.md
+        role: explains
+      - path: tests/unit/test_definition_root_contract.py
+        role: tests
       - path: skills/software-idea-to-project/SKILL.md
         role: routes
       - path: skills/software-idea-to-project/references/workflow-depth.md
