@@ -28,5 +28,7 @@ Canonical versioned records live in the [repository skill-change ledger](../../s
 - [PC-DN-001-DEF — Definition workflow and authority boundary](../../skill-change-ledger.md#pc-dn-001-def--definition-workflow-and-authority-boundary)
 - [PC-DN-001-DEL — Delivery authorization and verified close](../../skill-change-ledger.md#pc-dn-001-del--delivery-authorization-and-verified-close)
 - [PC-DN-001-REF — Behavior-preserving refactor workflow](../../skill-change-ledger.md#pc-dn-001-ref--behavior-preserving-refactor-workflow)
+- [PC-DN-003-WFD — Common workflow depth](../../skill-change-ledger.md#pc-dn-003-wfd--common-workflow-depth)
+- [PC-DN-003-ROOT — Persistent definition-root continuity](../../skill-change-ledger.md#pc-dn-003-root--persistent-definition-root-continuity)
 
 The deterministic representative cases are unchanged. The original PC-DN-001 records preserve their pre-authorization `inconclusive` verdicts. The user later authorized [BC-DN-001-001](../../skill-change-ledger.md), which compared all nine cases and returned `equivalent`; reports remain diagnostic-only because the candidate was a working tree.

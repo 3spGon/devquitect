@@ -6,7 +6,7 @@ Checkpointing records continuity. It does not control ordinary turn boundaries. 
 
 ## State location and schema
 
-Store the checkpoint at `docs/software-design/<slug>/00-status.md`. Initialize new persistent sessions with schema version `2` and revision `1`:
+Store new checkpoints at `<definition_root>/<slug>/00-status.md`. The default `definition_root` is `docs/software-design`; a caller may supply one repository-relative path for a new persistent session. Record the normalized root in the checkpoint. Initialize new persistent sessions with schema version `2`, revision `1`, a common `workflow_depth`, and `definition_root`:
 
 ```markdown
 ---
@@ -17,6 +17,8 @@ session: document-intake
 workflow_mode: persistent
 initiative_context: new-system
 system_context: null
+workflow_depth: standard
+definition_root: docs/software-design
 revision: 1
 phase: frame
 phase_status: active
@@ -73,6 +75,7 @@ Required invariants:
 
 - `schema_version` is `2`, `skill` is `software-idea-to-project`, and `workflow_mode` is `persistent`.
 - New checkpoints include `initiative_context` and `system_context`. Both fields are optional in existing schema v2 checkpoints, which remain valid without migration.
+- New checkpoints include a top-level `workflow_depth` (`lightweight`, `standard`, or `rigorous`) and repository-relative `definition_root`. Both fields are optional in existing schema v2 checkpoints; a missing legacy depth means `standard`, and a missing root means the checkpoint's current location. Do not migrate a session solely to add either field.
 - `system_context` is `null` until a System Context exists. Otherwise it is a normalized path relative to the checkpoint, such as `../system-context.md`, whose resolved target exists within `docs/software-design/`. It is not included in `required_context` or `artifacts`.
 - A `change_profile`, when present, is allowed only for `system-change` or `hybrid`. Its status, kinds, impact, depth, surfaces, and elevation reasons follow [change-profile.md](change-profile.md). A confirmed profile has non-empty kinds and surfaces plus non-null impact; expedited requires confirmed localized impact and every expedited precondition; cross-cutting impact requires full depth.
 - `session` equals the containing directory slug.
@@ -109,20 +112,22 @@ If a turn ends at a natural boundary while still `active`, preserve an agent-exe
 
 ## Discover and report sessions
 
-For status, resume, or handoff requests, search `docs/software-design/*/00-status.md` before relying on conversation context.
+For status, resume, or handoff, locate the named session at its recorded `definition_root` first. Search the default `docs/software-design` root for legacy sessions without that field, and include a caller-supplied root when it may contain the requested session. New roots must be normalized repository-relative paths with no `..` traversal, absolute prefix, or resolved target outside the repository.
+
+The caller-supplied root selects where a new session is created; it does not relocate an existing session. A resumed checkpoint's recorded root takes precedence. Keep legacy sessions at their current paths and do not migrate them just to add a root. If discovery finds multiple viable sessions, show their distinguishing paths and checkpoint summaries, then wait for the user to choose.
 
 - When the user names a project or slug, match that session first.
 - With exactly one relevant checkpoint, use it without making the user identify it again.
-- With multiple plausible checkpoints, list `project`, `session`, `phase`, `phase_status`, `last_updated`, and either `next_action` or `pending_user_action`, then wait for selection.
+- With multiple plausible checkpoints, list `project`, `session`, `definition_root` or current path, `phase`, `phase_status`, `last_updated`, and either `next_action` or `pending_user_action`, then wait for selection.
 - With no checkpoint, look for existing `docs/software-design/<slug>/` artifacts only to offer recovery. Do not reconstruct or write state during a read-only status request.
 
-A status response reports the current phase, phase status, both gates, initiative context, Change Profile when present, referenced System Context when recorded, last completed work, blockers, open decisions, the active next action, and any pending user action. Read only the System Context header for freshness unless the status depends on its body. When `delivery_checkpoint` is present, also read it and report delivery status, authorized scope, slice counts, current slice, evidence summary, delivery blockers, and its active or pending action as a separate section. It does not mutate documents, refresh context, execute either action, advance a phase, resolve a blocker, migrate schema, or repair inconsistencies.
+A status response reports the current phase, phase status, both gates, initiative context, effective workflow depth (`standard` when a legacy value is absent), `definition_root` or current legacy path, Change Profile when present, referenced System Context when recorded, last completed work, blockers, open decisions, the active next action, and any pending user action. Read only the System Context header for freshness unless the status depends on its body. When `delivery_checkpoint` is present, also read it and report delivery status, authorized scope, slice counts, current slice, evidence summary, delivery blockers, and its active or pending action as a separate section. It does not mutate documents, refresh context, execute either action, advance a phase, resolve a blocker, migrate schema, or repair inconsistencies.
 
 When status-only reads a schema v1 checkpoint, interpret it in memory, report that migration is pending, and leave the file unchanged.
 
 ## Resume by state
 
-Read the selected `00-status.md`, migrate schema v1 when necessary, then read the referenced System Context when it affects the active or pending action, followed by only `required_context`. Verify the schema and compare the checkpoint with declared artifact statuses before continuing. If an older schema v2 checkpoint omits the optional context fields, discover and populate them only during a normal state-changing resume when relevant; a status-only request leaves it unchanged.
+Read the selected `00-status.md` at its recorded root when present, migrate schema v1 when necessary, then read the referenced System Context when it affects the active or pending action, followed by only `required_context`. Verify the schema and compare the checkpoint with declared artifact statuses before continuing. Treat a missing legacy `workflow_depth` as `standard` and a missing `definition_root` as the checkpoint's current location; status-only requests leave both unchanged. A normal state-changing checkpoint update may record the effective values without moving the session.
 
 - `active` — execute `next_action` without confirmation, then continue through additional safe actions until a genuine terminal condition.
 - `awaiting-input` — present only `pending_user_action` with the minimum context needed to answer it.

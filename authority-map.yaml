@@ -15,6 +15,40 @@ contracts:
         role: tests
       - path: evals/cases/gate-one-bypass.yaml
         role: tests
+  - id: software-idea-to-project.workflow-depth
+    owner_path: skills/software-idea-to-project/references/workflow-depth.md
+    secondary_paths:
+      - path: skills/software-idea-to-project/SKILL.md
+        role: routes
+      - path: skills/software-idea-to-project/references/discovery.md
+        role: explains
+      - path: skills/software-idea-to-project/references/change-profile.md
+        role: explains
+      - path: skills/software-idea-to-project/references/session-state.md
+        role: explains
+      - path: evals/cases/software-idea-workflow-depth-new-system.yaml
+        role: tests
+      - path: evals/cases/software-idea-workflow-depth-system-change.yaml
+        role: tests
+      - path: evals/cases/software-idea-workflow-depth-hybrid.yaml
+        role: tests
+      - path: evals/cases/software-idea-workflow-depth-legacy.yaml
+        role: tests
+  - id: software-idea-to-project.durable-root-continuity
+    owner_path: skills/software-idea-to-project/references/session-state.md
+    secondary_paths:
+      - path: skills/software-idea-to-project/SKILL.md
+        role: routes
+      - path: skills/software-idea-to-project/references/workflow-depth.md
+        role: explains
+      - path: skills/software-idea-to-project/references/discovery.md
+        role: explains
+      - path: evals/cases/software-idea-definition-root-resume.yaml
+        role: tests
+      - path: evals/cases/software-idea-definition-root-ambiguity.yaml
+        role: tests
+      - path: evals/cases/software-idea-definition-root-invalid.yaml
+        role: tests
   - id: project-plan-execution.delivery-state
     owner_path: skills/project-plan-execution/references/delivery-state.md
     secondary_paths:

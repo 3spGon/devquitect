@@ -3,14 +3,15 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 19
-last_updated: '2026-09-24T22:09:46Z'
+revision: 28
+last_updated: '2026-09-29T05:27:07Z'
 plan: 08-implementation-plan.md
 plan_revision: 2
 completion_scope: implementation-only
 authorized_slices:
 - SLICE-DN-001
 - SLICE-DN-002
+- SLICE-DN-003
 delivery_status: complete
 current_slice: null
 next_action: null
@@ -50,9 +51,28 @@ execution_frontier:
     the required repository checks successfully.
   - Implemented the bounded quick-change skill, plugin discovery text, authority mapping,
     and four implicit/explicit positive/negative cases.
-  - Closed SLICE-DN-002 with verify_slice.py at inputs digest 1b38d6a1ac7f2dded757be27233a12c1f4f389f49a91355597aed479c799e7ef; the verifier passed.
-  - Reran the required credential-free check, Ruff, and diff check after close; all passed.
-  - All authorized slices (SLICE-DN-001 and SLICE-DN-002) are verified; SLICE-DN-003 through SLICE-DN-006 were not authorized and remain untouched.
+  - Closed SLICE-DN-002 with verify_slice.py at inputs digest 1b38d6a1ac7f2dded757be27233a12c1f4f389f49a91355597aed479c799e7ef;
+    the verifier passed.
+  - Reran the required credential-free check, Ruff, and diff check after close; all
+    passed.
+  - All authorized slices (SLICE-DN-001 and SLICE-DN-002) are verified; SLICE-DN-003
+    through SLICE-DN-006 were not authorized and remain untouched.
+  - The user explicitly authorized SLICE-DN-003 on 2026-09-29; preflight confirmed
+    plan revision 2, the approved definition gates, and verified SLICE-DN-002 dependency.
+  - Implemented the common workflow-depth selector, persistent-root and legacy-session
+    rules, authority mappings, and seven targeted cases.
+  - All seven new workflow-depth/root cases and three existing definition-routing
+    regression cases passed on the candidate with gpt-5.6-luna at high reasoning effort;
+    reports are diagnostic-only because this is a working-tree run.
+  - Added append-only PC-DN-003-WFD and PC-DN-003-ROOT records with immutable baseline,
+    candidate file hashes, cases, and report references.
+  - 'Reconciled compaction recovery against repository evidence: devquitect-next is
+    the only candidate for active SLICE-DN-003 and approved plan revision 2; the other
+    candidates are completed sessions for different projects and slice plans.'
+  - Ran the final credential-free check, Ruff, and diff check successfully; the default
+    uv cache was inaccessible, so the passing rerun used an offline cache under /private/tmp.
+  - "Closed SLICE-DN-003 via verify_slice.py at input digest 9fc763ea5540062376a8a8fa86860b3ad8a4335d8c51af92ebd1bd53257a5a61; AC-DN-005, AC-DN-006, and CHECK-DN-007 through CHECK-DN-009 passed."
+  - Reran the required credential-free check, Ruff, and diff check after slice closure and the complete checkpoint update; all passed.
   in_progress: null
   do_not_repeat: []
   pending_verification: []
@@ -65,13 +85,17 @@ slices:
     status: verified
     acceptance: not-required
     evidence: slices/SLICE-DN-002.md
+  SLICE-DN-003:
+    status: verified
+    acceptance: not-required
+    evidence: slices/SLICE-DN-003.md
 ---
 
 # Delivery checkpoint
 
 ## Current objective
 
-The authorized implementation scope for plan revision 2 is complete: `SLICE-DN-001` and `SLICE-DN-002` are verified. Remaining plan slices were not authorized in this delivery session.
+`SLICE-DN-001`, `SLICE-DN-002`, and `SLICE-DN-003` are verified. The authorized implementation-only scope under plan revision 2 is complete on branch `codex/slice-dn-003`.
 
 ## Last completed work
 
@@ -84,19 +108,22 @@ The authorized implementation scope for plan revision 2 is complete: `SLICE-DN-0
 - All four QUICK behavioral cases passed on `gpt-5.6-luna` with high reasoning effort; positive cases changed only the requested note, while negative cases left the workspace clean.
 - Closed `SLICE-DN-002` through `verify_slice.py`, then reran `uv run devquitect check --source working-tree --report .devquitect-reports/check.json`, `uv run ruff check src tests`, and `git diff --check`; all passed.
 - The authorized scope is complete. `SLICE-DN-003` through `SLICE-DN-006` were not authorized and were not started.
+- Completed `SLICE-DN-003` at input digest `9fc763ea5540062376a8a8fa86860b3ad8a4335d8c51af92ebd1bd53257a5a61`; both criteria and all three required checks passed, with evidence in `slices/SLICE-DN-003.md`.
+- Reran the required credential-free check, Ruff, and diff check after slice closure and the complete checkpoint update; all passed.
 
 ## Slice evidence
 
-`SLICE-DN-001` and `SLICE-DN-002` are verified with timestamped evidence in `slices/SLICE-DN-001.md` and `slices/SLICE-DN-002.md`. The remaining plan slices are outside this delivery authorization.
+`SLICE-DN-001`, `SLICE-DN-002`, and `SLICE-DN-003` are verified with timestamped evidence in their corresponding `slices/SLICE-DN-*.md` files. Plan slices DN-004 through DN-006 remain outside this delivery authorization.
 
 ## Handoff notes
 
 - The worktree already contained untracked `docs/software-design/devquitect-next/` definition artifacts; they are preserved.
 - The user authorized the model-backed follow-up on 2026-09-24. All nine representative cases returned `equivalent`; reports and runtime notes are recorded in the slice evidence and change ledger.
 - The user explicitly authorized only `SLICE-DN-002` for this execution, with implementation-only scope.
+- On 2026-09-29, the user explicitly authorized `SLICE-DN-003`; this adds only that slice to the existing implementation-only scope.
 
 <!-- devquitect:slice-close:start -->
 
-Verified SLICE-DN-002 at 2026-09-24T21:55:05.355385Z; evidence: `slices/SLICE-DN-002.md`.
+Verified SLICE-DN-003 at 2026-09-29T05:22:19.241402Z; evidence: `slices/SLICE-DN-003.md`.
 
 <!-- devquitect:slice-close:end -->

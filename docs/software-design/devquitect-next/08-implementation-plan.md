@@ -18,7 +18,7 @@ Deliver lean and traceable skill contracts plus QUICK in 0.7.0; generalized defi
 
 ## Revision 2 review impact
 
-Gate 1 and Gate 2 approved the expanded definition and cross-generation matrix. Plan revision 2 updates `SLICE-DN-004` with the approved model IDs and evidence criteria. The plan remains in Review pending explicit plan approval; no implementation slice is authorized.
+Gate 1 and Gate 2 approved the expanded definition and cross-generation matrix, and implementation plan revision 2 is approved. Plan revision 2 updates `SLICE-DN-004` with the approved model IDs and evidence criteria. The plan alone authorizes no slices; delivery requires explicit user authorization naming the intended `SLICE-DN-*` identifiers. Behavioral comparisons also require separate authorization.
 
 ## SLICE-DN-001 — Lean entrypoints and prompt-change evidence for 0.7.0
 

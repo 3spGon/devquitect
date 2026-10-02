@@ -1,0 +1,22 @@
+schema_version: 1
+id: software-idea-workflow-depth-legacy
+target_skill: software-idea-to-project
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - |
+    Use $software-idea-to-project for a status-only review. The existing schema_version 2 new-system checkpoint is at docs/software-design/catalogue/00-status.md; it has no workflow_depth or definition_root. Do not edit or migrate it. Report the effective depth, current root, and whether it was changed as exactly one JSON object with workflow_depth, definition_root, and changed.
+assertions:
+  - type: final-json
+    id: legacy-default-is-standard-and-stays-in-place
+    contains:
+      workflow_depth: standard
+      definition_root: docs/software-design
+      changed: false
+  - type: git-clean
+    id: status-only-legacy-review-is-read-only
+forbidden_effects: [workspace-write, checkpoint-migration, session-relocation]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [software-idea-to-project, workflow-depth, durable-root, legacy, positive]

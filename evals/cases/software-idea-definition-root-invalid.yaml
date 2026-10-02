@@ -1,0 +1,21 @@
+schema_version: 1
+id: software-idea-definition-root-invalid
+target_skill: software-idea-to-project
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - |
+    Use $software-idea-to-project to start a new persistent definition. The caller supplied definition_root: ../../outside-the-repository. Validate the root before creating files. Return exactly one JSON object with root_rejected and checkpoint_created.
+assertions:
+  - type: final-json
+    id: root-traversal-is-rejected-before-writing
+    contains:
+      root_rejected: true
+      checkpoint_created: false
+  - type: git-clean
+    id: invalid-root-does-not-write
+forbidden_effects: [workspace-write, out-of-repository-write]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [software-idea-to-project, durable-root, validation, negative]

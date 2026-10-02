@@ -49,3 +49,27 @@ This versioned ledger records each named prompt rule group. Baselines use immuta
 - **Runtime notes:** The stable `software-idea-positive` run logged a unified exec process creation error, and the stable `plan-execution-positive` run logged a model-list refresh timeout. Both records still classified as `pass`, and both paired comparisons returned `equivalent`; the messages remain in their reports.
 - **Verdict:** equivalent for the tested cases; diagnostic-only because the candidate was a working tree.
 - **Rationale:** The same baseline, candidate, model, reasoning effort, and nine representative positive/negative cases were used for both sides. This follow-up supplements, and does not rewrite, the original pre-authorization PC-DN-001 records.
+
+## PC-DN-003-WFD — Common workflow depth
+
+- **Baseline:** `git:2a14c35e44eab2c96338b3f969d9cdfa30e5973c` — `skills/software-idea-to-project/SKILL.md`, `skills/software-idea-to-project/references/change-profile.md`, `skills/software-idea-to-project/references/discovery.md`
+- **Candidate:** `worktree-sha256:e5a3626eb32efca1b6ac48dd77b026c2bfb2e7e7eb51aded98b0705d30254be6` — `skills/software-idea-to-project/SKILL.md`; `worktree-sha256:b472fbedba0caf64e83726ed0fb39e39d401c613a4a24e1152cb9ba52254180c` — `skills/software-idea-to-project/references/workflow-depth.md`; `worktree-sha256:d44eabb439adf6e9e5ae9fc135f180090869b285e3b6b087e77da34058fe9367` — `skills/software-idea-to-project/references/discovery.md`; `worktree-sha256:b5757ee892675b81fe06c17c1336029e157612681dbb300297f3b89f100b05ca` — `skills/software-idea-to-project/references/change-profile.md`
+- **Scope:** Select and record common workflow depth for new-system, system-change, and hybrid initiatives while preserving Change Profile values.
+- **Disposition:** move
+- **Deterministic cases:** `software-idea-workflow-depth-new-system`, `software-idea-workflow-depth-system-change`, `software-idea-workflow-depth-hybrid`, `software-idea-workflow-depth-legacy`, `software-idea-positive`, `software-idea-negative`, `gate-one-bypass` (all candidate cases passed)
+- **Behavioral configuration:** Candidate-only functional evaluations on `gpt-5.6-luna`, reasoning effort `high`, supervised local authentication, one repetition per case; no paired baseline comparison.
+- **Evidence:** `.devquitect-reports/slice-dn-003-workflow-depth-new-system.json`, `.devquitect-reports/slice-dn-003-workflow-depth-system-change.json`, `.devquitect-reports/slice-dn-003-workflow-depth-hybrid.json`, `.devquitect-reports/slice-dn-003-workflow-depth-legacy.json`, and [SLICE-DN-003 evidence](software-design/devquitect-next/slices/SLICE-DN-003.md).
+- **Verdict:** inconclusive
+- **Rationale:** All candidate cases and credential-free repository checks passed. The results are diagnostic-only because they use a working tree and do not establish a paired baseline comparison.
+
+## PC-DN-003-ROOT — Persistent definition-root continuity
+
+- **Baseline:** `git:2a14c35e44eab2c96338b3f969d9cdfa30e5973c` — `skills/software-idea-to-project/SKILL.md`, `skills/software-idea-to-project/references/session-state.md`, `skills/software-idea-to-project/references/discovery.md`
+- **Candidate:** `worktree-sha256:e5a3626eb32efca1b6ac48dd77b026c2bfb2e7e7eb51aded98b0705d30254be6` — `skills/software-idea-to-project/SKILL.md`; `worktree-sha256:3ef05fa03e53b8b7e3ace7017ddf37aa6b308baab34b07a3acb9dd3ce08aee16` — `skills/software-idea-to-project/references/session-state.md`; `worktree-sha256:d44eabb439adf6e9e5ae9fc135f180090869b285e3b6b087e77da34058fe9367` — `skills/software-idea-to-project/references/discovery.md`; `worktree-sha256:b472fbedba0caf64e83726ed0fb39e39d401c613a4a24e1152cb9ba52254180c` — `skills/software-idea-to-project/references/workflow-depth.md`
+- **Scope:** Store one repository-relative definition root, resume from the recorded location, preserve legacy paths, and ask when discovery is ambiguous.
+- **Disposition:** move
+- **Deterministic cases:** `software-idea-definition-root-resume`, `software-idea-definition-root-ambiguity`, `software-idea-definition-root-invalid`, `software-idea-workflow-depth-legacy`, `software-idea-positive`, `software-idea-negative` (all final candidate cases passed)
+- **Behavioral configuration:** Candidate-only functional evaluations on `gpt-5.6-luna`, reasoning effort `high`, supervised local authentication, one repetition per case; no paired baseline comparison.
+- **Evidence:** `.devquitect-reports/slice-dn-003-definition-root-resume.json`, `.devquitect-reports/slice-dn-003-definition-root-ambiguity-final.json`, `.devquitect-reports/slice-dn-003-definition-root-invalid.json`, `.devquitect-reports/slice-dn-003-workflow-depth-legacy.json`, and [SLICE-DN-003 evidence](software-design/devquitect-next/slices/SLICE-DN-003.md).
+- **Verdict:** inconclusive
+- **Rationale:** All final candidate cases and credential-free repository checks passed. The ambiguity case now asserts the required user-selection state rather than a particular action label; results remain diagnostic-only without a paired baseline comparison.

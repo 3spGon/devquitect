@@ -20,9 +20,9 @@ Interaction behavior that affects approval, accessibility, or workflows belongs 
 Follow applicable `AGENTS.md` instructions and inspect only the repository evidence needed to establish context. Classify a request as start, status, resume, or handoff; identify whether it concerns a new system, a system change, or both; then use the reference that owns the current phase:
 
 - For early or incomplete ideas, follow [discovery.md](references/discovery.md). Both design gates require explicit approval.
-- For system changes, use [change-profile.md](references/change-profile.md) to select proportional workflow depth. Use [experience-design.md](references/experience-design.md) when interaction decisions affect acceptance or usability.
+- For every initiative, use [workflow-depth.md](references/workflow-depth.md) to select and report proportional depth. For system-change and hybrid work, also use [change-profile.md](references/change-profile.md); use [experience-design.md](references/experience-design.md) when interaction decisions affect acceptance or usability.
 - After Gate 1, use [technical-design.md](references/technical-design.md) for architecture readiness. After Gate 2, use [implementation-planning.md](references/implementation-planning.md) to produce an evidence-based plan.
-- For persistent sessions, use [artifacts.md](references/artifacts.md), [session-state.md](references/session-state.md), and [system-context.md](references/system-context.md) for artifact ownership, state transitions, and the shared baseline.
+- For persistent sessions, use [artifacts.md](references/artifacts.md), [session-state.md](references/session-state.md), and [system-context.md](references/system-context.md) for artifact ownership, durable-root discovery, state transitions, and the shared baseline. A caller may supply one repository-relative `definition_root`; new sessions default to `docs/software-design`.
 
 Ask for a working mode only when the request leaves it unclear. Chat-only work creates no durable files; persistent sessions live under `docs/software-design/<slug>/` and require the user's choice or explicit request. Do not create placeholders or documents without useful content.
 

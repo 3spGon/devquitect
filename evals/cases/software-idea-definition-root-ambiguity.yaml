@@ -1,0 +1,22 @@
+schema_version: 1
+id: software-idea-definition-root-ambiguity
+target_skill: software-idea-to-project
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - |
+    Use $software-idea-to-project to resume orders. Two viable persistent checkpoints match: docs/software-design/orders/00-status.md and projects/specs/orders/00-status.md; both are active and neither is identified as the intended one. Do not choose, move, or copy either session. Ask the user which to resume. Return exactly one JSON object with user_selection_required, selected_root, and moved.
+assertions:
+  - type: final-json
+    id: ambiguous-session-requires-user-selection
+    contains:
+      user_selection_required: true
+      selected_root: null
+      moved: false
+  - type: git-clean
+    id: ambiguous-discovery-does-not-write
+forbidden_effects: [workspace-write, silent-session-selection, session-relocation]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [software-idea-to-project, durable-root, ambiguity, negative]

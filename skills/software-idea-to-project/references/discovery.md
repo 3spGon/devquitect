@@ -10,6 +10,8 @@ Classify the initiative before framing it:
 - **system-change** — the initiative changes an implemented system;
 - **hybrid** — it introduces a new component or boundary that must integrate with an implemented system.
 
+Select a common workflow depth for every initiative using [workflow-depth.md](workflow-depth.md), including `new-system` work. A Change Profile remains specific to `system-change` and `hybrid` initiatives and supplements the common depth.
+
 For system-change and hybrid work, read the System Context when present and establish a sufficiently verified baseline for the affected area before defining the requested delta. If the context is missing or stale, inspect only the relevant documentation, code, configuration, tests, and recent evidence. In persistent mode, create or refresh `docs/software-design/system-context.md` according to [system-context.md](system-context.md); in chat-only mode, keep the reconstructed baseline in conversation and do not write it.
 
 After enough evidence exists to state the affected baseline and requested delta, read [change-profile.md](change-profile.md). Initialize the applicable Change Profile as provisional and standard, then refine it as discovery establishes change kinds, impact, affected surfaces, preserved behavior, risk, and verification. Do not confirm expedited routing merely because the requested edit appears small.

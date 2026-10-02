@@ -4,7 +4,7 @@ Read this reference for every `system-change` or `hybrid` initiative after enoug
 
 ## Purpose and ownership
 
-A Change Profile is operational routing state, not a generated project artifact. It makes the depth of definition visible and evidence-based without weakening either approval gate or implementation authorization.
+A Change Profile is operational routing state, not a generated project artifact. It classifies `system-change` and `hybrid` work without weakening either approval gate or implementation authorization. The common workflow depth also applies to these initiatives; see [workflow-depth.md](workflow-depth.md).
 
 In persistent mode, `00-status.md` owns the current profile and `brainstorm.md` records meaningful profile transitions. `01-concept.md` may contain the rationale when it is useful to understand the approved design. Do not create `change-profile.md` inside a project session.
 
@@ -18,6 +18,8 @@ Use these fields:
 - `workflow_depth`: `expedited`, `standard`, or `full`;
 - `affected_surfaces`: any applicable values from `behavior`, `experience`, `domain`, `data`, `interfaces`, `security-privacy`, `operations`, `quality-attributes`, and `migration-compatibility`;
 - `elevation_reasons`: current evidence that makes a lower depth unsafe.
+
+Keep the existing profile values for compatibility. Record the equivalent common depth in the top-level `workflow_depth` field: `expedited` maps to `lightweight`, `standard` to `standard`, and `full` to `rigorous`. Do not replace the profile's other classification fields.
 
 Start an applicable initiative as `provisional` with `workflow_depth: standard`, empty kinds and surfaces, null impact, and no elevation reasons. It may start at `full` only when supplied evidence already establishes a full-depth condition.
 
