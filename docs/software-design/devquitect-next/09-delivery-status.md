@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 32
-last_updated: '2026-10-02T17:26:33Z'
+revision: 36
+last_updated: '2026-10-02T17:45:32Z'
 plan: 08-implementation-plan.md
 plan_revision: 2
 completion_scope: implementation-only
@@ -12,6 +12,7 @@ authorized_slices:
 - SLICE-DN-001
 - SLICE-DN-002
 - SLICE-DN-003
+- SLICE-DN-004
 delivery_status: complete
 current_slice: null
 next_action: null
@@ -25,12 +26,31 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
+  - Verified DN-004 against AC-DN-007 and AC-DN-008 with nine passing focused tests and all required checks.
+  - Closed DN-004 through verify_slice.py at digest 728c265bd1ac0c7792eff5e1e32db0e5301a0420df325cf290ec606d782c1974 with no issues.
+  - Reviewed the cumulative diff; approved plan, verifier, inventory, and dependencies remain unchanged.
+  - Completed only the authorized scope DN-001 through DN-004; DN-005, DN-006, and behavioral comparisons are unauthorized.
+  - Implemented explicit-only delivery metadata and declared implicit definition policy;
+    QUICK and refactoring retain true.
+  - Added independent five-model pending inventory, fixed twelve-case suite digest,
+    three named ledger groups, and authority ownership.
+  - Seven focused contract checks passed; fixed the single Ruff line-length finding
+    and reran Ruff successfully.
+  - Confirmed explicit user authorization for DN-004, approved plan revision 2, and
+    verified DN-003 dependency.
+  - Created codex/slice-dn-004-invocation-matrix and traced metadata staging, validation,
+    cases, and ledger ownership.
   - Created codex/slice-dn-003-revalidation as requested on 2026-10-02.
-  - Compared the existing DN-003 implementation with approved plan revision 2 and both acceptance criteria.
-  - Removed contradictory fixed-root artifact instructions and mapped the reference and two deterministic contract tests.
-  - Focused tests, credential-free check, Ruff, and git diff --check passed after correcting a long test line.
-  - Refreshed the stale plan fingerprint and recorded current manual/deterministic evidence separately from historical model reports.
-  - Closed DN-003 through verify_slice.py at input digest 2c4e05e24dc24a651106ec003ceb3e8777f507279f99b24d1f45637ed37f5d26 with no issues.
+  - Compared the existing DN-003 implementation with approved plan revision 2 and
+    both acceptance criteria.
+  - Removed contradictory fixed-root artifact instructions and mapped the reference
+    and two deterministic contract tests.
+  - Focused tests, credential-free check, Ruff, and git diff --check passed after
+    correcting a long test line.
+  - Refreshed the stale plan fingerprint and recorded current manual/deterministic
+    evidence separately from historical model reports.
+  - Closed DN-003 through verify_slice.py at input digest 2c4e05e24dc24a651106ec003ceb3e8777f507279f99b24d1f45637ed37f5d26
+    with no issues.
   - Confirmed the definition gates and approved plan revision 2.
   - Created the requested working branch.
   - Linked the delivery checkpoint from the definition checkpoint.
@@ -97,15 +117,25 @@ slices:
     status: verified
     acceptance: not-required
     evidence: slices/SLICE-DN-003.md
+  SLICE-DN-004:
+    status: verified
+    acceptance: not-required
+    evidence: slices/SLICE-DN-004.md
 ---
 
 # Delivery checkpoint
 
 ## Current objective
 
-SLICE-DN-003 is verified on `codex/slice-dn-003-revalidation`, with the fixed-root artifact contradiction corrected and current evidence accepted by the supported verifier. Previously verified SLICE-DN-001 and SLICE-DN-002 remain unchanged. DN-004 through DN-006 remain outside the authorized scope.
+SLICE-DN-004 is implemented and verified on `codex/slice-dn-004-invocation-matrix`.
+The authorized DN-001 through DN-004 scope is complete. Behavioral comparisons, DN-005,
+and DN-006 remain outside this authorization; pending model rows assert no behavioral result.
 
 ## Last completed work
+
+- Completed DN-004 native invocation policy and independent five-model inventory; nine focused tests,
+  the credential-free suite, Ruff, and diff check passed. Supported check/close returned PASS with
+  no issues. Cumulative review found no verifier, inventory, dependency, or unrelated source change.
 
 - Confirmed both definition gates and the approved implementation plan.
 - Created branch `codex/slice-dn-001-lean-entrypoints`.
@@ -121,9 +151,15 @@ SLICE-DN-003 is verified on `codex/slice-dn-003-revalidation`, with the fixed-ro
 
 ## Slice evidence
 
-`SLICE-DN-001`, `SLICE-DN-002`, and `SLICE-DN-003` are verified with timestamped evidence in their corresponding `slices/SLICE-DN-*.md` files. Plan slices DN-004 through DN-006 remain outside this delivery authorization.
+`SLICE-DN-001`, `SLICE-DN-002`, and `SLICE-DN-003` retain their verified evidence. DN-004
+has current PASS evidence for both criteria and CHECK-DN-010 through CHECK-DN-012 in
+`slices/SLICE-DN-004.md`, accepted by the supported verifier. DN-005 and DN-006 remain unauthorized.
 
 ## Handoff notes
+
+- On 2026-10-02 the user authorized DN-004 and a new branch. The working tree was clean.
+  No behavioral run is authorized for this task. Python 3.14.7 and PyYAML 6.0.3 are available;
+  uv requires an accessible cache under /private/tmp in this sandbox.
 
 - On 2026-10-02 the user authorized DN-003 and a new branch. Revalidation found a stale plan hash
   and a conflicting fixed-root artifact reference. The reference and authority mapping were
@@ -137,6 +173,6 @@ SLICE-DN-003 is verified on `codex/slice-dn-003-revalidation`, with the fixed-ro
 
 <!-- devquitect:slice-close:start -->
 
-Verified SLICE-DN-003 at 2026-10-02T17:26:24.528605Z; evidence: `slices/SLICE-DN-003.md`.
+Verified SLICE-DN-004 at 2026-10-02T17:45:25.567280Z; evidence: `slices/SLICE-DN-004.md`.
 
 <!-- devquitect:slice-close:end -->

@@ -85,3 +85,110 @@ This versioned ledger records each named prompt rule group. Baselines use immuta
 - **Evidence:** Current focused tests and credential-free checks in [SLICE-DN-003 evidence](software-design/devquitect-next/slices/SLICE-DN-003.md).
 - **Verdict:** inconclusive
 - **Rationale:** Deterministic contract verification passed. Prior behavioral reports describe the baseline snapshot; they do not establish behavioral equivalence for this correction or release eligibility.
+
+## PC-DN-004-DEL — Explicit-only delivery invocation
+
+- **Baseline:** `git:dff146543c870a56b55d1ed339eeb95f6397653f` — `skills/project-plan-execution/agents/openai.yaml`.
+- **Candidate:** `worktree-sha256:de5efdc5aca653cc8ec410bb267923b078680eef37b101a0714f5aa1b17888ff` — `skills/project-plan-execution/agents/openai.yaml`.
+- **Scope:** Disable implicit host activation for approved-plan execution; retain its explicit default prompt and authorization requirements.
+- **Disposition:** retain
+- **Deterministic cases:** `test_host_invocation_metadata`, `test_explicit_invocation_preserves_scope_and_authority`; representative `plan-execution-positive` and `plan-execution-implicit-negative` remain fixed for any separately authorized comparison.
+- **Behavioral configuration:** Not authorized; no model-backed run or host-routing result claimed.
+- **Evidence:** [DN-004 evidence](software-design/devquitect-next/slices/SLICE-DN-004.md).
+- **Verdict:** inconclusive
+- **Rationale:** The host-native metadata owns activation. Deterministic checks verify the explicit-only flag without inventing a router or claiming behavioral equivalence.
+
+## PC-DN-004-DEF — Declared definition invocation
+
+- **Baseline:** `git:dff146543c870a56b55d1ed339eeb95f6397653f` — `skills/software-idea-to-project/agents/openai.yaml`.
+- **Candidate:** `worktree-sha256:c58dfced9e9ec7b35f6731f6e494e4fefd0d61413cba21c8eac68eb87f7665dc` — `skills/software-idea-to-project/agents/openai.yaml`.
+- **Scope:** Declare eligible implicit definition activation; QUICK and targeted-refactoring already declare true and retain their existing scope boundaries.
+- **Disposition:** retain
+- **Deterministic cases:** `test_host_invocation_metadata`, `test_explicit_invocation_preserves_scope_and_authority`; unchanged representative `software-idea-positive`, `software-idea-negative`, `quick-change-positive`, `quick-change-negative`, `quick-change-explicit-positive`, `quick-change-explicit-negative`, `refactoring-positive`, and `refactoring-negative`.
+- **Behavioral configuration:** Not authorized; no model-backed run.
+- **Evidence:** [DN-004 evidence](software-design/devquitect-next/slices/SLICE-DN-004.md).
+- **Verdict:** inconclusive
+- **Rationale:** All four policies are explicit in metadata; explicit user invocation retains precedence and never expands authority.
+
+## PC-DN-004-MATRIX — Independent cross-generation evidence
+
+- **Baseline:** `git:dff146543c870a56b55d1ed339eeb95f6397653f` — `skills/software-idea-to-project/references/implementation-planning.md`.
+- **Candidate:** `worktree-sha256:a3bd5ff2062cd9d549ea839079e9a3fe928d2cfc2b6e2c787891356c2ac7502a` — `skills/software-idea-to-project/references/implementation-planning.md`.
+- **Scope:** One independently identified model/host/runtime row per authorized behavioral comparison, preserving the same source pair, rule group, representative cases, and suite revision.
+- **Disposition:** retain
+- **Deterministic cases:** `test_initial_matrix_rows_are_independent_and_unexecuted`, `test_matrix_rejects_pooled_or_invented_evidence`; representative `evaluation-matrix-positive` and `evaluation-matrix-negative` plus the fixed routing cases below.
+- **Behavioral configuration:** Not authorized. The five rows below are an unexecuted inventory, not behavioral evidence. Null fields mean unobserved configuration; repetitions is the intended per-case count until a run records the actual count.
+- **Evidence:** [DN-004 evidence](software-design/devquitect-next/slices/SLICE-DN-004.md); no comparison reports exist for this group.
+- **Verdict:** inconclusive
+- **Rationale:** Configuration mismatches, adapter failures, pending rows, and deterministic failures cannot support a pooled or model-only verdict. Future runs append a new observed matrix rather than rewrite this inventory.
+
+The suite revision hashes the sorted UTF-8 lines `<case-id>:<case-file-sha256>\n`.
+All five rows refer to this same change group, baseline/candidate pair, and representative cases.
+Authorized runs record observed host/runtime versions, effort (`high` where supported), actual
+repetitions, report references, and an independent verdict in each new row. Changes in any of those
+configurations must be retained and prevent a model-only comparison. Historical results in this
+ledger belong to their original groups and are not reused as results for these rows.
+
+```devquitect-evaluation-matrix
+schema_version: 1
+prompt_change_group: PC-DN-004-MATRIX
+representative_cases:
+  - software-idea-positive
+  - software-idea-negative
+  - quick-change-positive
+  - quick-change-negative
+  - quick-change-explicit-positive
+  - quick-change-explicit-negative
+  - plan-execution-positive
+  - plan-execution-implicit-negative
+  - refactoring-positive
+  - refactoring-negative
+  - evaluation-matrix-positive
+  - evaluation-matrix-negative
+rows:
+  - model_id: gpt-5.6-sol
+    host: null
+    runtime: null
+    reasoning_effort: null
+    suite_revision: sha256:e6f14a59da173317677421a4d43456d58541e4fdbf8d79e148be7b7d044804d0
+    repetitions: 1
+    report_references: []
+    authorization: not-authorized
+    verdict: not-run
+  - model_id: gpt-5.6-terra
+    host: null
+    runtime: null
+    reasoning_effort: null
+    suite_revision: sha256:e6f14a59da173317677421a4d43456d58541e4fdbf8d79e148be7b7d044804d0
+    repetitions: 1
+    report_references: []
+    authorization: not-authorized
+    verdict: not-run
+  - model_id: gpt-5.6-luna
+    host: null
+    runtime: null
+    reasoning_effort: null
+    suite_revision: sha256:e6f14a59da173317677421a4d43456d58541e4fdbf8d79e148be7b7d044804d0
+    repetitions: 1
+    report_references: []
+    authorization: not-authorized
+    verdict: not-run
+  - model_id: gpt-6-sol
+    host: null
+    runtime: null
+    reasoning_effort: null
+    suite_revision: sha256:e6f14a59da173317677421a4d43456d58541e4fdbf8d79e148be7b7d044804d0
+    repetitions: 1
+    report_references: []
+    authorization: not-authorized
+    verdict: not-run
+  - model_id: gpt-6-luna
+    host: null
+    runtime: null
+    reasoning_effort: null
+    suite_revision: sha256:e6f14a59da173317677421a4d43456d58541e4fdbf8d79e148be7b7d044804d0
+    repetitions: 1
+    report_references: []
+    authorization: not-authorized
+    verdict: not-run
+```

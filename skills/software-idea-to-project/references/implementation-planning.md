@@ -95,6 +95,37 @@ Map approved requirements, applicable experience decisions, and significant risk
 
 Commands must be copied from repository evidence or derived from an explicitly approved greenfield toolchain. State the expected signal of success or failure. Do not write vague steps such as “add validation,” “handle errors,” or “write tests” without specifying the behavior involved.
 
+## Invocation and behavioral evidence
+
+Host matching follows each skill's `agents/openai.yaml` policy. Definition, QUICK, and targeted
+refactoring allow eligible implicit invocation; `project-plan-execution` is explicit-only.
+Explicit user invocation takes precedence over host matching, but does not expand the selected
+skill's scope or grant implementation, behavioral-testing, or external-action authority.
+
+For a prompt change, record the immutable baseline, candidate file hashes, named rule group,
+and representative case IDs in the append-only skill-change ledger before comparison. Behavioral
+comparisons require separate user authorization; credential-free checks remain the default.
+
+Maintain an independent evidence row for each canonical model ID: `gpt-5.6-sol`,
+`gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-sol`, and `gpt-6-luna`. The GPT-5.6 rows are the
+prior-generation baseline; GPT-6 Sol/Luna rows are additional. Reuse the same prompt-change
+group, baseline/candidate identities, representative cases, and case-suite revision across rows.
+Define the suite revision as SHA-256 of the sorted case IDs and their case-file SHA-256 values.
+
+Each row records `model_id`, `host`, `runtime`, `reasoning_effort`, `suite_revision`,
+`repetitions`, `report_references`, `authorization`, and its own `verdict`. Host and runtime
+include observed names and versions; runtime includes the quality-tool version and adapter.
+Use `high` reasoning effort where supported; record unsupported effort as `not-supported`.
+Use null host/runtime/effort and `not-run` for unexecuted rows, with no report references;
+intended settings are not observations. A pending row supplies no behavioral or release evidence.
+
+For each authorized row, run paired comparisons with the selected model and effort explicitly
+configured, then link every per-case report and retain its source/snapshot and case digests.
+Record the actual repetition count. Diagnose authentication, service, adapter, or missing-event
+failures as inconclusive; they never pass. Keep verdicts independent and never pool scores or
+results. If host, runtime, effort, suite, or repetitions differ, record the difference and do not
+claim a model-only comparison. Behavioral success cannot override deterministic failures.
+
 ## Final readiness review
 
 Before presenting the plan:

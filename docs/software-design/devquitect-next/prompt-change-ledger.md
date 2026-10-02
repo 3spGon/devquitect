@@ -23,6 +23,19 @@ This append-only ledger makes each staged prompt simplification reviewable witho
 
 ## Entries
 
+### PC-DN-004 — Invocation policies and independent evaluation rows
+
+The user authorized SLICE-DN-004 implementation on 2026-10-02, without behavioral comparisons.
+The immutable baseline is `git:dff146543c870a56b55d1ed339eeb95f6397653f`.
+[PC-DN-004 records](../../skill-change-ledger.md#pc-dn-004-del--explicit-only-delivery-invocation)
+separate the delivery metadata, definition metadata, and evidence-matrix rule groups, record each
+candidate file hash, and retain the positive/negative cases. The matrix inventory fixes twelve
+representative cases at suite revision
+`sha256:e6f14a59da173317677421a4d43456d58541e4fdbf8d79e148be7b7d044804d0`.
+Its five independent model rows are unexecuted (`not-run`); no host/runtime observations or
+comparison reports are fabricated. Current deterministic and repository evidence belongs in
+`slices/SLICE-DN-004.md`; behavioral verdicts remain inconclusive until separately authorized.
+
 Canonical versioned records live in the [repository skill-change ledger](../../skill-change-ledger.md). This session indexes its rule groups without duplicating their evidence:
 
 - [PC-DN-001-DEF — Definition workflow and authority boundary](../../skill-change-ledger.md#pc-dn-001-def--definition-workflow-and-authority-boundary)

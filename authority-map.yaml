@@ -1,5 +1,38 @@
 schema_version: 1
 contracts:
+  - id: project-plan-execution.explicit-invocation
+    owner_path: skills/project-plan-execution/agents/openai.yaml
+    secondary_paths:
+      - path: skills/software-idea-to-project/references/implementation-planning.md
+        role: explains
+      - path: tests/unit/test_invocation_matrix_contract.py
+        role: tests
+      - path: evals/cases/plan-execution-positive.yaml
+        role: tests
+      - path: evals/cases/plan-execution-implicit-negative.yaml
+        role: tests
+  - id: software-idea-to-project.implicit-invocation
+    owner_path: skills/software-idea-to-project/agents/openai.yaml
+    secondary_paths:
+      - path: skills/software-idea-to-project/references/implementation-planning.md
+        role: explains
+      - path: tests/unit/test_invocation_matrix_contract.py
+        role: tests
+      - path: evals/cases/software-idea-positive.yaml
+        role: tests
+      - path: evals/cases/software-idea-negative.yaml
+        role: tests
+  - id: software-idea-to-project.evaluation-matrix
+    owner_path: skills/software-idea-to-project/references/implementation-planning.md
+    secondary_paths:
+      - path: docs/skill-change-ledger.md
+        role: explains
+      - path: tests/unit/test_invocation_matrix_contract.py
+        role: tests
+      - path: evals/cases/evaluation-matrix-positive.yaml
+        role: tests
+      - path: evals/cases/evaluation-matrix-negative.yaml
+        role: tests
   - id: software-idea-to-project.definition-boundary
     owner_path: skills/software-idea-to-project/SKILL.md
     secondary_paths:

@@ -1,0 +1,16 @@
+schema_version: 1
+id: plan-execution-implicit-negative
+target_skill: project-plan-execution
+activation: implicit-negative
+fixture: delivery-authorization-matching
+sandbox: read-only
+turns:
+  - >-
+    Report the current delivery status only. Do not implement, run verification,
+    or change the checkpoint. I have not invoked a delivery execution skill.
+assertions:
+  - {type: git-clean, id: implicit-status-is-read-only, critical: true}
+forbidden_effects: [workspace-write, implementation, verification-without-evidence]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, routing, invocation-policy, project-plan-execution]
