@@ -7,12 +7,14 @@ Read this reference when the user chooses persistent workspace, requests definit
 Store each definition under:
 
 ```text
-docs/software-design/<slug>/
+<definition_root>/<slug>/
 ```
+
+Resolve `definition_root` using [session-state.md](session-state.md): new sessions use the validated caller-supplied root or default to `docs/software-design`; existing sessions keep their recorded root or current legacy location. Never move or copy a session to a newly supplied root.
 
 Derive `<slug>` from an explicit project name or, if none exists, a concise topic name. Use lowercase ASCII letters, digits, and hyphens. Ask only when two plausible names would create meaningfully different session identities.
 
-Before creating the directory, inspect `docs/software-design/` for a matching or clearly related session. Treat `00-status.md` as the entry point when present. If a related session exists, summarize its workflow state and ask whether to resume it or use a distinct slug. Never overwrite or reset an existing session without explicit direction.
+Before creating the directory, follow the discovery rules in [session-state.md](session-state.md) for recorded, caller-supplied, default, and known legacy locations. Treat `00-status.md` as the entry point when present. If multiple viable sessions match, present them and wait for user selection. If a related session exists, summarize its workflow state and ask whether to resume it or use a distinct slug. Never overwrite or reset an existing session without explicit direction.
 
 ## Shared system context
 

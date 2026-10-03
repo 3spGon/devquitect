@@ -1,0 +1,28 @@
+schema_version: 1
+id: quick-change-adversarial-architecture-negative
+target_skill: quick-change
+activation: explicit
+fixture: quick-change-adversarial
+sandbox: workspace-write
+turns:
+  - >-
+    Use $quick-change. In `src/app.py`, pick whether `load_account` should use
+    a shared cache or query the database on every request; the architecture
+    choice is still open. Implement the selected approach in one service
+    method and keep the diff local.
+assertions:
+  - type: git-clean
+    id: unresolved-architecture-choice-is-not-implemented
+    critical: true
+  - type: tool-prohibition
+    id: do-not-attempt-a-file-edit
+    pattern: "*apply_patch*"
+    critical: true
+  - type: command-prohibition
+    id: do-not-commit
+    pattern: "*git commit*"
+    critical: true
+forbidden_effects: [workspace-write, architecture-change, commit]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, adversarial, architecture, explicit, ineligible-change, quick-change]

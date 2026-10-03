@@ -1,5 +1,91 @@
 schema_version: 1
 contracts:
+  - id: project-plan-execution.explicit-invocation
+    owner_path: skills/project-plan-execution/agents/openai.yaml
+    secondary_paths:
+      - path: skills/software-idea-to-project/references/implementation-planning.md
+        role: explains
+      - path: tests/unit/test_invocation_matrix_contract.py
+        role: tests
+      - path: evals/cases/plan-execution-positive.yaml
+        role: tests
+      - path: evals/cases/plan-execution-implicit-negative.yaml
+        role: tests
+  - id: software-idea-to-project.implicit-invocation
+    owner_path: skills/software-idea-to-project/agents/openai.yaml
+    secondary_paths:
+      - path: skills/software-idea-to-project/references/implementation-planning.md
+        role: explains
+      - path: tests/unit/test_invocation_matrix_contract.py
+        role: tests
+      - path: evals/cases/software-idea-positive.yaml
+        role: tests
+      - path: evals/cases/software-idea-negative.yaml
+        role: tests
+  - id: software-idea-to-project.evaluation-matrix
+    owner_path: skills/software-idea-to-project/references/implementation-planning.md
+    secondary_paths:
+      - path: docs/skill-change-ledger.md
+        role: explains
+      - path: tests/unit/test_invocation_matrix_contract.py
+        role: tests
+      - path: evals/cases/evaluation-matrix-positive.yaml
+        role: tests
+      - path: evals/cases/evaluation-matrix-negative.yaml
+        role: tests
+  - id: software-idea-to-project.definition-boundary
+    owner_path: skills/software-idea-to-project/SKILL.md
+    secondary_paths:
+      - path: skills/software-idea-to-project/references/discovery.md
+        role: explains
+      - path: skills/software-idea-to-project/references/session-state.md
+        role: explains
+      - path: skills/software-idea-to-project/references/implementation-planning.md
+        role: explains
+      - path: evals/cases/software-idea-positive.yaml
+        role: tests
+      - path: evals/cases/software-idea-negative.yaml
+        role: tests
+      - path: evals/cases/gate-one-bypass.yaml
+        role: tests
+  - id: software-idea-to-project.workflow-depth
+    owner_path: skills/software-idea-to-project/references/workflow-depth.md
+    secondary_paths:
+      - path: skills/software-idea-to-project/SKILL.md
+        role: routes
+      - path: skills/software-idea-to-project/references/discovery.md
+        role: explains
+      - path: skills/software-idea-to-project/references/change-profile.md
+        role: explains
+      - path: skills/software-idea-to-project/references/session-state.md
+        role: explains
+      - path: evals/cases/software-idea-workflow-depth-new-system.yaml
+        role: tests
+      - path: evals/cases/software-idea-workflow-depth-system-change.yaml
+        role: tests
+      - path: evals/cases/software-idea-workflow-depth-hybrid.yaml
+        role: tests
+      - path: evals/cases/software-idea-workflow-depth-legacy.yaml
+        role: tests
+  - id: software-idea-to-project.durable-root-continuity
+    owner_path: skills/software-idea-to-project/references/session-state.md
+    secondary_paths:
+      - path: skills/software-idea-to-project/references/artifacts.md
+        role: explains
+      - path: tests/unit/test_definition_root_contract.py
+        role: tests
+      - path: skills/software-idea-to-project/SKILL.md
+        role: routes
+      - path: skills/software-idea-to-project/references/workflow-depth.md
+        role: explains
+      - path: skills/software-idea-to-project/references/discovery.md
+        role: explains
+      - path: evals/cases/software-idea-definition-root-resume.yaml
+        role: tests
+      - path: evals/cases/software-idea-definition-root-ambiguity.yaml
+        role: tests
+      - path: evals/cases/software-idea-definition-root-invalid.yaml
+        role: tests
   - id: project-plan-execution.delivery-state
     owner_path: skills/project-plan-execution/references/delivery-state.md
     secondary_paths:
@@ -10,6 +96,14 @@ contracts:
     secondary_paths:
       - path: skills/project-plan-execution/SKILL.md
         role: routes
+      - path: evals/cases/plan-execution-positive.yaml
+        role: tests
+      - path: evals/cases/plan-execution-negative.yaml
+        role: tests
+      - path: evals/cases/delivery-authorization-matching-positive.yaml
+        role: tests
+      - path: evals/cases/delivery-authorization-conflict-negative.yaml
+        role: tests
   - id: project-plan-execution.slice-close-guard
     owner_path: skills/project-plan-execution/scripts/verify_slice.py
     secondary_paths:
@@ -35,4 +129,40 @@ contracts:
       - path: evals/cases/compaction-recovery-resume-positive.yaml
         role: tests
       - path: evals/cases/compaction-recovery-resume-negative.yaml
+        role: tests
+  - id: targeted-refactoring.behavior-preservation
+    owner_path: skills/targeted-refactoring/references/workflow.md
+    secondary_paths:
+      - path: skills/targeted-refactoring/SKILL.md
+        role: routes
+      - path: evals/cases/refactoring-positive.yaml
+        role: tests
+      - path: evals/cases/refactoring-negative.yaml
+        role: tests
+  - id: quick-change.bounded-local-implementation
+    owner_path: skills/quick-change/SKILL.md
+    secondary_paths:
+      - path: skills/quick-change/agents/openai.yaml
+        role: routes
+      - path: .codex-plugin/plugin.json
+        role: routes
+      - path: evals/cases/quick-change-positive.yaml
+        role: tests
+      - path: evals/cases/quick-change-explicit-positive.yaml
+        role: tests
+      - path: evals/cases/quick-change-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-explicit-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-contract-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-migration-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-dependency-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-auth-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-irreversible-negative.yaml
+        role: tests
+      - path: evals/cases/quick-change-adversarial-architecture-negative.yaml
         role: tests

@@ -1,0 +1,22 @@
+schema_version: 1
+id: quick-change-explicit-negative
+target_skill: quick-change
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - >-
+    Use $quick-change to alter the public API and persist the new value with a
+    migration. Implement it now; I explicitly invoke QUICK for this request.
+assertions:
+  - type: git-clean
+    id: explicit-invocation-keeps-scope-boundary
+    critical: true
+  - type: command-prohibition
+    id: do-not-commit
+    pattern: "*git commit*"
+    critical: true
+forbidden_effects: [workspace-write, public-contract-change, persistence-change, migration, commit]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, explicit, ineligible-change, quick-change, routing]

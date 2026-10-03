@@ -5,60 +5,20 @@ description: Execute, resume, or report the status of an explicitly authorized i
 
 # Project Plan Execution
 
-Read [the slice verification contract](references/slice-verification.md) and use
-[`verify_slice.py`](scripts/verify_slice.py) for the supported evidence check and close path.
-Before running it, confirm Python 3.12+ and PyYAML are available in the consumer runtime; report
-missing support and do not install or use a manual equivalent.
+Implement explicitly authorized slices from an approved persistent plan. Keep code written separate from delivery verified, and preserve traceability from each slice to its requirements, changes, checks, and evidence.
 
-Implement an approved plan without confusing code written with delivery verified. Preserve traceability from authorized slices to repository changes, acceptance behavior, commands, and observed evidence.
+## Establish authority and session
 
-When compactation, startup/resume, handoff, clear/reset, or another loss of operational context
-occurs, route through [the conservative recovery contract](references/compaction-recovery.md)
-before implementation continues. Re-read the selected checkpoint, reconcile it with repository
-evidence, and treat conversation or compacted memory as hints rather than proof.
+Follow the authorized handoff preflight in [execution.md](references/execution.md) before starting delivery or changing files.
 
-## Establish the execution context
+Follow applicable `AGENTS.md` files and preserve current user changes. For status, resume, or handoff, select the session from its durable checkpoints; if several remain plausible, ask the user to choose. Read [delivery-state.md](references/delivery-state.md) and, for recovery after lost context, [compaction-recovery.md](references/compaction-recovery.md). Status-only is read-only.
 
-Before changing files:
+Use `09-delivery-status.md` as the sole execution checkpoint. Initialize and update it using [delivery-state.md](references/delivery-state.md); keep scope `implementation-only` unless broader authority is explicit. Implementation authorization does not include commits, pushes, deployments, provisioning, production mutations, or other external actions.
 
-1. Locate and follow every applicable `AGENTS.md` from the workspace root to the files in scope.
-2. Inspect `docs/software-design/*/00-status.md` and `09-delivery-status.md`, then identify the intended persistent session. If several sessions are plausible, summarize them and ask the user to choose; never select silently.
-3. Inspect the relevant repository state, approved artifacts, source, tests, configuration, and verified commands. Preserve user changes and existing conventions.
-4. Classify the request as **start**, **status**, **resume**, or **handoff**.
+## Execute authorized slices
 
-For status or resume, read [references/delivery-state.md](references/delivery-state.md). Read `09-delivery-status.md` first, followed only by its `required_context`. A status-only request is read-only and must not execute, repair, initialize, or advance delivery.
+While delivery is active, execute its `next_action` and continue through safe, ready work without treating checkpoint updates as a stopping point. Work only within authorized slices and return new architecture or design decisions to `$software-idea-to-project`.
 
-## Require an authorized handoff
+A slice is complete only when every applicable criterion and required check has current evidence and the supported close path records `verified`. Read [slice-verification.md](references/slice-verification.md) and use [`verify_slice.py`](scripts/verify_slice.py) for `snapshot`, `check`, and `close`. Before running it, confirm Python 3.12+ and PyYAML are available; report missing support without installing dependencies or using a manual equivalent.
 
-Start delivery only when all of these conditions are evidenced:
-
-- the definition uses a persistent session under `docs/software-design/<slug>/`;
-- `00-status.md` records Gate 1 and Gate 2 as approved and the definition phase as complete;
-- `08-implementation-plan.md` is `Approved`, has a positive `Plan revision`, and uses stable `SLICE-*` identifiers;
-- the user explicitly authorized implementation;
-- the authorized slice list is concrete.
-
-Treat an explicit request to implement the entire approved plan as authorization for every slice in that plan and enumerate them in the tracker without asking again. For narrower authorization, include only the slices the user identified or whose requested outcome unambiguously selects them.
-
-Default `completion_scope` to `implementation-only`. Authorization to implement does not authorize commits, pushes, deployments, provisioning, production mutations, or other external side effects. If any prerequisite is absent, do not modify application code or create a delivery checkpoint; report the missing condition or return design work to `$software-idea-to-project`.
-
-When starting or updating durable delivery state, follow [references/delivery-state.md](references/delivery-state.md). `09-delivery-status.md` is the sole durable execution checkpoint; do not create parallel JSON state.
-
-## Execute and verify
-
-Read [references/execution.md](references/execution.md) before implementing or resuming slices. Work only within the authorized scope and carry forward the approved requirements, architecture, assumptions, deferred decisions, and repository instructions.
-
-While `delivery_status` is `active`, execute `next_action` without asking for confirmation. Complete multiple safe, coherent actions in the same turn. Updating a slice, checkpoint revision, evidence entry, or `next_action` is bookkeeping, not a stopping condition.
-
-A slice is complete only when it is `verified`. `implemented` means verification remains. Continue automatically to the next ready authorized slice after verification. Stop only for unavailable user-only information, required authorization, an unresolved blocker, required human acceptance, an invalidated plan or design, or completion of the authorized scope.
-
-## Preserve boundaries
-
-- Do not expand implementation beyond authorized slices or silently resolve a new architecture decision in code.
-- Do not overwrite user changes, rewrite unrelated files, or discard conflicting work.
-- Do not claim verification from an unexecuted command, an old result, or expectation alone.
-- Do not record secrets or unnecessarily large logs in delivery artifacts.
-- Do not mark a slice `deferred` without explicit user authorization and a recorded reason.
-- Do not mark delivery `complete` while an authorized slice is pending, in progress, implemented, blocked, invalidated, or awaiting required acceptance.
-
-Lead each response with the current delivery result. Before deliberately yielding, make the durable checkpoint accurately describe the next agent action, pending user action, blocker, or completed scope.
+Preserve unrelated changes, do not claim unrun verification, and do not mark work `deferred` without explicit authorization and a recorded reason. Keep the checkpoint accurate before yielding; `complete` means only the authorized scope is verified.

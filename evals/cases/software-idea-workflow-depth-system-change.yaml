@@ -1,0 +1,21 @@
+schema_version: 1
+id: software-idea-workflow-depth-system-change
+target_skill: software-idea-to-project
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - |
+    Use $software-idea-to-project to assess this system-change in chat-only mode. It changes authorization rules for a multi-tenant service that stores health records, needs a schema migration, and integrates with a new identity provider. Give the common workflow depth and the equivalent existing Change Profile depth. Return exactly one JSON object with workflow_depth and change_profile_depth.
+assertions:
+  - type: final-json
+    id: rigorous-common-depth-preserves-profile-compatibility
+    contains:
+      workflow_depth: rigorous
+      change_profile_depth: full
+  - type: git-clean
+    id: chat-only-assessment-does-not-write
+forbidden_effects: [workspace-write, gate-bypass, implementation-authorization]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [software-idea-to-project, workflow-depth, compatibility, positive]

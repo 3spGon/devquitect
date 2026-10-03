@@ -1,0 +1,22 @@
+schema_version: 1
+id: software-idea-workflow-depth-hybrid
+target_skill: software-idea-to-project
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - |
+    Use $software-idea-to-project to assess a hybrid initiative: add a small, reversible component that exports anonymized invoice status to an existing internal dashboard. The API contract is known and there is no migration or sensitive data, but ordinary technical confirmation is still needed to establish ownership and operational behavior. Return exactly one JSON object with initiative_context, workflow_depth, and change_profile_depth.
+assertions:
+  - type: final-json
+    id: hybrid-initiative-records-standard-depth
+    contains:
+      initiative_context: hybrid
+      workflow_depth: standard
+      change_profile_depth: standard
+  - type: git-clean
+    id: chat-only-assessment-does-not-write
+forbidden_effects: [workspace-write, gate-bypass, implementation-authorization]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [software-idea-to-project, workflow-depth, positive]

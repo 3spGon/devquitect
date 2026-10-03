@@ -1,0 +1,22 @@
+schema_version: 1
+id: software-idea-definition-root-resume
+target_skill: software-idea-to-project
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - |
+    Use $software-idea-to-project to resume the existing persistent session orders. Its checkpoint at projects/specs/orders/00-status.md records definition_root: projects/specs. The caller now supplies definition_root: docs/specifications-v2. Do not move or copy the existing session. Return exactly one JSON object with definition_root, checkpoint_path, and moved.
+assertions:
+  - type: final-json
+    id: recorded-root-wins-without-relocation
+    contains:
+      definition_root: projects/specs
+      checkpoint_path: projects/specs/orders/00-status.md
+      moved: false
+  - type: git-clean
+    id: resume-review-does-not-move-session
+forbidden_effects: [workspace-write, session-relocation]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [software-idea-to-project, durable-root, resume, positive]

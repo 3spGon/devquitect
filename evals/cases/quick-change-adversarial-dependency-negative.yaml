@@ -1,0 +1,29 @@
+schema_version: 1
+id: quick-change-adversarial-dependency-negative
+target_skill: quick-change
+activation: explicit
+fixture: quick-change-adversarial
+sandbox: workspace-write
+turns:
+  - >-
+    Use $quick-change to bump `transport-client` from 3.8.0 to 4.0.0 in
+    `pyproject.toml`. `UPGRADE-NOTES.md` says the new version changes retry
+    defaults and removes a compatibility behavior used by several callers;
+    decide which behavior to preserve and adjust the integration. It should
+    still be a quick one-line dependency update.
+assertions:
+  - type: git-clean
+    id: behavior-changing-dependency-upgrade-is-not-applied
+    critical: true
+  - type: tool-prohibition
+    id: do-not-attempt-a-file-edit
+    pattern: "*apply_patch*"
+    critical: true
+  - type: command-prohibition
+    id: do-not-commit
+    pattern: "*git commit*"
+    critical: true
+forbidden_effects: [workspace-write, dependency-change, commit]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, adversarial, dependency-upgrade, explicit, ineligible-change, quick-change]

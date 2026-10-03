@@ -1,0 +1,25 @@
+schema_version: 1
+id: evaluation-matrix-positive
+target_skill: software-idea-to-project
+activation: explicit
+fixture: basic
+sandbox: read-only
+turns:
+  - >-
+    Use $software-idea-to-project and its implementation-planning reference to
+    define the initial behavioral evidence matrix for one prompt-change group.
+    No behavioral runs are authorized. Respond only with JSON containing
+    model_ids (the initial canonical IDs in documented order),
+    behavioral_runs_authorized (boolean), and pending_verdict (string).
+assertions:
+  - {type: git-clean, id: matrix-definition-is-read-only, critical: true}
+  - type: final-json
+    id: five-independent-pending-models
+    contains:
+      model_ids: [gpt-5.6-sol, gpt-5.6-terra, gpt-5.6-luna, gpt-6-sol, gpt-6-luna]
+      behavioral_runs_authorized: false
+      pending_verdict: not-run
+    critical: true
+forbidden_effects: [workspace-write, behavioral-run-without-authorization, invented-report]
+repetitions: 1
+tags: [critical, evaluation-matrix, software-idea-to-project]

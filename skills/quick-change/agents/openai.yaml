@@ -1,0 +1,6 @@
+interface:
+  display_name: "QUICK"
+  short_description: "Make small, directly verifiable local changes"
+  default_prompt: "Use $quick-change for an authorized, reversible local change and route higher-risk work to its owning workflow."
+policy:
+  allow_implicit_invocation: true

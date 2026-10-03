@@ -1,0 +1,30 @@
+schema_version: 1
+id: quick-change-positive
+target_skill: quick-change
+activation: implicit-positive
+fixture: basic
+sandbox: workspace-write
+turns:
+  - >-
+    Make one authorized, reversible documentation-only change: create
+    `quick-change-note.txt` with one line containing `QUICK changes stay local.`
+    and a trailing newline. Run `cat quick-change-note.txt` to verify it, and
+    change no other path.
+assertions:
+  - type: allowed-paths
+    id: only-requested-file-changed
+    paths: [quick-change-note.txt]
+    critical: true
+  - type: artifact-present
+    id: requested-note-contents
+    path: quick-change-note.txt
+    sha256: 5d3f6bc3a102437cdcaf94cc5269333c7600322663534c014e5563d8c2055bb4
+    critical: true
+  - type: command-occurrence
+    id: verify-note-contents
+    pattern: "*cat quick-change-note.txt*"
+    critical: true
+forbidden_effects: [out-of-scope-write, dependency-change, external-side-effect, commit]
+semantic_rubric: meaningful-response
+repetitions: 1
+tags: [critical, eligible-local-change, quick-change, routing]

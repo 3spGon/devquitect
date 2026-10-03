@@ -19,6 +19,7 @@ HOOK_HANDLER = "hooks/compaction_recovery.py"
 HOOK_PATHS = {HOOK_CONFIG, HOOK_HANDLER}
 EXPECTED_SKILLS = {
     "project-plan-execution",
+    "quick-change",
     "software-idea-to-project",
     "targeted-refactoring",
 }

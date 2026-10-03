@@ -1,0 +1,20 @@
+{
+  "accepted_deltas": [],
+  "approved_at": "2026-10-02T18:34:11Z",
+  "approved_by": "User: explicit v0.8.0 local promotion authorization in Codex conversation 01a0fdad-cb70-7940-bdae-0c8967752f72",
+  "comparison_ids": [],
+  "compatibility": {
+    "impact": "minor",
+    "migration_refs": []
+  },
+  "package_digest": "sha256:aa2deeb6dffb68ca28f31db03953bcf4ef46225e2b776fecdc51e7259a868ceb",
+  "residual_risks": [
+    "Behavioral evidence covers gpt-5.6-luna/high with one repetition per source and case; no cross-model or variance claim.",
+    "The outer restricted supervisor had four shared functional failures; its row remains diagnostic and is not pooled with the corrected twelve-pass candidate row."
+  ],
+  "run_ids": [],
+  "schema_version": 1,
+  "snapshot_id": "sha256:67a9177656aa136261d5aaa5935a0d89bd6a5155fe14d53ef8508e73622675aa",
+  "source_commit": "dc936180ed2a854c9f6ac65aa9e21559f4a7e2af",
+  "version": "0.8.0"
+}
