@@ -250,8 +250,9 @@ The new manual `release-readiness.yml` consumes a complete successful `push` on 
 `ci_run_attempt`, and `previous_release_sha`. It checks out that exact candidate and installs its
 locked quality tooling. The workflow has only `contents: read` and `actions: read`; both workflows
 request 30-day retention. An expired artifact requires new matching CI, including all jobs.
-The DN-006 local implementation has fixture and existing-main API replay evidence; its own
-hosted exact-candidate dispatch still requires delivery authorization and acceptance evidence.
+DN-006 also has actual protected PR/main CI and hosted exact-candidate readiness evidence;
+see `docs/software-design/devquitect-next/slices/SLICE-DN-006.md` for the immutable candidate,
+run/attempt, package/container identities and unapproved proposal references.
 
 The additive CLI interface is:
 

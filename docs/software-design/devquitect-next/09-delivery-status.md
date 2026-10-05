@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 59
-last_updated: '2026-10-05T19:03:34+00:00'
+revision: 61
+last_updated: '2026-10-05T19:14:10+00:00'
 plan: 08-implementation-plan.md
 plan_revision: 3
 completion_scope: implementation-only
@@ -15,9 +15,9 @@ authorized_slices:
 - SLICE-DN-004
 - SLICE-DN-005
 - SLICE-DN-006
-delivery_status: in-progress
+delivery_status: active
 current_slice: SLICE-DN-006
-next_action: Commit and push the reviewed DN-006 candidate, open its PR, observe required protected CI before integration, then dispatch exact final-main readiness.
+next_action: Verify the assembled System Context refresh, commit/push its follow-up PR, integrate after protected CI and verify final-main readiness.
 pending_user_action: null
 required_context:
 - 02-requirements.md
@@ -30,6 +30,8 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
+  - Main run 37361093919 and manual readiness 37361468906 attempt 1 passed for c4b0bc1d961126612b27c194cab569a64c751024. Independently inspected schemas, six CI jobs/artifacts, all payload hashes, canonical ZIP, null approval fields and readiness container digest 2154cee58e7ed45b01baa09b60487350fb996e0fe0b26d1e535ed08bd64072dd with 30-day retention. Refreshed affected System Context and contributor status from that exact candidate.
+  - PR 5 passed all six jobs in run 37360725218 attempt 1 and merged under existing main protection; head 75db68172a88d2c4b69b8c12fcbd8a38f99fac5f, base 80bfa04b1d26c08d87ad5c421928c5a088ec4ffa, final main c4b0bc1d961126612b27c194cab569a64c751024 are distinct. Corrected the authorization checkpoint frontier shape rejected by supported snapshot.
   - Reconciled all four recovery candidates; only devquitect-next revision 58 is active. The human user explicitly authorized commit, push, PR, protected integration after CI and manual readiness on 2026-10-05; no publication, promotion approval or model testing is authorized.
   - Rejected empty behavioral reports and missing observations that claim executed runtime; the positive fixtures now contain simulated model/effort observations. All five inventory checks pass at final digest 2268c65104da1de7fea7b90d6cca70a421e1d6b28d873f55219b6b79ca367cd3, including 140 focused and 41 transport cases.
   - Refreshed every structured check timestamp/fingerprint and preserved the four unverified hosted criteria. Supported check reports exactly AC-DN-011/016/017/018, with valid current plan/tracker/evidence and no stale inputs.
@@ -202,11 +204,14 @@ execution_frontier:
     AC-DN-005, AC-DN-006, and CHECK-DN-007 through CHECK-DN-009 passed.
   - Reran the required credential-free check, Ruff, and diff check after slice closure
     and the complete checkpoint update; all passed.
-  in_progress: Authorized protected candidate delivery and hosted readiness.
+  in_progress:
+    action: Verify and integrate the exact-candidate System Context refresh via a protected follow-up PR.
+    paths:
+    - docs/software-design/system-context.md
   do_not_repeat: []
   pending_verification:
-  - Observe final-main CI and manual hosted readiness for the exact newly reviewed candidate; AC-DN-011/016/017/018 remain unverified.
-  - Refresh System Context from the verified DN-006 candidate after hosted acceptance; do not replace its DN-005 baseline with local replay evidence.
+  - Observe follow-up protected CI and final-main readiness, then refresh all criterion/input observations and supported close.
+  - Repeat local inventory at assembled current inputs after the System Context and contributor edits.
 slices:
   SLICE-DN-001:
     status: verified
