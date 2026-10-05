@@ -58,3 +58,41 @@ The user approved Gate 2. The approved technical design uses the existing prompt
 ## 2026-09-22 — Plan revision 2 approved
 
 The user approved only implementation plan revision 2. This completes the persistent definition workflow; it does not authorize implementation, behavioral comparisons, or any `SLICE-DN-*` execution. Future delivery requires a separate explicit authorization naming the slices.
+
+## 2026-10-02 — Continuous Verification and Release Readiness amendment
+
+The user supplied the initiative to redefine DN-005 around clean-runner Continuous Verification and DN-006 around exact-candidate Release Readiness, then explicitly requested `software-idea-to-project` to make the necessary plan changes. This authorizes a persistent review amendment, not implementation or new gate approvals. Plan revision 3 is Review; concept/requirements/decisions are Review; affected technical documents are Draft for confirmation after amended Gate 1.
+
+The affected baseline was revalidated against the current checkout. No `.github/workflows/` implementation exists. Existing credential-free checks, platform-sensitive tests, packaging, and release policy are available. The packager already rejects requested/committed version mismatch: the earlier analysis's claim that it rewrites the version was incorrect. `release-check` rebuilds twice and binds canonical check evidence to the exact commit/snapshot, but does not take a CI ZIP directly and currently uses the immediate parent for version compatibility.
+
+The review direction preserves local verification, separates manual authorized behavioral evidence from required deterministic gates, reruns CI for the final integrated SHA, and requires GitHub provenance plus file-digest/package identity. It proposes a compatible explicit previous-release reference so post-bump fixes can be release candidates. Effective main protection and successful real runner evidence remain delivery requirements; documentation or local fixtures alone do not prove them. Optional behavioral infrastructure failure is inconclusive and does not block a deterministically correct PR.
+
+Only DN-005 and DN-006 change. Existing AC-DN-009 through AC-DN-012 keep their meanings; AC-DN-013 through AC-DN-023 add the new guarantees. DN-001 through DN-004 and their inventory are unchanged. The revision-2 delivery checkpoint and slice evidence remain untouched and authoritative for that delivery. Future authorized execution must reconcile revision 3 explicitly rather than imply that earlier evidence satisfies changed future criteria.
+
+The profile remains confirmed full / rigorous and cross-cutting, now explicitly covering external CI, provenance, security/trust, minimal maintainer interaction, and release compatibility. Gate 1 and Gate 2 approvals do not transfer to the amendment: the checkpoint returns to crystallization for amended Gate 1 review, with Gate 2 invalidated. No model-backed test, workflow, code, remote setting, commit, tag, or publication is authorized or performed by this definition update.
+
+## 2026-10-03 — Amended Gate 1 approved
+
+The user replied "apruebo" to the pending amended Gate 1 after reviewing the main changes. This approves DN-005 / DN-006 behavior, R-11 through R-14, and the operating direction. Concept, requirements, and decisions are Approved. Gate 2, plan revision 3, implementation, model-backed runs, remote changes, and publication remain unapproved. Technical design now proceeds without another request to start it.
+
+## 2026-10-03 — CI and readiness technical design ready for Gate 2
+
+Resolved the previously deferred representation, policy ownership, interface compatibility, required-check names, retention, and failure behavior. Architecture, data model, and interfaces are Review. The proposed GitHub evidence adapter uses authenticated attempt-specific job/artifact metadata, safe bounded downloads, and exact candidate binding; the shared promotion policy consumes verified bytes and preserves existing local behavior. The additive CI-aware release-check options include explicit repository/run/attempt and previous-release SHA, plus optional separate behavioral evidence.
+
+Use a new version-1 CI evidence document while preserving the existing report and promotion schemas. Request 30-day review retention, reject incomplete or mixed attempts, and stage successful outputs without overwriting user files. The previous-release ref is an ancestor with a lower version; optional behavioral results remain independent. Actual remote protection, artifact retention support, and hosted runner behavior are delivery acceptance evidence, not claims of current capability. No workflow, tooling, dependency, schema file, model call, or remote state was implemented or changed by this technical definition.
+
+Credential-free verification passed: working-tree `devquitect check`, Ruff, and `git diff --check`. The consistency audit confirmed Gate 1 approved / Gate 2 pending, matching canonical statuses, preserved DN-001 through DN-004 inventory and delivery records, and compatibility of the proposed CI/readiness report entries with the existing report schema. Verification covers definition consistency and the current repository, not execution of the proposed hosted workflows.
+
+## 2026-10-03 — Gate 2 approved
+
+The user explicitly stated "apruebo gate 2". Architecture, evidence representation, additive release-check interfaces, and technical decisions are Approved. The remaining definition action is to finalize plan revision 3 with the approved paths, interfaces, validation, and evidence requirements, then obtain separate plan approval. This does not authorize DN-005 / DN-006 implementation, model-backed testing, remote changes, or publication.
+
+## 2026-10-03 — Final plan revision 3 ready for approval
+
+Finalized the existing revision-3 amendment from the approved technical design: DN-005 owns the CI evidence schema/producer and workflow contract test; DN-006 owns the GitHub evidence adapter, its unit fixtures, and compatible release-check extension. The plan specifies exact selectors and dispatch inputs, 30-day retention, safe bounded extraction, legacy behavior, separate behavioral row index, staged output, and policy/configuration/infrastructure exits. The requirement-to-slice/check mapping covers R-01 through R-14 with no unresolved implementation-blocking design choice.
+
+The inventory audit passed for six matched slice headings/keys and 23 unique checks. DN-001 through DN-004, existing AC-DN-009 through AC-DN-012, and revision-2 delivery files remain unchanged. New-file checks target explicitly proposed delivery paths and are not represented as already executable. Plan revision 3 remains Review for separate approval; hosted evidence and remote settings remain future acceptance work. No implementation, model call, commit, or remote action was performed.
+
+## 2026-10-03 — Plan revision 3 approved
+
+The user explicitly stated "Apruebo el plan" in response to the pending plan-revision-3 approval. The plan is Approved and the definition workflow is complete with both gates approved. This records approval of the delivery definition only; it does not authorize DN-005 / DN-006 execution, behavioral tests, remote changes, commits, tags, or publication. Revision-2 delivery evidence remains untouched and requires explicit reconciliation during later authorized project-plan-execution.
