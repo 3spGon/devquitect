@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import jsonschema
 import pytest
@@ -38,8 +39,22 @@ def workflow(path=WORKFLOW):
 def bash():
     # Windows' system bash launches WSL; these contracts use the runner's Git Bash.
     if sys.platform == "win32":
-        return str(Path(shutil.which("git")).resolve().parents[1] / "bin/bash.exe")
+        for parent in Path(shutil.which("git")).resolve().parents:
+            candidate = parent / "bin/bash.exe"
+            if candidate.is_file():
+                return str(candidate)
+        raise FileNotFoundError("Git Bash is required for Windows workflow contracts")
     return "bash"
+
+
+@pytest.mark.parametrize("git_path", ["cmd/git.exe", "mingw64/bin/git.exe"])
+def test_windows_contract_shell_resolves_git_bash_from_git_layout(tmp_path, monkeypatch, git_path):
+    native = tmp_path / "bin/bash.exe"
+    native.parent.mkdir()
+    native.touch()
+    monkeypatch.setattr(sys.modules[__name__], "sys", SimpleNamespace(platform="win32"))
+    monkeypatch.setattr(shutil, "which", lambda _: str(tmp_path / git_path))
+    assert bash() == str(native)
 
 
 def test_ci_triggers_jobs_locked_toolchain_and_read_only_permissions():

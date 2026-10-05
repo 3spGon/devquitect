@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 47
-last_updated: '2026-10-05T04:35:00+00:00'
+revision: 48
+last_updated: '2026-10-05T04:37:00+00:00'
 plan: 08-implementation-plan.md
 plan_revision: 3
 completion_scope: implementation-only
@@ -16,7 +16,7 @@ authorized_slices:
 - SLICE-DN-005
 delivery_status: active
 current_slice: SLICE-DN-005
-next_action: Finish current local inventory checks and push the Windows portability correction to PR 3; verify every hosted job/artifact before protected integration and independent final-main verification.
+next_action: Push the corrected Git Bash discovery, rerun the six local inventory checks with stable inputs/HEAD, and verify every PR job/artifact before protected integration and independent final-main CI.
 pending_user_action: null
 required_context:
 - 02-requirements.md
@@ -27,8 +27,10 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
+  - Run 37263858064 confirms native Windows Codex and LF whitespace fixture now pass; Git Bash lookup still failed because Git resolves under mingw64/bin. Corrected discovery to search Git ancestor directories and added two layout cases; 71 CI contracts and Ruff/diff checks pass.
+  - Integration rerun passed all six tests at stable HEAD, but its input fingerprint changed during the shell-layout edit; preserve that observation diagnostically and repeat current inventory before acceptance.
   - Corrected Windows contracts to use Git Bash rather than WSL and LF fixture bytes, and exposed the pinned native Codex executable for Python; retained all 87 platform contracts and their negative assertions.
-  - After the correction, CHECK-DN-013/014/015/019 passed locally; CHECK-DN-020/023 are still running and hosted Windows acceptance is pending.
+  - Historical local CHECK-DN-013/014/015/019 passes after the first Windows correction are superseded by the latest shell-layout change and require current-fingerprint refresh.
   - Reconciled all four recovery candidates; devquitect-next v3/revision 45 is the sole active approved-plan-3 DN-005 session. The three other sessions are completed and remain unchanged.
   - Classified PR run 37263102048 Windows failure as recoverable portability failures; quality/package/Linux/macOS succeeded, Windows and its aggregate failed, and protected main blocks integration.
   - Committed DN-005 as 1129b10, incorporated current origin/main, pushed head b4880b53bc1b103d5db9520365612854d921008e, and opened/attached PR 3.
