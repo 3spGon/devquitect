@@ -22,6 +22,11 @@ from .codex_adapter import (
 )
 from .comparison import freeze_pair, pair_records
 from .evaluation import run_case
+from .github_evidence import (
+    EvidenceConfigurationError,
+    EvidencePolicyError,
+    EvidenceUnavailableError,
+)
 from .models import AuthenticationEvidence, SkillSource
 from .packaging import PackageError, build_package
 from .promotion import PromotionError, release_check
@@ -119,6 +124,11 @@ def _parser() -> argparse.ArgumentParser:
     release.add_argument("--evidence", required=True, type=Path)
     release.add_argument("--output", required=True, type=Path)
     release.add_argument("--report", type=Path)
+    release.add_argument("--repository")
+    release.add_argument("--ci-run-id")
+    release.add_argument("--ci-run-attempt")
+    release.add_argument("--previous-release")
+    release.add_argument("--behavioral-evidence", type=Path)
     check = commands.add_parser("check", help="run the integrated contributor definition of done")
     check.add_argument("--source", default="working-tree")
     check.add_argument("--behavioral", action="store_true")
@@ -542,17 +552,62 @@ def _run_package(args: argparse.Namespace) -> int:
 
 
 def _run_release_check(args: argparse.Namespace) -> int:
+    ci_mode = any(value is not None for value in
+                  (args.repository, args.ci_run_id, args.ci_run_attempt))
+    evidence_manifest = []
+    selected_inputs = {
+        "repository": args.repository, "ci_run_id": args.ci_run_id,
+        "ci_run_attempt": args.ci_run_attempt, "previous_release": args.previous_release,
+    }
     try:
         repository = _repository_root()
+        if ci_mode and args.report and any(
+            args.report.resolve() == root.resolve()
+            or root.resolve() in args.report.resolve().parents
+            for root in (args.output, args.evidence, args.behavioral_evidence) if root
+        ):
+            raise EvidenceConfigurationError("report must be outside evidence and output roots")
+        try:
+            run_id = int(args.ci_run_id) if args.ci_run_id is not None else None
+            attempt = int(args.ci_run_attempt) if args.ci_run_attempt is not None else None
+        except ValueError as error:
+            raise EvidenceConfigurationError("run ID and attempt must be positive") from error
         artifact, proposal = release_check(
-            repository, args.source, args.version, args.evidence, args.output
+            repository, args.source, args.version, args.evidence, args.output,
+            ci_repository=args.repository, ci_run_id=run_id, ci_run_attempt=attempt,
+            previous_release=args.previous_release, behavioral_evidence=args.behavioral_evidence,
+            evidence_manifest=evidence_manifest,
+            report_path=args.report if ci_mode else None,
         )
-    except PackageError as error:
-        sys.stderr.write(f"release-check configuration error: {error}\n")
-        return 2
-    except PromotionError as error:
-        sys.stderr.write(f"release-check policy failure: {error}\n")
-        return 1
+    except (PackageError, SourceError, PromotionError, EvidenceConfigurationError,
+            EvidencePolicyError, EvidenceUnavailableError, OSError, ValueError, KeyError,
+            TypeError) as error:
+        code = (3 if isinstance(error, (EvidenceUnavailableError, OSError)) else
+                2 if isinstance(error, (PackageError, SourceError, EvidenceConfigurationError))
+                else 1)
+        sys.stderr.write(f"release-check failed ({code}): {error}\n")
+        if ci_mode or args.behavioral_evidence:
+            report = build_artifact_report(
+                report_type="release-check",
+                inputs={"source": args.source, "version": args.version, **selected_inputs},
+                result="inconclusive" if code == 3 else "fail",
+                records=[{"code": f"release-check.{code}", "severity": "error",
+                          "path": "release-check", "message": str(error)}],
+                evidence_manifest=[],
+            )
+            # An invalid report path cannot create or overwrite evidence/output files.
+            if args.report and not any(
+                args.report.resolve() == root.resolve()
+                or root.resolve() in args.report.resolve().parents
+                for root in (args.output, args.evidence, args.behavioral_evidence) if root
+            ):
+                try:
+                    write_report_atomic(args.report, report)
+                except OSError:
+                    sys.stderr.write("diagnostic file unavailable; "
+                                     "release-check report on stdout\n")
+            sys.stdout.write(serialize_json(report))
+        return code
     report = build_artifact_report(
         report_type="release-check",
         inputs={
@@ -563,12 +618,16 @@ def _run_release_check(args: argparse.Namespace) -> int:
                 "snapshot_id": artifact.snapshot_id,
             },
             "version": args.version,
+            **(selected_inputs if ci_mode or args.previous_release else {}),
         },
         records=[],
-        evidence_manifest=[artifact.as_dict(), {"promotion": proposal}],
+        evidence_manifest=[artifact.as_dict(), {"promotion": proposal}, *evidence_manifest],
     )
     if args.report:
-        write_report_atomic(args.report, report)
+        if ci_mode:
+            report = json.loads(args.report.read_text(encoding="utf-8"))
+        else:
+            write_report_atomic(args.report, report)
     sys.stdout.write(serialize_json(report))
     return 0
 

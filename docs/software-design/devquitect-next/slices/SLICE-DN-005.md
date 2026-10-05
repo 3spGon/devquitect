@@ -4,223 +4,249 @@ session: devquitect-next
 slice: SLICE-DN-005
 plan_revision: 3
 plan_digest: 9ff4314ccaba6eb0aa226330185fab221608f4977870f4d8bf9382161c206c52
-verified_at: '2026-10-05T03:40:26.548341+00:00'
-inputs_digest: 07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553
+verified_at: '2026-10-05T04:53:45.246977+00:00'
+inputs_digest: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
 environment:
   python: 3.14.7
   PyYAML: 6.0.3
 criteria:
   AC-DN-009:
-    action: "Review the assembled local candidate and preserved verifier contract."
-    expected: "Current credential-free evidence for changed contracts; unchanged distributed verifier, YAML inventory semantics, and dependencies."
-    method: "Run all inventory checks; compare the distributed verifier with the installed 0.8.0 script and inspect the cumulative Git diff."
-    observed: "All six local inventory checks passed on macOS/Python 3.14.7. Verifier bytes match the installed script; skills, cases, authority map, pyproject.toml, uv.lock, report/promotion schemas and approved plan are unchanged. Only approved CI implementation, its tests, guidance/context and delivery records changed. Working-tree evidence is local development evidence."
-    status: "PASS"
-    evidence: "CHECK-DN-013"
+    action: Review the assembled local candidate and preserved verifier contract.
+    expected: The assembled candidate has current credential-free evidence for changed contracts and leaves
+      verify_slice.py and its YAML verification contract unchanged.
+    method: Run all inventory checks; compare the distributed verifier with the installed 0.8.0 script
+      and inspect the cumulative Git diff.
+    observed: All six approved inventory commands pass at the current assembled-input digest. The cumulative
+      change is limited to CI workflows, schema/producer/contracts, guidance/context and delivery records.
+      Distributed verifier bytes, skills, authority map, cases, approved plan, dependencies, canonical
+      report/promotion schemas and packaging version enforcement are unchanged.
+    status: PASS
+    evidence: CHECK-DN-013
   AC-DN-010:
-    action: "Refresh only System Context sections affected by observed CI implementation."
-    expected: "System Context reflects verified local behavior and accurately distinguishes pending hosted/protection acceptance."
-    method: "Review the context diff against current test evidence and read-only GitHub observations."
-    observed: "Context records locally tested workflows/producer, unchanged verifier/contracts, configured remote and Actions, supported 30-day retention, and pending hosted execution/effective protection. It makes no claim that DN-005 is verified or hosted CI operational, and describes DN-006 as outside implemented scope."
-    status: "PASS"
-    evidence: "CHECK-DN-023"
+    action: Refresh only System Context sections affected by observed CI implementation.
+    expected: The System Context reflects only verified implementation evidence.
+    method: Review the context diff against current test evidence and read-only GitHub observations.
+    observed: System Context revision 16 records actual protected PR 3/main source evidence and its limitations.
+      The assembled context refresh passed protected PR 4 and independently verified final-main run 37265160752;
+      its tracked input bytes match the current checkout. DN-006 remains outside implemented scope.
+    status: PASS
+    evidence: CHECK-DN-023
   AC-DN-013:
-    action: "Verify smoke tests on all three hosted Python 3.12 platforms."
-    expected: "Linux, macOS and Windows hosted jobs pass on the exact candidate."
-    method: "Local workflow/CLI contracts plus actual GitHub attempt-specific results."
-    observed: "Local smoke/contract suite: 87 passed on macOS/Python 3.14.7; configuration fixes all three hosted variants to Python 3.12. Hosted attempts were not executed because this implementation is uncommitted/unpushed and external write authority is absent. All three actual hosted results remain pending."
-    status: "FAIL"
-    evidence: "CHECK-DN-019; CHECK-DN-023; pending hosted PR and final-main attempts"
+    action: Verify smoke tests on all three hosted Python 3.12 platforms.
+    expected: Compaction recovery, relevant CLI contracts, and path-sensitive packaging smoke tests pass
+      on Linux, macOS, and Windows with Python 3.12.
+    method: Local workflow/CLI contracts plus actual GitHub attempt-specific results.
+    observed: 'PR 4 run 37264944492 and final-main run 37265160752, each attempt 1, passed all three mandatory
+      variants plus aggregate. Each ran 89 smoke/contracts. Actual final platform metadata: macos26/20260907.0351.1:
+      Python 3.12.10, pass; ubuntu24/20260927.320.1: Python 3.12.14, pass; win25-vs2026/20260925.250.1:
+      Python 3.12.10, pass. Local suite also passed 89 cases; Windows-specific Bash discovery, native
+      CLI preflight and LF whitespace fixture failures were corrected without skipping contracts.'
+    status: PASS
+    evidence: CHECK-DN-023
   AC-DN-014:
-    action: "Verify manual behavioral separation and non-run/refusal states."
-    expected: "Optional model-backed workflow cannot substitute for required deterministic gates."
-    method: "Inspect both workflows and run authorization/configuration/exact-SHA preflight and required aggregate positive/negative fixtures without launching a model."
-    observed: "69 CI contract cases passed. Behavioral trigger is workflow_dispatch only with separate name/environment, explicit authorization, exact reviewed main SHA and API-key-only command; missing settings record not-run. Normal CI has no model secrets or behavioral step and its aggregate rejects every non-success platform result. No model call/dispatch occurred and DN-004 rows/ledgers are unchanged."
-    status: "PASS"
-    evidence: "CHECK-DN-023"
+    action: Verify manual behavioral separation and non-run/refusal states.
+    expected: The manual behavioral workflow is separate from deterministic required checks and cannot
+      substitute for a failed deterministic gate.
+    method: Inspect both workflows and run authorization/configuration/exact-SHA preflight and required
+      aggregate positive/negative fixtures without launching a model.
+    observed: 71 deterministic CI contracts pass, including separate workflow_dispatch authorization/configuration/exact-reviewed-main
+      preflight and explicit not-run state. Behavioral has a separate job/environment and API-key-only
+      command; normal required CI contains no behavioral step or model credentials. No workflow dispatch/model
+      call or DN-004 row/ledger mutation occurred. Aggregate positive/negative cases reject all non-success
+      platform states.
+    status: PASS
+    evidence: CHECK-DN-023
   AC-DN-015:
-    action: "Observe clean hosted checkout/tool/workflow and PR versus final-main identities."
-    expected: "Exact tested source and installed tool revision, with distinct integration/head/base and independent final candidate."
-    method: "Execute source/lock-byte and strict metadata fixtures; obtain matching hosted PR and push evidence."
-    observed: "Local fixtures accept clean identities, retain separate PR SHAs, and reject source/tool/workflow/lock mismatches and malformed/missing metadata. Producer records actual checkout/toolchain/run/attempt data. No actual new hosted PR or final-main candidate evidence is available; fixture metadata is not runtime provenance."
-    status: "FAIL"
-    evidence: "CHECK-DN-023; pending actual hosted identity/artifact evidence"
+    action: Observe clean hosted checkout/tool/workflow and PR versus final-main identities.
+    expected: Clean CI evidence identifies the exact tested commit and installed tool revision, distinguishing
+      PR integration/head/base identities from the independently verified final candidate SHA.
+    method: Execute source/lock-byte and strict metadata fixtures; obtain matching hosted PR and push
+      evidence.
+    observed: Actual PR 4 index records integration 57d2a4e0cb6a26d80122797d9228a7472021cacb, head 66d90c0674f17d876f0bcc45029b9df21327ac86
+      and base 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930 separately. Independent push run 37265160752 attempt
+      1 records final source/workflow/installed quality-tool SHA 80bfa04b1d26c08d87ad5c421928c5a088ec4ffa,
+      refs/heads/main and null PR. Strict indexes and all downloaded file sizes/digests validate. Every
+      result is from the same run/attempt/source; fixtures reject mismatched source/tool/lock/workflow
+      and missing/malformed metadata.
+    status: PASS
+    evidence: CHECK-DN-023
   AC-DN-019:
-    action: "Verify clean credential-free quality in the locked hosted Python 3.12 environment."
-    expected: "Structural checks, credential-free tests, Ruff and event-base whitespace pass with read-only permissions and no model credentials."
-    method: "Workflow contract tests, real local whitespace repositories (including divergent PR and empty-tree first-push), local repository suite, then hosted quality job."
-    observed: "Local tests and required checks pass; workflow pins Python 3.12, uv/actions/Codex CLI, syncs locked dependencies, checks HEAD, uses contents read and no model secrets. Positive/negative event-range fixtures pass. Actual clean hosted Python 3.12 execution remains pending; local runtime was Python 3.14.7."
-    status: "FAIL"
-    evidence: "CHECK-DN-013; CHECK-DN-014; CHECK-DN-023; pending hosted quality"
+    action: Verify clean credential-free quality in the locked hosted Python 3.12 environment.
+    expected: Quality runs structural validation, credential-free tests, Ruff, and event-base whitespace
+      checks from the locked Python 3.12 environment without model credentials or write permissions.
+    method: Workflow contract tests, real local whitespace repositories (including divergent PR and empty-tree
+      first-push), local repository suite, then hosted quality job.
+    observed: Final-main quality succeeded on source 80bfa04b1d26c08d87ad5c421928c5a088ec4ffa with actual
+      Python 3.12.14, uv 0.12.10, uv sync --locked --all-groups and contents read. Archived check.json
+      reports pass, behavioral false and validation source exactly that SHA; actual identity/check/Ruff/event-base
+      whitespace command records all exit 0. PR merge-base and first-push empty-tree positive/negative
+      fixtures pass. The workflow uses pinned actions and no model secrets or write permissions.
+    status: PASS
+    evidence: CHECK-DN-023
   AC-DN-020:
-    action: "Verify two canonical Linux builds on the same exact candidate and locked toolchain."
-    expected: "Equal ZIP SHA-256 and deterministic entry manifests, with observed canonical runner/toolchain identity."
-    method: "Real local immutable rebuilds and actual package CLI/index tests; obtain hosted Linux two-build artifacts."
-    observed: "Local tests rebuild HEAD independently, compare manifests/ZIP digests, consume the real package CLI report, verify three payload file digests and reject differing bytes/manifests/reused roots. They use existing commit fd18f1741299d5c47021c2de5f3c9c93dc58acfd on macOS/Python 3.14.7, not a new hosted Linux candidate. Canonical hosted package evidence remains pending."
-    status: "FAIL"
-    evidence: "CHECK-DN-019; CHECK-DN-023; pending canonical Linux package artifacts"
+    action: Verify two canonical Linux builds on the same exact candidate and locked toolchain.
+    expected: Two independent canonical builds of the same commit, version, and locked toolchain have
+      equal ZIP SHA-256 and deterministic entry manifests.
+    method: Real local immutable rebuilds and actual package CLI/index tests; obtain hosted Linux two-build
+      artifacts.
+    observed: 'Canonical final-main Linux job ran both existing package commands for source 80bfa04b1d26c08d87ad5c421928c5a088ec4ffa/version
+      0.8.0 in dist/first and dist/second; both exit 0 and strict equal-ZIP/byte-identical-entry-manifest
+      guard exit 0. Downloaded ZIP SHA-256 aa2deeb6dffb68ca28f31db03953bcf4ef46225e2b776fecdc51e7259a868ceb;
+      manifest/report digests and strict index validate. Actual canonical toolchain: {"compression_runtime":
+      "1.3", "lock_sha256": "ead42ea78041d842287fc1135edf3e6a407ee68c354936e30bfc3c5002a50e5a", "python":
+      "3.12.14", "quality_source_commit": "80bfa04b1d26c08d87ad5c421928c5a088ec4ffa", "quality_version":
+      "0.1.0", "runner_image": "ubuntu24/20260927.320.1", "uv": "uv 0.12.10 (x86_64-unknown-linux-gnu)"}.
+      Negative contracts reject reused roots, differing ZIPs/manifests and source/version drift.'
+    status: PASS
+    evidence: CHECK-DN-023
   AC-DN-021:
-    action: "Verify effective protected main merge gates."
-    expected: "Required quality/platform aggregate/package success, PR integration, no force pushes and no deletion; mandatory failed/cancelled/skipped jobs never accepted."
-    method: "Execute always-run aggregate shell with each non-success/missing platform result; inspect effective main protection/rulesets using read-only GitHub API."
-    observed: "Aggregate positive/negative cases passed for all three explicit dependencies. GitHub main protection endpoint returned HTTP 404 Branch not protected and inherited/repository rulesets returned []. Actions is enabled with allowed_actions all; artifact retention is 90 days, maximum 90. Effective merge protection is absent and cannot pass acceptance. Applying it needs separate authorization."
-    status: "FAIL"
-    evidence: "CHECK-DN-023; gh api repos/3spGon/devquitect/branches/main/protection; gh api repos/3spGon/devquitect/rulesets?includes_parents=true"
+    action: Verify effective protected main merge gates.
+    expected: Effective main protection requires successful quality, all mandatory platform-smoke variants,
+      and package checks, prevents force push and deletion, and never treats failed, cancelled, or skipped
+      mandatory jobs as verified.
+    method: Execute always-run aggregate shell with each non-success/missing platform result; inspect
+      effective main protection/rulesets using read-only GitHub API.
+    observed: 'Effective main protection was applied under explicit user authorization and read back after
+      both merges/final-main runs: strict Devquitect / quality, Devquitect / platform-smoke and Devquitect
+      / package checks bound to Actions app 15368; PR integration required; enforce_admins true; force
+      push/deletion false. Both PRs integrated only after all six jobs succeeded. Earlier Windows failures
+      caused aggregate failure and BLOCKED merge state. All 15 non-success/missing-variant fixtures reject
+      acceptance; final hosted jobs all conclude success.'
+    status: PASS
+    evidence: CHECK-DN-023
 checks:
   CHECK-DN-013:
-    command: "uv run devquitect check --source working-tree --report .devquitect-reports/check.json"
-    cwd: "."
-    started_at: "2026-10-05T03:36:35.931074+00:00"
-    finished_at: "2026-10-05T03:37:10.535800+00:00"
+    command: uv run devquitect check --source working-tree --report .devquitect-reports/check.json
+    cwd: .
+    started_at: '2026-10-05T04:45:51.235638+00:00'
+    finished_at: '2026-10-05T04:46:26.367857+00:00'
     exit_code: 0
-    status: "PASS"
-    observed: "Structural validation and fast credential-free suite passed; report result pass, behavioral false."
-    inputs_before: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
-    inputs_after: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
+    status: PASS
+    observed: check result=pass; behavioral=False; fast suite exit=0
+    inputs_before: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
+    inputs_after: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
   CHECK-DN-014:
-    command: "uv run ruff check src tests"
-    cwd: "."
-    started_at: "2026-10-05T03:37:11.631839+00:00"
-    finished_at: "2026-10-05T03:37:11.687964+00:00"
+    command: uv run ruff check src tests
+    cwd: .
+    started_at: '2026-10-05T04:46:27.503883+00:00'
+    finished_at: '2026-10-05T04:46:27.557458+00:00'
     exit_code: 0
-    status: "PASS"
-    observed: "All checks passed!"
-    inputs_before: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
-    inputs_after: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
+    status: PASS
+    observed: All checks passed!
+    inputs_before: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
+    inputs_after: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
   CHECK-DN-015:
-    command: "git diff --check"
-    cwd: "."
-    started_at: "2026-10-05T03:37:12.784790+00:00"
-    finished_at: "2026-10-05T03:37:12.793434+00:00"
+    command: git diff --check
+    cwd: .
+    started_at: '2026-10-05T04:46:28.664872+00:00'
+    finished_at: '2026-10-05T04:46:28.671152+00:00'
     exit_code: 0
-    status: "PASS"
-    observed: "No output; diff is whitespace-clean."
-    inputs_before: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
-    inputs_after: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
+    status: PASS
+    observed: No output; diff is whitespace-clean.
+    inputs_before: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
+    inputs_after: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
   CHECK-DN-019:
-    command: "uv run pytest tests/unit/test_compaction_recovery_hook.py tests/unit/test_packaging.py tests/contract"
-    cwd: "."
-    started_at: "2026-10-05T03:37:13.883038+00:00"
-    finished_at: "2026-10-05T03:37:34.633010+00:00"
+    command: uv run pytest tests/unit/test_compaction_recovery_hook.py tests/unit/test_packaging.py tests/contract
+    cwd: .
+    started_at: '2026-10-05T04:46:29.768753+00:00'
+    finished_at: '2026-10-05T04:46:51.194452+00:00'
     exit_code: 0
-    status: "PASS"
-    observed: "87 smoke/contract tests passed locally on macOS / Python 3.14.7."
-    inputs_before: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
-    inputs_after: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
+    status: PASS
+    observed: 89 smoke/contract tests passed locally on macOS/Python 3.14.7.
+    inputs_before: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
+    inputs_after: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
   CHECK-DN-020:
-    command: "uv run pytest tests/integration/test_check_command.py"
-    cwd: "."
-    started_at: "2026-10-05T03:37:35.731398+00:00"
-    finished_at: "2026-10-05T03:39:58.467021+00:00"
+    command: uv run pytest tests/integration/test_check_command.py
+    cwd: .
+    started_at: '2026-10-05T04:46:52.507674+00:00'
+    finished_at: '2026-10-05T04:48:41.454826+00:00'
     exit_code: 0
-    status: "PASS"
-    observed: "6 check-command integration tests passed."
-    inputs_before: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
-    inputs_after: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
+    status: PASS
+    observed: Six check-command integration tests passed with stable HEAD and input fingerprint.
+    inputs_before: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
+    inputs_after: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
   CHECK-DN-023:
-    command: "uv run pytest tests/contract/test_ci_workflow_contract.py"
-    cwd: "."
-    started_at: "2026-10-05T03:39:59.874880+00:00"
-    finished_at: "2026-10-05T03:40:26.548341+00:00"
+    command: uv run pytest tests/contract/test_ci_workflow_contract.py
+    cwd: .
+    started_at: '2026-10-05T04:48:42.662411+00:00'
+    finished_at: '2026-10-05T04:49:04.668562+00:00'
     exit_code: 0
-    status: "PASS"
-    observed: "69 CI producer/workflow positive and negative contract tests passed."
-    inputs_before: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
-    inputs_after: "07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553"
+    status: PASS
+    observed: 71 CI workflow/producer positive and negative contract tests passed.
+    inputs_before: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
+    inputs_after: 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465
 ---
 
-# NO VERIFICADO — SLICE-DN-005
+# SLICE-DN-005 — current acceptance evidence
 
-Authorized on 2026-10-04: local DN-005 implementation and credential-free verification on
-`codex/slice-dn-005-continuous-verification`. No commit, push, remote protection change,
-workflow dispatch, behavioral execution, or DN-006 work is authorized.
+Approved plan revision 3; authorized implementation on 2026-10-04 in
+`codex/slice-dn-005-continuous-verification`. The user's subsequent `autorizo` explicitly covered
+candidate commits/pushes/PRs, main protection and integration after passing required CI.
+Model-backed execution, credential configuration, publication, promotion and DN-006 are excluded.
+The delivery checkpoint owns the supported closure status.
 
-Plan revision reconciliation: revision 2 at `b217d69797c9ce276ac0377ebafd00ead8a14248`
-has identical DN-001 through DN-004 verification inventories to approved revision 3.
-Their requirements/behavior are unaffected; retain verified states and historical evidence.
+## Source and hosted verification
 
-Read-only GitHub inspection: `repos/3spGon/devquitect/branches/main/protection` returned
-HTTP 404 (`Branch not protected`); `rulesets?includes_parents=true` returned `[]`.
-Artifact retention is 90 days with maximum 90, supporting a 30-day request.
-AC-DN-013/015/019/020 require actual matching hosted runs; AC-DN-021 requires effective
-protection. Local fixtures cannot substitute for these observations.
+| Event | Run / attempt | Tested source | Outcome |
+| --- | --- | --- | --- |
+| pull_request | [37264198908](https://github.com/3spGon/devquitect/actions/runs/37264198908) / 1 | `e5883c7bb2f112d7f81061553d7555f70a720c7a` | All six jobs success; artifacts validated |
+| push | [37264541061](https://github.com/3spGon/devquitect/actions/runs/37264541061) / 1 | `1fb3c2f9a42cfb1861ab058fb257b1d1447e1930` | All six jobs success; artifacts validated |
+| pull_request | [37264944492](https://github.com/3spGon/devquitect/actions/runs/37264944492) / 1 | `57d2a4e0cb6a26d80122797d9228a7472021cacb` | All six jobs success; artifacts validated |
+| push | [37265160752](https://github.com/3spGon/devquitect/actions/runs/37265160752) / 1 | `80bfa04b1d26c08d87ad5c421928c5a088ec4ffa` | All six jobs success; artifacts validated |
 
-## Final local verification and scope review
+PR 4 integration `57d2a4e0cb6a26d80122797d9228a7472021cacb`, head `66d90c0674f17d876f0bcc45029b9df21327ac86` and base
+`1fb3c2f9a42cfb1861ab058fb257b1d1447e1930` are distinct. Its protected merge produced exact final main `80bfa04b1d26c08d87ad5c421928c5a088ec4ffa`;
+the independent push run above verifies that SHA, not the PR head or merely an equal tree.
+Actual run/job/artifact metadata and downloaded results are retained locally in ignored
+`.devquitect-reports/hosted-<run-id>/observation.json` and its `artifacts/` directory.
+All six artifacts per run use source-and-attempt names, are unexpired and retain 30 days.
 
-All six approved local inventory commands passed at input digest
-`07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553`.
-The smoke/contract suite passed 87 tests; the CI-specific suite passed 69; the check-command
-integration suite passed six. These counts overlap and are not additive. Local runtime:
-macOS, Python 3.14.7, PyYAML 6.0.3. Commands used an accessible uv cache at
-`/private/tmp/dn005-uv-cache`; no dependencies were added or installed for this delivery.
-Generated logs/reports are retained only under ignored `.devquitect-reports/`.
+## Final-main artifacts and environment
 
-The structured `verified_at` field timestamps this evidence evaluation, not a verified slice
-transition. FAIL on the five hosted/protection criteria means acceptance is not established;
-it does not claim the unexecuted hosted jobs failed. Supported `check` must reject closure.
-Observed supported `snapshot`: exit 0, PASS, no issues. Observed supported `check`: exit 1,
-FAIL, with exactly five `criteria.unsatisfied` issues for AC-DN-013/015/019/020/021.
-Plan, tracker, fingerprints and all six local check records are valid; no other issue remains.
-`close` was not attempted because mandatory acceptance is absent, and DN-005 is not verified.
+Canonical Linux: Python 3.12.14, uv 0.12.10, zlib 1.3,
+quality 0.1.0 from `80bfa04b1d26c08d87ad5c421928c5a088ec4ffa`, image `ubuntu24/20260927.320.1`,
+lock SHA-256 `ead42ea78041d842287fc1135edf3e6a407ee68c354936e30bfc3c5002a50e5a`. Local verifier/check environment:
+macOS, Python 3.14.7, PyYAML 6.0.3. Local working-tree evidence is development verification;
+actual hosted source identities come from immutable Git commits.
 
-Material changes: both new workflows, strict CI evidence schema, internal producer under existing
-`reporting.py` ownership, external deterministic CI contract tests, contributor guidance,
-affected System Context sections, and this delivery checkpoint/detail. No DN-006 consumer,
-release workflow, promotion change, version bump, skill change, model run, or ledger row was added.
-The unchanged verifier matches its installed 0.8.0 copy byte-for-byte. Cumulative review found
-no unrelated change; DN-001 through DN-004 inventories and historical evidence remain intact.
+| Payload | Bytes | SHA-256 |
+| --- | ---: | --- |
+| manifest: `devquitect-0.8.0.manifest.json` | 5750 | `a21cc4b131ce69487aba61886ae18d63db8f51a9f495667b1f94e2fe3a917244` |
+| report: `package.json` | 7005 | `581032704449d152b5df8e8a402d9ec79045dbf115b13b99bc78be84cb24b994` |
+| zip: `devquitect-0.8.0.zip` | 60484 | `aa2deeb6dffb68ca28f31db03953bcf4ef46225e2b776fecdc51e7259a868ceb` |
 
-Recoverable findings corrected: schema version marker required by structural validation,
-initial Ruff import/line-length findings, PR whitespace starting at the approved head/base
-merge-base, and installed source/lock byte checks (including CRLF differences). Pertinent tests
-and all final inventory commands were rerun successfully after the last implementation change.
+| GitHub artifact | ID | Container digest | Expires (UTC) |
+| --- | ---: | --- | --- |
+| `platform-smoke-Linux-80bfa04b1d26c08d87ad5c421928c5a088ec4ffa-attempt-1` | 11326227154 | `sha256:6dffcb3cbd4ce6544efc3a1a3e6a6f19464d8e0a107b09f30b430cab0196cad1` | 2026-11-04T04:49:51Z |
+| `quality-80bfa04b1d26c08d87ad5c421928c5a088ec4ffa-attempt-1` | 11326167278 | `sha256:eb67229e02e35222c1aa242122d3014070e7c96b8370777a4c1dfbd2a589d11c` | 2026-11-04T04:50:03Z |
+| `platform-smoke-Windows-80bfa04b1d26c08d87ad5c421928c5a088ec4ffa-attempt-1` | 11326117650 | `sha256:f4db7fb5f490aa772a2359f2bc4b3d725dada141e08c68284ef23d5c3e7c1889` | 2026-11-04T04:51:28Z |
+| `platform-smoke-macOS-80bfa04b1d26c08d87ad5c421928c5a088ec4ffa-attempt-1` | 11325997642 | `sha256:103557721d5c754343db4fdee03a79068ef1ee8a441fcab16acd352caabcc484` | 2026-11-04T04:50:23Z |
+| `package-diagnostics-80bfa04b1d26c08d87ad5c421928c5a088ec4ffa-attempt-1` | 11325911812 | `sha256:f5d900581f42dea58f81c04d5595f284905fc9782f25a9cfb6e36fec71d0c1c4` | 2026-11-04T04:49:38Z |
+| `package-80bfa04b1d26c08d87ad5c421928c5a088ec4ffa-attempt-1` | 11325806994 | `sha256:0e6e057a881e02e3a8adb77d348242acb4ad4b6a847f819d6ef28e463adffb13` | 2026-11-04T04:49:37Z |
 
-Action pins were resolved from upstream release tags using read-only GitHub API; the pinned
-Codex CLI version exists in the npm registry. Workflow anchors follow GitHub's documented
-[YAML anchor support](https://docs.github.com/en/actions/reference/workflows-and-actions/reusing-workflow-configurations).
-The optional local code graph was refreshed without an LLM and remains ignored; one unrelated
-SQL fixture has no extraction because optional tree_sitter_sql is unavailable. Graph completeness
-is not delivery evidence and no installation was attempted.
+Payload and uploaded-container digests are separate identities. Both canonical build commands
+ran against the same full SHA/version in independent roots; their command records and strict
+equal-ZIP/byte-identical-manifest guard succeeded. Index own digest is deliberately excluded.
 
-## External acceptance blocker and recovery
+## Scope, failures and preserved contracts
 
-### Subsequent external authorization
+Hosted attempts 37263102048 and 37263858064 failed Windows and their aggregate; protection
+blocked integration. Corrected Git Bash discovery across cmd/mingw64 layouts, native Codex
+availability for Python, and LF fixture bytes without weakening or skipping smoke tests.
+One local integration observation was discarded after HEAD changed during the test; another
+was diagnostic because inputs changed during correction. All six final inventory observations
+above were rerun with stable HEAD and matching before/after fingerprints.
 
-On 2026-10-04 the user replied `autorizo` to the explicit request covering candidate commit,
-push, PR creation, main protection, and PR integration only after required CI passes. This clears
-the authority blocker for those actions. Model-backed testing, credential configuration,
-publication, promotion approval, and DN-006 remain unauthorized. The previous local observations
-remain historical; actual hosted acceptance is being obtained before a supported close.
+The cumulative implementation changes nine approved files. The pre-existing approved plan
+amendment was preserved, including identical DN-001 through DN-004 inventories; their verified
+states/history remain intact. Distributed verify_slice.py equals the installed 0.8.0 script
+byte-for-byte; no verifier/YAML contract, skill, case, authority map, dependency, plugin version,
+public CLI, report/promotion schema, release consumer or DN-004 behavioral row was changed.
+Optional Graphify code state was refreshed without an LLM and remains ignored.
 
-Historical pre-authorization blocker (superseded by the authorization above): the repository and execution skill prohibit
-commits, pushes and remote settings changes without separate authority. Needed next authority:
-create/review an immutable candidate, push/open a PR, execute its automatic CI, integrate through
-an authorized PR path, verify the final-main run, and activate/verify main protection requiring
-the literal three gate names, PR review/integration, no force pushes and no deletion. If a hosted
-job fails, correct only attributable DN-005 issues and rerun the whole matching attempt.
-Record actual run/job/artifact/toolchain identities before changing the five pending criteria
-to PASS. Rerun inventory checks against the resulting input digest, then use the unchanged
-supported snapshot/check/close path. Do not close DN-005 from local fixtures alone.
-
-### Hosted implementation acceptance, 2026-10-05
-
-PR 3 run [37264198908](https://github.com/3spGon/devquitect/actions/runs/37264198908),
-attempt 1, passed quality, package, all three Python 3.12 platform variants and their aggregate.
-Integration `e5883c7bb2f112d7f81061553d7555f70a720c7a`, head
-`4978cac9ef1b470b1c569be24cf811c08be7b384`, and base
-`6230f4f3e831e5400db035c3de058e9cfe72946b` are separately recorded in actual CI evidence.
-The protected merge produced `1fb3c2f9a42cfb1861ab058fb257b1d1447e1930`; independent
-main push [37264541061](https://github.com/3spGon/devquitect/actions/runs/37264541061),
-attempt 1, passed the same six jobs. All six artifacts per run were downloaded, their 30-day
-retention observed, strict indexes validated, payload sizes/digests checked and both build
-commands/equal-rebuild guard confirmed passing. Main protection was applied and read back with
-the three literal strict checks bound to Actions app 15368, enforced admins, PR integration,
-no force push and no deletion. Failed runs 37263102048 and 37263858064 correctly blocked merge;
-Windows shell/native-CLI/LF fixture issues were corrected without skipping contracts.
-
-All six local checks passed at digest
-`01474e9ff980eb3f59f2e5a434fd47ec65883a707c65ea2aff215ab147a28592` with stable inputs/HEAD
-(89 smoke/contracts, six integration tests, 71 CI cases). This supersedes the pre-authorization
-observations in the initial structured record. The actual-evidence System Context refresh now
-needs its own current-input/hosted verification before that structured record is refreshed and
-the supported close is attempted; delivery status remains `implemented`.
+System Context refers to the actually verified implementation baseline and owns no slice status.
+Credential-free CHECK-DN-013/014/015/019/020/023 all passed at the declared current digest;
+89 smoke/contracts, six integration tests and 71 CI-specific cases overlap. Effective main
+protection requires strict Actions-app-bound quality/platform aggregate/package success and PR
+integration, applies to administrators, and prohibits force push and deletion. Behavioral is
+manual and optional; it cannot replace a deterministic failure and was not dispatched.

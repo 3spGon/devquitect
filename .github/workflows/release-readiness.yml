@@ -1,0 +1,122 @@
+name: Release readiness
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_sha:
+        description: Reviewed full candidate SHA with successful push/main CI
+        required: true
+        type: string
+      version:
+        description: Committed candidate plugin version
+        required: true
+        type: string
+      ci_run_id:
+        description: Successful Devquitect CI run ID
+        required: true
+        type: string
+      ci_run_attempt:
+        description: Complete successful CI attempt
+        required: true
+        type: string
+      previous_release_sha:
+        description: Immutable previous-release ancestor SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  readiness:
+    name: Devquitect / release-readiness
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+      CANDIDATE_VERSION: ${{ inputs.version }}
+      CI_RUN_ID: ${{ inputs.ci_run_id }}
+      CI_RUN_ATTEMPT: ${{ inputs.ci_run_attempt }}
+      PREVIOUS_RELEASE_SHA: ${{ inputs.previous_release_sha }}
+    steps:
+      - name: Validate selection before candidate checkout
+        run: |
+          python - <<'PY'
+          import datetime, json, os, re
+          from pathlib import Path
+          valid = (os.environ['GITHUB_REF'] == 'refs/heads/main'
+                   and all(re.fullmatch(r'[0-9a-f]{40}', os.environ[k])
+                           for k in ('CANDIDATE_SHA', 'PREVIOUS_RELEASE_SHA'))
+                   and re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', os.environ['CANDIDATE_VERSION'])
+                   and all(re.fullmatch(r'[1-9][0-9]*', os.environ[k])
+                           for k in ('CI_RUN_ID', 'CI_RUN_ATTEMPT')))
+          if not valid:
+              root = Path('.devquitect-reports')
+              root.mkdir()
+              report = dict(schema_version=1, report_type='release-check',
+                            generated_at=datetime.datetime.now(datetime.UTC).isoformat(),
+                            toolchain={}, inputs={}, result='fail', evidence_manifest=[], redactions=[],
+                            records=[dict(code='release-check.2', severity='error', path='release-check',
+                                          message='Invalid readiness inputs or dispatch ref')])
+              (root / 'release-readiness.json').write_text(json.dumps(report))
+              raise SystemExit(2)
+          PY
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.candidate_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: '0.12.10'
+          enable-cache: false
+      - run: uv sync --locked --all-groups
+      - name: Verify installed candidate tooling
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          git diff --exit-code HEAD --
+          uv run python - <<'PY'
+          from pathlib import Path
+          from devquitect_quality import promotion
+          assert Path(promotion.__file__).resolve() == Path('src/devquitect_quality/promotion.py').resolve()
+          PY
+      - name: Check exact candidate with read-only CI evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .devquitect-reports/ci-input
+          uv run devquitect release-check --source "$CANDIDATE_SHA" --version "$CANDIDATE_VERSION" --repository "$GITHUB_REPOSITORY" --ci-run-id "$CI_RUN_ID" --ci-run-attempt "$CI_RUN_ATTEMPT" --previous-release "$PREVIOUS_RELEASE_SHA" --evidence .devquitect-reports/ci-input --output dist/readiness --report .devquitect-reports/release-readiness.json
+      - name: Retain unavailable-verification diagnostics
+        if: ${{ failure() }}
+        run: |
+          python - <<'PY'
+          import datetime, json
+          from pathlib import Path
+          path = Path('.devquitect-reports/release-readiness.json')
+          if not path.exists():
+              path.parent.mkdir(parents=True, exist_ok=True)
+              report = dict(schema_version=1, report_type='release-check',
+                            generated_at=datetime.datetime.now(datetime.UTC).isoformat(),
+                            toolchain={}, inputs={}, result='inconclusive', evidence_manifest=[], redactions=[],
+                            records=[dict(code='release-check.3', severity='error', path='release-check',
+                                          message='Candidate checkout or locked verification unavailable')])
+              path.write_text(json.dumps(report))
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ always() }}
+        with:
+          name: readiness-${{ inputs.candidate_sha }}-attempt-${{ github.run_attempt }}
+          path: |
+            .devquitect-reports/
+            dist/readiness/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
