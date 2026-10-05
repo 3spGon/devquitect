@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 50
-last_updated: '2026-10-05T04:45:00+00:00'
+revision: 53
+last_updated: '2026-10-05T04:55:00+00:00'
 plan: 08-implementation-plan.md
 plan_revision: 3
 completion_scope: implementation-only
@@ -14,9 +14,9 @@ authorized_slices:
 - SLICE-DN-003
 - SLICE-DN-004
 - SLICE-DN-005
-delivery_status: active
-current_slice: SLICE-DN-005
-next_action: Commit/push the actual-evidence System Context refresh through a protected follow-up PR, verify its assembled candidate and exact final-main run, then refresh criterion/check fingerprints and use supported close.
+delivery_status: complete
+current_slice: null
+next_action: null
 pending_user_action: null
 required_context:
 - 02-requirements.md
@@ -27,30 +27,82 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
-  - Independent main push run 37264541061 attempt 1 passed all six jobs for exact commit 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930; downloaded and validated indexes, payload digests, read-only quality report, platform results, independent-build guard and 30-day retention.
-  - Refreshed only affected System Context sections from actual PR/main/protection observations; this documentation change requires assembled current-input checks and protected CI before closure.
-  - PR 3 run 37264198908 attempt 1 passed all six jobs; validated all six 30-day artifacts, strict CI index/payload digests, actual Python 3.12/tool identities, both independent canonical builds and effective main protection.
-  - Recorded PR integration e5883c7bb2f112d7f81061553d7555f70a720c7a separately from head 4978cac9ef1b470b1c569be24cf811c08be7b384 and base 6230f4f3e831e5400db035c3de058e9cfe72946b; merged PR 3 only after successful checks under enforced protection, producing main 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930.
-  - All six local inventory checks now pass at current stable-input digest 01474e9ff980eb3f59f2e5a434fd47ec65883a707c65ea2aff215ab147a28592; 89 smoke/contracts, six check integrations and 71 CI-specific cases passed.
-  - Run 37263858064 confirms native Windows Codex and LF whitespace fixture now pass; Git Bash lookup still failed because Git resolves under mingw64/bin. Corrected discovery to search Git ancestor directories and added two layout cases; 71 CI contracts and Ruff/diff checks pass.
-  - Integration rerun passed all six tests at stable HEAD, but its input fingerprint changed during the shell-layout edit; preserve that observation diagnostically and repeat current inventory before acceptance.
-  - Corrected Windows contracts to use Git Bash rather than WSL and LF fixture bytes, and exposed the pinned native Codex executable for Python; retained all 87 platform contracts and their negative assertions.
-  - Historical local CHECK-DN-013/014/015/019 passes after the first Windows correction are superseded by the latest shell-layout change and require current-fingerprint refresh.
-  - Reconciled all four recovery candidates; devquitect-next v3/revision 45 is the sole active approved-plan-3 DN-005 session. The three other sessions are completed and remain unchanged.
-  - Classified PR run 37263102048 Windows failure as recoverable portability failures; quality/package/Linux/macOS succeeded, Windows and its aggregate failed, and protected main blocks integration.
-  - Committed DN-005 as 1129b10, incorporated current origin/main, pushed head b4880b53bc1b103d5db9520365612854d921008e, and opened/attached PR 3.
-  - Activated and read back strict quality/platform aggregate/package checks bound to GitHub Actions app 15368, required PR integration, enforced admins, and disabled force push/deletion on main.
-  - Historical in-flight observation of run 37263102048 is superseded by its completed Windows failure above; that attempt is diagnostic and does not satisfy hosted acceptance.
-  - On 2026-10-04 the user explicitly authorized candidate commit/push/PR, main protection, and integration only after required CI succeeds; no model testing or publication is authorized.
-  - Supported snapshot passed; supported check rejected exactly the five external criteria, with valid plan/tracker/fingerprints/check evidence after fixing two structured evidence references.
-  - Final repository credential-free check, Ruff and diff check passed after the evidence edit; no product failure remains unresolved locally.
-  - All six DN-005 local inventory checks passed at digest 07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553; 87 smoke/contracts, six check integrations and 69 CI-specific contracts passed (overlapping counts).
-  - Recorded current criterion-by-criterion evidence, preserved verifier/plan/dependencies, and retained five pending hosted/protection criteria without claiming completion.
-  - Implemented DN-005 workflow definitions, strict CI evidence schema, and the producer in existing reporting.py ownership.
-  - Local CI contracts and the integrated credential-free check passed after correcting the schema-version marker and Ruff findings.
-  - Preserved the distributed verifier, its YAML contract, skill sources, dependencies, and DN-004 behavioral matrix.
-  - Refreshed and closed DN-004 after the separately authorized comparison ledger append at digest 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151.
-  - Current focused tests, credential-free check, Ruff, and diff check passed; no skill source or case changed during the follow-up.
+  - Independent final-main run 37265160752 attempt 1 passed all six jobs for exact source 80bfa04b1d26c08d87ad5c421928c5a088ec4ffa; all six unexpired 30-day artifacts, strict indexes and payload/container identities are recorded in current DN-005 evidence.
+  - Refreshed all eight criteria and six check observations at digest 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465; unchanged supported snapshot/check/close returned PASS with no issues, closing DN-005 at revision 52.
+  - Completed only authorized DN-001 through DN-005. DN-006 remains outside scope; no model run, publication or promotion was performed by DN-005.
+  - Protected follow-up PR 4 run 37264944492 attempt 1 passed all six jobs/artifact
+    validation; integration 57d2a4e0cb6a26d80122797d9228a7472021cacb, head 66d90c0674f17d876f0bcc45029b9df21327ac86
+    and base 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930 were recorded separately. PR
+    4 merged after success, producing final main 80bfa04b1d26c08d87ad5c421928c5a088ec4ffa.
+  - All six inventory checks passed with stable HEAD/inputs at assembled-context digest
+    43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465; 89 smoke/contracts,
+    six integrations and 71 CI cases passed.
+  - Independent main push run 37264541061 attempt 1 passed all six jobs for exact
+    commit 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930; downloaded and validated indexes,
+    payload digests, read-only quality report, platform results, independent-build
+    guard and 30-day retention.
+  - Refreshed only affected System Context sections from actual PR/main/protection
+    observations; this documentation change requires assembled current-input checks
+    and protected CI before closure.
+  - PR 3 run 37264198908 attempt 1 passed all six jobs; validated all six 30-day artifacts,
+    strict CI index/payload digests, actual Python 3.12/tool identities, both independent
+    canonical builds and effective main protection.
+  - Recorded PR integration e5883c7bb2f112d7f81061553d7555f70a720c7a separately from
+    head 4978cac9ef1b470b1c569be24cf811c08be7b384 and base 6230f4f3e831e5400db035c3de058e9cfe72946b;
+    merged PR 3 only after successful checks under enforced protection, producing
+    main 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930.
+  - All six local inventory checks now pass at current stable-input digest 01474e9ff980eb3f59f2e5a434fd47ec65883a707c65ea2aff215ab147a28592;
+    89 smoke/contracts, six check integrations and 71 CI-specific cases passed.
+  - Run 37263858064 confirms native Windows Codex and LF whitespace fixture now pass;
+    Git Bash lookup still failed because Git resolves under mingw64/bin. Corrected
+    discovery to search Git ancestor directories and added two layout cases; 71 CI
+    contracts and Ruff/diff checks pass.
+  - Integration rerun passed all six tests at stable HEAD, but its input fingerprint
+    changed during the shell-layout edit; preserve that observation diagnostically
+    and repeat current inventory before acceptance.
+  - Corrected Windows contracts to use Git Bash rather than WSL and LF fixture bytes,
+    and exposed the pinned native Codex executable for Python; retained all 87 platform
+    contracts and their negative assertions.
+  - Historical local CHECK-DN-013/014/015/019 passes after the first Windows correction
+    are superseded by the latest shell-layout change and require current-fingerprint
+    refresh.
+  - Reconciled all four recovery candidates; devquitect-next v3/revision 45 is the
+    sole active approved-plan-3 DN-005 session. The three other sessions are completed
+    and remain unchanged.
+  - Classified PR run 37263102048 Windows failure as recoverable portability failures;
+    quality/package/Linux/macOS succeeded, Windows and its aggregate failed, and protected
+    main blocks integration.
+  - Committed DN-005 as 1129b10, incorporated current origin/main, pushed head b4880b53bc1b103d5db9520365612854d921008e,
+    and opened/attached PR 3.
+  - Activated and read back strict quality/platform aggregate/package checks bound
+    to GitHub Actions app 15368, required PR integration, enforced admins, and disabled
+    force push/deletion on main.
+  - Historical in-flight observation of run 37263102048 is superseded by its completed
+    Windows failure above; that attempt is diagnostic and does not satisfy hosted
+    acceptance.
+  - On 2026-10-04 the user explicitly authorized candidate commit/push/PR, main protection,
+    and integration only after required CI succeeds; no model testing or publication
+    is authorized.
+  - Supported snapshot passed; supported check rejected exactly the five external
+    criteria, with valid plan/tracker/fingerprints/check evidence after fixing two
+    structured evidence references.
+  - Final repository credential-free check, Ruff and diff check passed after the evidence
+    edit; no product failure remains unresolved locally.
+  - All six DN-005 local inventory checks passed at digest 07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553;
+    87 smoke/contracts, six check integrations and 69 CI-specific contracts passed
+    (overlapping counts).
+  - Recorded current criterion-by-criterion evidence, preserved verifier/plan/dependencies,
+    and retained five pending hosted/protection criteria without claiming completion.
+  - Implemented DN-005 workflow definitions, strict CI evidence schema, and the producer
+    in existing reporting.py ownership.
+  - Local CI contracts and the integrated credential-free check passed after correcting
+    the schema-version marker and Ruff findings.
+  - Preserved the distributed verifier, its YAML contract, skill sources, dependencies,
+    and DN-004 behavioral matrix.
+  - Refreshed and closed DN-004 after the separately authorized comparison ledger
+    append at digest 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151.
+  - Current focused tests, credential-free check, Ruff, and diff check passed; no
+    skill source or case changed during the follow-up.
   - The user authorized v0.8.0 preparation and relevant supervised model comparisons
     on 2026-10-02.
   - Created immutable candidate dc936180ed2a854c9f6ac65aa9e21559f4a7e2af with plugin
@@ -138,17 +190,9 @@ execution_frontier:
     AC-DN-005, AC-DN-006, and CHECK-DN-007 through CHECK-DN-009 passed.
   - Reran the required credential-free check, Ruff, and diff check after slice closure
     and the complete checkpoint update; all passed.
-  in_progress:
-    action: Verify the assembled documentation/evidence refresh through protected PR and final-main gates before supported closure.
-    paths:
-    - .github/workflows/ci.yml
-    - .github/workflows/behavioral.yml
-    - docs/software-design/devquitect-next/slices/SLICE-DN-005.md
+  in_progress: null
   do_not_repeat: []
-  pending_verification:
-  - Current local inventory fingerprint after the actual-evidence System Context refresh.
-  - Protected follow-up PR and exact final-main CI for the assembled refreshed candidate.
-  - Supported snapshot/check/close with all current criterion and check observations.
+  pending_verification: []
 slices:
   SLICE-DN-001:
     status: verified
@@ -167,7 +211,7 @@ slices:
     acceptance: not-required
     evidence: slices/SLICE-DN-004.md
   SLICE-DN-005:
-    status: implemented
+    status: verified
     acceptance: not-required
     evidence: slices/SLICE-DN-005.md
 ---
@@ -176,14 +220,20 @@ slices:
 
 ## Current objective
 
-DN-005 is implemented locally but not verified under approved plan revision 3 on
-`codex/slice-dn-005-continuous-verification`. Preserve verified DN-001 through DN-004 and their
-historical evidence; DN-006 remains unauthorized. No model runs or publication are authorized.
-All local inventory checks passed. The user has now authorized commit/push/PR, main protection,
-and integration only after required CI succeeds. Hosted acceptance remains in progress; no slice
-close or complete transition is supported until actual evidence satisfies every criterion.
+DN-005 is implemented and verified under approved plan revision 3 on
+`codex/slice-dn-005-continuous-verification`. All eight criteria and six inventory checks pass;
+the unchanged supported snapshot/check/close accepted the current evidence without issues.
+PRs 3 and 4 integrated only after protected CI passed. Independent final-main run 37265160752
+verified exact source `80bfa04b1d26c08d87ad5c421928c5a088ec4ffa`. Authorized DN-001 through
+DN-005 are verified; DN-006 remains unauthorized. DN-005 performed no model run or publication.
 
 ## Last completed work
+
+- Completed DN-005 credential-free quality, three-platform smoke, independent canonical builds,
+  strict CI provenance/index, optional behavioral separation and effective protected merge gates.
+  Windows failures were corrected and rerun; final hosted jobs and current local checks passed.
+  System Context records actual evidence. The supported close recorded `verified` at current
+  input digest `43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465`.
 
 - Completed DN-004 native invocation policy and independent five-model inventory; nine focused tests,
   the credential-free suite, Ruff, and diff check passed. Supported check/close returned PASS with
@@ -205,26 +255,35 @@ close or complete transition is supported until actual evidence satisfies every 
 
 `SLICE-DN-001`, `SLICE-DN-002`, and `SLICE-DN-003` retain their verified evidence. DN-004
 has current PASS evidence for both criteria and CHECK-DN-010 through CHECK-DN-012 in
-`slices/SLICE-DN-004.md`, accepted by the supported verifier. Newly authorized DN-005 has PASS
-local checks and three local criteria; five hosted/protection criteria remain unestablished in
-`slices/SLICE-DN-005.md`. DN-006 remains unauthorized.
+`slices/SLICE-DN-004.md`, accepted by the supported verifier. DN-005 has current PASS evidence
+for all eight criteria and CHECK-DN-013/014/015/019/020/023 in `slices/SLICE-DN-005.md`, including
+exact PR/final-main jobs, artifact/tool identities and effective protection. DN-006 remains
+unauthorized. The final closure checkpoint/detail are local delivery metadata; implementation
+and the actual-evidence System Context are integrated on main through PRs 3 and 4.
 
 ## Handoff notes
 
-- Authorized external execution: PR https://github.com/3spGon/devquitect/pull/3; candidate head
-  `b4880b53bc1b103d5db9520365612854d921008e`; tested integration SHA
-  `b777d9ebcfebb27e81bb847498fe29a59f2e4308`; CI run `37263102048`, attempt `1`.
-  Effective protection activation succeeded; required checks use GitHub Actions app `15368`.
-  Quality/package/Ubuntu succeeded; do not infer macOS/Windows or final-main results from them.
+- Protected PRs https://github.com/3spGon/devquitect/pull/3 and
+  https://github.com/3spGon/devquitect/pull/4 are merged. Latest PR integration
+  `57d2a4e0cb6a26d80122797d9228a7472021cacb`, head
+  `66d90c0674f17d876f0bcc45029b9df21327ac86` and base
+  `1fb3c2f9a42cfb1861ab058fb257b1d1447e1930` are distinct from independently verified final main
+  `80bfa04b1d26c08d87ad5c421928c5a088ec4ffa`. Final push run `37265160752`, attempt `1`,
+  passed all six jobs; artifacts retain 30 days. Main protection requires three strict checks
+  from Actions app `15368`, PR integration, enforced admins, no force push/deletion.
+- Runs `37263102048` and `37263858064` are failed diagnostic history; their Windows/aggregate
+  failures blocked merge and were corrected. They do not substitute for passing acceptance.
 
 - On 2026-10-04 the user authorized DN-005 and a new branch. Both definition gates and plan
   revision 3 are approved. Revision 3 preserves DN-001 through DN-004's inventory and behavior;
   reconcile only the new CI scope, retaining the verified dependency DN-004 and historical evidence.
   Python 3.14.7 and PyYAML 6.0.3 are available for the unmodified verifier.
-- Read-only GitHub inspection found `main` unprotected (protection endpoint HTTP 404), no
+- Historical pre-authorization GitHub inspection found `main` unprotected (protection endpoint HTTP 404), no
   repository/inherited rulesets, and artifact retention 90 days with maximum 90. Hosted execution
   of a new exact candidate requires separate commit/push authority; remote protection activation
-  requires separate maintainer authorization. Local configuration/tests cannot satisfy those criteria.
+  required separate maintainer authorization. The user's 2026-10-04 `autorizo` subsequently granted
+  commit/push/PR/protection/integration authority; effective protection and hosted results above
+  supersede that blocker. Local configuration/tests alone cannot satisfy hosted criteria.
 
 - The later user request authorized v0.8.0 preparation and supervised model comparisons. BC-DN-004-001
   records twelve cases in each of two independent supervisor configurations; the corrected row has
@@ -247,6 +306,6 @@ local checks and three local criteria; five hosted/protection criteria remain un
 
 <!-- devquitect:slice-close:start -->
 
-Verified SLICE-DN-004 at 2026-10-02T18:30:35.103164Z; evidence: `slices/SLICE-DN-004.md`.
+Verified SLICE-DN-005 at 2026-10-05T04:54:30.422764Z; evidence: `slices/SLICE-DN-005.md`.
 
 <!-- devquitect:slice-close:end -->
