@@ -2,13 +2,23 @@
 
 from __future__ import annotations
 
+import argparse
+import hashlib
 import json
 import os
+import platform
+import re
+import subprocess
+import sys
 import tempfile
+import zlib
 from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime
+from importlib.metadata import version
 from pathlib import Path, PurePosixPath
 from typing import Any
+
+import jsonschema
 
 from .models import AuthenticationEvidence
 from .redaction import redact_value
@@ -352,3 +362,232 @@ def write_report_atomic(path: str | Path, report: Mapping[str, Any]) -> None:
     except BaseException:
         temporary.unlink(missing_ok=True)
         raise
+
+
+def ci_identity(repository: Path, environment: Mapping[str, str]) -> dict[str, Any]:
+    """Identify the actual CI checkout and installed reporting code, never a branch alias."""
+
+    def git(*args: str) -> str:
+        return subprocess.check_output(
+            ["git", "-C", str(repository), *args], text=True
+        ).strip()
+
+    source = git("rev-parse", "HEAD")
+    if source != environment["GITHUB_SHA"] or not re.fullmatch(r"[0-9a-f]{40}", source):
+        raise ValueError("CI checkout does not match the tested commit")
+    installed = Path(__file__).resolve()
+    expected = repository.resolve() / "src/devquitect_quality/reporting.py"
+    if installed != expected:
+        raise ValueError("installed quality tool is not from the CI checkout")
+    for path in ("src/devquitect_quality/reporting.py", "uv.lock"):
+        committed = subprocess.check_output(["git", "show", f"{source}:{path}"], cwd=repository)
+        if committed != (repository / path).read_bytes():
+            raise ValueError("installed quality tool or lock bytes differ from the tested commit")
+    if subprocess.run(
+        ["git", "-C", str(repository), "diff", "--quiet", "HEAD", "--"], check=False
+    ).returncode:
+        raise ValueError("CI checkout has tracked changes")
+    event = environment["GITHUB_EVENT_NAME"]
+    payload = json.loads(Path(environment["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
+    if event not in {"pull_request", "push"}:
+        raise ValueError("unsupported CI event")
+    workflow_path, separator, workflow_ref = environment["GITHUB_WORKFLOW_REF"].partition("@")
+    if (
+        workflow_path != environment["GITHUB_REPOSITORY"] + "/.github/workflows/ci.yml"
+        or not separator or not workflow_ref
+    ):
+        raise ValueError("unexpected CI workflow identity")
+    if event == "push" and environment["GITHUB_REF"] != "refs/heads/main":
+        raise ValueError("candidate CI must be push on main")
+    pr = None
+    if event == "pull_request":
+        pr = {
+            "integration_commit": source,
+            "head_commit": payload["pull_request"]["head"]["sha"],
+            "base_commit": payload["pull_request"]["base"]["sha"],
+        }
+    identity = {
+        "schema_version": 1,
+        "repository": environment["GITHUB_REPOSITORY"],
+        "workflow_path": ".github/workflows/ci.yml",
+        "workflow_commit": environment["GITHUB_WORKFLOW_SHA"],
+        "run_id": int(environment["GITHUB_RUN_ID"]),
+        "run_attempt": int(environment["GITHUB_RUN_ATTEMPT"]),
+        "event": event,
+        "ref": environment["GITHUB_REF"],
+        "source_commit": source,
+        "pr": pr,
+        "toolchain": {
+            "python": platform.python_version(),
+            "uv": subprocess.check_output(["uv", "--version"], text=True).strip(),
+            "quality_version": version("devquitect-quality"),
+            "quality_source_commit": source,
+            "compression_runtime": zlib.ZLIB_RUNTIME_VERSION,
+            "runner_image": environment["ImageOS"] + "/" + environment["ImageVersion"],
+            "lock_sha256": hashlib.sha256((repository / "uv.lock").read_bytes()).hexdigest(),
+        },
+    }
+    # Validate metadata with the same strict schema as the package index.
+    schema = json.loads((repository / "schemas/ci-evidence.schema.json").read_text())
+    identity_schema = dict(schema)
+    identity_schema["required"] = [
+        field for field in schema["required"] if field not in {"snapshot_id", "version", "files"}
+    ]
+    jsonschema.Draft202012Validator(identity_schema).validate(identity)
+    if not identity["toolchain"]["python"].startswith("3.12."):
+        raise ValueError("CI requires Python 3.12")
+    return identity
+
+
+def ci_whitespace(repository: Path, event: str, payload: Mapping[str, Any]) -> int:
+    """Check introduced whitespace against the event base, including an initial push."""
+
+    if event == "pull_request":
+        base = payload["pull_request"]["base"]["sha"]
+        head = payload["pull_request"]["head"]["sha"]
+        if not all(re.fullmatch(r"[0-9a-f]{40}", sha) for sha in (base, head)):
+            raise ValueError("invalid PR head/base commits")
+        base = subprocess.check_output(
+            ["git", "merge-base", head, base], cwd=repository, text=True
+        ).strip()
+    elif event == "push":
+        base = payload["before"]
+        if base == "0" * 40:
+            base = subprocess.check_output(
+                ["git", "hash-object", "-t", "tree", "--stdin"], input=b"", cwd=repository
+            ).decode().strip()
+    else:
+        raise ValueError("unsupported whitespace event")
+    if not re.fullmatch(r"[0-9a-f]{40}", base):
+        raise ValueError("invalid event base commit")
+    return subprocess.run(
+        ["git", "diff", "--check", base, "HEAD", "--"], cwd=repository, check=False
+    ).returncode
+
+
+def build_ci_package_evidence(
+    identity: Mapping[str, Any], first: Path, second: Path, report_path: Path, schema: Path
+) -> dict[str, Any]:
+    """Bind two independently rebuilt ZIPs/manifests to the observed CI source."""
+
+    if first.resolve() == second.resolve():
+        raise ValueError("package rebuilds require independent output roots")
+    manifests = [list(root.glob("devquitect-*.manifest.json")) for root in (first, second)]
+    if any(len(paths) != 1 for paths in manifests):
+        raise ValueError("each independent build needs exactly one manifest")
+    manifest_paths = [paths[0] for paths in manifests]
+    metadata = [json.loads(path.read_text(encoding="utf-8")) for path in manifest_paths]
+    if (
+        metadata[0] != metadata[1]
+        or manifest_paths[0].read_bytes() != manifest_paths[1].read_bytes()
+    ):
+        raise ValueError("independent package manifests differ")
+    manifest = metadata[0]
+    if manifest["source_commit"] != identity["source_commit"]:
+        raise ValueError("package source differs from tested commit")
+    if identity["toolchain"]["quality_source_commit"] != identity["source_commit"]:
+        raise ValueError("quality tool source differs from tested commit")
+    if identity["pr"] is not None and (
+        identity["pr"]["integration_commit"] != identity["source_commit"]
+    ):
+        raise ValueError("PR integration identity differs from tested commit")
+    artifact_name = f"devquitect-{manifest['version']}.zip"
+    zip_paths = [root / artifact_name for root in (first, second)]
+    digest = hashlib.sha256(zip_paths[0].read_bytes()).hexdigest()
+    if digest != hashlib.sha256(zip_paths[1].read_bytes()).hexdigest():
+        raise ValueError("independent ZIP digests differ")
+    if manifest["artifact_digest"] != f"sha256:{digest}":
+        raise ValueError("manifest ZIP digest mismatch")
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    if (
+        report["report_type"] != "package" or report["result"] != "pass"
+        or report["inputs"]["source"]["source_commit"] != manifest["source_commit"]
+        or report["inputs"]["version"] != manifest["version"]
+        or report["inputs"]["source"]["snapshot_id"] != manifest["snapshot_id"]
+    ):
+        raise ValueError("package report does not match the successful build")
+    paths = {"zip": zip_paths[0], "manifest": manifest_paths[0], "report": report_path}
+    files = {}
+    for kind, path in paths.items():
+        content = path.read_bytes()
+        relative = path.relative_to(first).as_posix()
+        files[kind] = {
+            "path": normalize_relative_path(relative), "size": len(content),
+            "sha256": hashlib.sha256(content).hexdigest(),
+        }
+    document = {
+        **identity, "snapshot_id": manifest["snapshot_id"],
+        "version": manifest["version"], "files": files,
+    }
+    jsonschema.Draft202012Validator(json.loads(schema.read_text())).validate(document)
+    return document
+
+
+def _ci_main() -> int:
+    """Internal CI reporting entrypoint; commands are explicit workflow arguments."""
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("operation", choices=("identity", "whitespace", "run", "result", "package"))
+    parser.add_argument("--job")
+    parser.add_argument("--checks", nargs="*")
+    parser.add_argument("--first", type=Path)
+    parser.add_argument("--second", type=Path)
+    args, command = parser.parse_known_args()
+    if args.operation != "run" and command:
+        parser.error("unexpected command arguments")
+    repository = Path.cwd()
+    root = repository / ".devquitect-reports"
+    if args.operation == "run":
+        if command and command[0] == "--":
+            command = command[1:]
+        if not args.job or not command:
+            parser.error("run requires --job and an explicit command after --")
+        started = datetime.now(UTC).isoformat()
+        try:
+            code = subprocess.run(command, check=False).returncode
+        except OSError:
+            code = 127
+        write_report_atomic(root / "steps" / f"{args.job}.json", {
+            "command": command, "exit_code": code,
+            "status": "pass" if code == 0 else "fail",
+            "started_at": started, "finished_at": datetime.now(UTC).isoformat(),
+        })
+        return code if code >= 0 else 1
+    if args.operation == "whitespace":
+        payload = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+        return ci_whitespace(repository, os.environ["GITHUB_EVENT_NAME"], payload)
+    if args.operation == "identity":
+        write_report_atomic(root / "identity.json", ci_identity(repository, os.environ))
+        return 0
+    identity = json.loads((root / "identity.json").read_text())
+    if args.operation == "package":
+        document = build_ci_package_evidence(
+            identity, args.first, args.second, args.first / "package.json",
+            repository / "schemas/ci-evidence.schema.json",
+        )
+        write_report_atomic(args.first / "ci-evidence.json", document)
+        return 0
+    checks = {}
+    for check in args.checks or []:
+        path = root / "steps" / f"{check}.json"
+        checks[check] = json.loads(path.read_text()) if path.exists() else {
+            "status": "not-run", "exit_code": None,
+        }
+    passing = bool(checks) and all(
+        item.get("status") == "pass" and item.get("exit_code") == 0 for item in checks.values()
+    )
+    write_report_atomic(root / "result.json", {
+        **identity, "job": args.job, "checks": checks,
+        "result": "pass" if passing else "fail",
+    })
+    return 0 if passing else 1
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(_ci_main())
+    except (
+        ValueError, KeyError, OSError, subprocess.CalledProcessError, jsonschema.ValidationError
+    ) as error:
+        sys.stderr.write(f"CI evidence unavailable: {error}\n")
+        sys.exit(2)
