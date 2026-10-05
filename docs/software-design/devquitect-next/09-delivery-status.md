@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 48
-last_updated: '2026-10-05T04:37:00+00:00'
+revision: 50
+last_updated: '2026-10-05T04:45:00+00:00'
 plan: 08-implementation-plan.md
 plan_revision: 3
 completion_scope: implementation-only
@@ -16,7 +16,7 @@ authorized_slices:
 - SLICE-DN-005
 delivery_status: active
 current_slice: SLICE-DN-005
-next_action: Push the corrected Git Bash discovery, rerun the six local inventory checks with stable inputs/HEAD, and verify every PR job/artifact before protected integration and independent final-main CI.
+next_action: Commit/push the actual-evidence System Context refresh through a protected follow-up PR, verify its assembled candidate and exact final-main run, then refresh criterion/check fingerprints and use supported close.
 pending_user_action: null
 required_context:
 - 02-requirements.md
@@ -27,6 +27,11 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
+  - Independent main push run 37264541061 attempt 1 passed all six jobs for exact commit 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930; downloaded and validated indexes, payload digests, read-only quality report, platform results, independent-build guard and 30-day retention.
+  - Refreshed only affected System Context sections from actual PR/main/protection observations; this documentation change requires assembled current-input checks and protected CI before closure.
+  - PR 3 run 37264198908 attempt 1 passed all six jobs; validated all six 30-day artifacts, strict CI index/payload digests, actual Python 3.12/tool identities, both independent canonical builds and effective main protection.
+  - Recorded PR integration e5883c7bb2f112d7f81061553d7555f70a720c7a separately from head 4978cac9ef1b470b1c569be24cf811c08be7b384 and base 6230f4f3e831e5400db035c3de058e9cfe72946b; merged PR 3 only after successful checks under enforced protection, producing main 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930.
+  - All six local inventory checks now pass at current stable-input digest 01474e9ff980eb3f59f2e5a434fd47ec65883a707c65ea2aff215ab147a28592; 89 smoke/contracts, six check integrations and 71 CI-specific cases passed.
   - Run 37263858064 confirms native Windows Codex and LF whitespace fixture now pass; Git Bash lookup still failed because Git resolves under mingw64/bin. Corrected discovery to search Git ancestor directories and added two layout cases; 71 CI contracts and Ruff/diff checks pass.
   - Integration rerun passed all six tests at stable HEAD, but its input fingerprint changed during the shell-layout edit; preserve that observation diagnostically and repeat current inventory before acceptance.
   - Corrected Windows contracts to use Git Bash rather than WSL and LF fixture bytes, and exposed the pinned native Codex executable for Python; retained all 87 platform contracts and their negative assertions.
@@ -134,16 +139,16 @@ execution_frontier:
   - Reran the required credential-free check, Ruff, and diff check after slice closure
     and the complete checkpoint update; all passed.
   in_progress:
-    action: Finish local inventory verification and verify the corrected PR attempt on all hosted platforms.
+    action: Verify the assembled documentation/evidence refresh through protected PR and final-main gates before supported closure.
     paths:
     - .github/workflows/ci.yml
     - .github/workflows/behavioral.yml
     - docs/software-design/devquitect-next/slices/SLICE-DN-005.md
   do_not_repeat: []
   pending_verification:
-  - Actual hosted PR and final-main attempts on Linux, macOS, and Windows Python 3.12.
-  - Canonical hosted Linux package/index/toolchain evidence for the exact final candidate.
-  - Effective main protection and successful PR integration under the user's 2026-10-04 external authorization.
+  - Current local inventory fingerprint after the actual-evidence System Context refresh.
+  - Protected follow-up PR and exact final-main CI for the assembled refreshed candidate.
+  - Supported snapshot/check/close with all current criterion and check observations.
 slices:
   SLICE-DN-001:
     status: verified

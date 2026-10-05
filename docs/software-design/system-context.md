@@ -5,9 +5,9 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 15
-last_updated: 2026-10-04
-baseline_reference: working-tree@devquitect-next-dn005-local-verification
+revision: 16
+last_updated: 2026-10-05
+baseline_reference: 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930
 ---
 
 # Devquitect system context
@@ -37,10 +37,10 @@ Inside the current system:
 - the `devquitect` plugin definition under `.codex-plugin/plugin.json`;
 - versioned validation schemas under `schemas/`, contributor guidance under `docs/`, and the
   isolated App Server lifecycle adapter for versioned compaction scenarios.
+- hosted credential-free CI and effective protected PR merge gates on `main`.
 
 Outside the current implemented baseline:
 
-- operational hosted continuous integration and effective protected merge gates;
 - public plugin distribution;
 - automated release publication;
 - MCP servers, connectors, applications, or graphical interfaces.
@@ -51,11 +51,11 @@ Outside the current implemented baseline:
 - Codex loads and follows the skill instructions when a request explicitly or implicitly selects them.
 - Git records the source history and the `v0.1.0` preliminary release marker.
 
-The configured Git remote is `git@github.com:3spGon/devquitect.git`. Read-only inspection on
-2026-10-04 confirmed GitHub Actions enabled and support for the requested 30-day artifact
-retention (configured/maximum: 90 days). No effective `main` protection or ruleset was present.
-DN-005's local workflow implementation still requires hosted acceptance and separate authority
-to commit/push the candidate and activate protection.
+The configured Git remote is `git@github.com:3spGon/devquitect.git`. GitHub Actions is enabled;
+actual DN-005 artifacts retain 30 days (repository configured/maximum: 90 days). Under the user's
+2026-10-04 authorization, `main` now requires strict quality/platform aggregate/package success
+from GitHub Actions app 15368 and PR integration, including administrators; force push and branch
+deletion are disabled. PR 3 integrated only after all mandatory jobs passed.
 
 ## Current capabilities
 
@@ -105,22 +105,23 @@ documentation and explicit-auth implementation together while retaining the prev
 check behavior. A forcibly killed parent can leave temporary material until bounded stale recovery
 or operator cleanup; the baseline makes no SIGKILL-proof deletion claim.
 
-## DN-005 local CI implementation and pending hosted acceptance
+## DN-005 continuous verification
 
-The local implementation defines `ci.yml` for pull requests and final `main` pushes, with
+The verified implementation defines `ci.yml` for pull requests and final `main` pushes, with
 quality, three separately named platform jobs and an always-run aggregate, and canonical Linux
 packaging. Normal jobs have `contents: read`, pinned actions/uv/Codex CLI, Python 3.12 and the
 locked environment; they receive no model credentials. The existing HEAD credential-free check,
 Ruff, and event-specific introduced-whitespace checks remain the gate commands. PR whitespace
 uses head/base merge-base; first pushes use Git's empty tree. Checkout disables CRLF conversion
-to preserve committed bytes on Windows.
+to preserve committed bytes on Windows. Windows contracts locate Git Bash across Git layouts;
+the workflow exposes the pinned native Codex executable for Python's CLI preflight.
 
 Credential-free local contract tests exercise source/tool/lock identity checks, valid and invalid
 metadata, two real immutable package rebuilds, strict schema-v1 CI indexes and file digests,
 rejected differing rebuilds, command exit/missing-result handling, aggregate rejection of
 failed/cancelled/skipped/missing variants, and the separate manual behavioral preflight.
 Observed local checks and each acceptance criterion are recorded in
-[SLICE-DN-005](devquitect-next/slices/SLICE-DN-005.md); this is not a verified hosted slice.
+[SLICE-DN-005](devquitect-next/slices/SLICE-DN-005.md), which owns delivery verification status.
 The distributed slice verifier, its YAML inventory semantics, dependencies, skill contracts,
 existing packaging version enforcement, and canonical report/promotion schemas are preserved.
 
@@ -129,12 +130,23 @@ configuration, and an exact reviewed `main` SHA. Missing authorization or config
 `not-run`; there has been no dispatch, model run, credential configuration, or matrix-row update
 in this delivery. Behavioral success cannot replace any deterministic gate.
 
-Hosted Linux/macOS/Windows Python 3.12 runs, clean PR/final-main source evidence, canonical Linux
-rebuild evidence, and protection requiring `Devquitect / quality`, `Devquitect / platform-smoke`,
-and `Devquitect / package` remain pending. Remote protection must prohibit force pushes/deletion
-and require PR integration. Local fixtures prove behavior/configuration, not successful hosted
-execution. DN-006 CI-aware readiness, artifact consumption, and publication remain outside the
-implemented scope.
+Hosted [PR run 37264198908](https://github.com/3spGon/devquitect/actions/runs/37264198908)
+tested integration `e5883c7bb2f112d7f81061553d7555f70a720c7a`, head
+`4978cac9ef1b470b1c569be24cf811c08be7b384`, and base
+`6230f4f3e831e5400db035c3de058e9cfe72946b` separately. Independent
+[main push run 37264541061](https://github.com/3spGon/devquitect/actions/runs/37264541061)
+verified exact final commit `1fb3c2f9a42cfb1861ab058fb257b1d1447e1930`; all six jobs succeeded
+in both attempt-1 runs. Linux/macOS/Windows passed 89 smoke/contracts with actual Python 3.12;
+canonical Linux used Python 3.12.14, uv 0.12.10, zlib 1.3 and locked dependencies. Source,
+installed tool revision and workflow identity coincide for each distinct tested commit.
+
+The canonical job built twice in independent roots and passed the equal ZIP/entry-manifest guard.
+Downloaded schema-v1 CI indexes, ZIP/manifest/report sizes and SHA-256 digests were validated.
+The final-main ZIP digest is `aa2deeb6dffb68ca28f31db03953bcf4ef46225e2b776fecdc51e7259a868ceb`.
+Required names are `Devquitect / quality`, `Devquitect / platform-smoke`, and
+`Devquitect / package`; the aggregate requires successful Linux/macOS/Windows variants. Earlier
+failed Windows attempts were blocked by these gates and are retained as diagnostic history.
+DN-006 CI-aware readiness, artifact consumption, and publication remain outside implemented scope.
 
 ## Technical landscape
 
@@ -162,15 +174,15 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 
 ## Known limitations and context gaps
 
-- Contributor checks have current local evidence; the new GitHub workflow definitions have not
-  yet been exercised on hosted runners or activated as effective protected merge gates.
+- Contributor checks and hosted PR/final-main CI have current credential-free evidence; changing
+  source or runner/tool versions requires fresh candidate evidence.
 - Behavioral checks require an explicit trusted run with ChatGPT or API authentication; ordinary fast checks remain credential-free.
 - Compatibility across model or Codex runtime changes is not measured.
 - Real lifecycle scenarios depend on the Codex App Server protocol and trusted
   authentication; adapter, hook, service, or same-thread lifecycle failures remain inconclusive.
 - Model-backed evidence is candidate-specific and retained in local reports rather than this source baseline; it is review-only and cannot change promotion eligibility.
-- Hosted CI acceptance and effective `main` protection are pending. DN-006 CI-aware readiness,
-  installation automation, and publication are outside the implemented DN-005 scope.
+- CI artifacts expire after 30 days and are verification evidence, not public releases. DN-006
+  CI-aware readiness, installation automation, and publication remain outside DN-005.
 - The `0.4.0` candidate is not promoted until exact-commit evidence passes and a maintainer explicitly approves the resulting promotion proposal.
 
 ## Authoritative references

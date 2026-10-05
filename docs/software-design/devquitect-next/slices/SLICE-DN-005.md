@@ -192,7 +192,7 @@ the authority blocker for those actions. Model-backed testing, credential config
 publication, promotion approval, and DN-006 remain unauthorized. The previous local observations
 remain historical; actual hosted acceptance is being obtained before a supported close.
 
-The local implementation is ready for review. The repository and execution skill prohibit
+Historical pre-authorization blocker (superseded by the authorization above): the repository and execution skill prohibit
 commits, pushes and remote settings changes without separate authority. Needed next authority:
 create/review an immutable candidate, push/open a PR, execute its automatic CI, integrate through
 an authorized PR path, verify the final-main run, and activate/verify main protection requiring
@@ -201,3 +201,26 @@ job fails, correct only attributable DN-005 issues and rerun the whole matching 
 Record actual run/job/artifact/toolchain identities before changing the five pending criteria
 to PASS. Rerun inventory checks against the resulting input digest, then use the unchanged
 supported snapshot/check/close path. Do not close DN-005 from local fixtures alone.
+
+### Hosted implementation acceptance, 2026-10-05
+
+PR 3 run [37264198908](https://github.com/3spGon/devquitect/actions/runs/37264198908),
+attempt 1, passed quality, package, all three Python 3.12 platform variants and their aggregate.
+Integration `e5883c7bb2f112d7f81061553d7555f70a720c7a`, head
+`4978cac9ef1b470b1c569be24cf811c08be7b384`, and base
+`6230f4f3e831e5400db035c3de058e9cfe72946b` are separately recorded in actual CI evidence.
+The protected merge produced `1fb3c2f9a42cfb1861ab058fb257b1d1447e1930`; independent
+main push [37264541061](https://github.com/3spGon/devquitect/actions/runs/37264541061),
+attempt 1, passed the same six jobs. All six artifacts per run were downloaded, their 30-day
+retention observed, strict indexes validated, payload sizes/digests checked and both build
+commands/equal-rebuild guard confirmed passing. Main protection was applied and read back with
+the three literal strict checks bound to Actions app 15368, enforced admins, PR integration,
+no force push and no deletion. Failed runs 37263102048 and 37263858064 correctly blocked merge;
+Windows shell/native-CLI/LF fixture issues were corrected without skipping contracts.
+
+All six local checks passed at digest
+`01474e9ff980eb3f59f2e5a434fd47ec65883a707c65ea2aff215ab147a28592` with stable inputs/HEAD
+(89 smoke/contracts, six integration tests, 71 CI cases). This supersedes the pre-authorization
+observations in the initial structured record. The actual-evidence System Context refresh now
+needs its own current-input/hosted verification before that structured record is refreshed and
+the supported close is attempted; delivery status remains `implemented`.
