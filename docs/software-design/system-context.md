@@ -5,9 +5,9 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 16
+revision: 17
 last_updated: 2026-10-05
-baseline_reference: 1fb3c2f9a42cfb1861ab058fb257b1d1447e1930
+baseline_reference: c4b0bc1d961126612b27c194cab569a64c751024
 ---
 
 # Devquitect system context
@@ -22,7 +22,7 @@ The current system provides reusable agent workflows for moving from a software 
 
 ## Current lifecycle
 
-The repository is in development. A preliminary `v0.1.0` tag exists, and the `devquitec-architecture-definition` candidate carries the `0.4.0` plugin manifest, the verified local quality workflow, and the credential-free-verified proportional Change Profile workflow. The candidate is not promoted, tagged, published, or installed by this repository workflow. The skill set and its shared workflow contracts continue to evolve.
+The repository is in development. A preliminary `v0.1.0` tag exists. The verified DN-006 candidate carries plugin version `0.8.0`, protected credential-free CI and manual read-only release readiness. Its promotion proposal remains unapproved; no release was tagged, published or installed by this delivery. The skill set and its shared workflow contracts continue to evolve.
 
 ## System boundaries
 
@@ -83,7 +83,7 @@ deletion are disabled. PR 3 integrated only after all mandatory jobs passed.
 - `devquitect compare` freezes stable and candidate sources before execution, runs them independently, and classifies equivalent behavior, improvement, regression, reviewed contract change, variability, or inconclusive infrastructure.
 - `devquitect calibrate` writes bounded, redacted, versioned behavior-calibration evidence for review; absent reports are unknown and only matching model, runtime, suite, and repetition configurations are comparable.
 - `devquitect package` reads an exact Git commit, enforces the committed semantic version and package allowlist, and emits a normalized plugin ZIP with entry and artifact SHA-256 identities.
-- `devquitect release-check` rebuilds in two fresh roots, requires a passing credential-free check bound to the same snapshot, ignores model-backed evidence for promotion eligibility, applies compatibility and migration policy, and emits an explicitly unapproved promotion proposal.
+- `devquitect release-check` rebuilds in two fresh roots, requires a passing credential-free check bound to the same snapshot, applies compatibility and migration policy, and emits an explicitly unapproved promotion proposal. Optional CI mode fetches authenticated exact-attempt GitHub evidence itself and requires complete successful push/main jobs and matching canonical package bytes. Behavioral rows retain independent verdicts and cannot override deterministic eligibility.
 - `devquitect check` composes structural validation with the credential-free unit, integration, and CLI contract suite; `--behavioral` explicitly adds trusted critical evaluation and clean-ref self-hosting comparison.
 - Real behavioral commands default to Codex CLI `gpt-5.6-luna` at `high` reasoning effort as a convenience, retain runtime identity in evidence, and allow explicit model and effort overrides; fast checks invoke no model.
 
@@ -146,7 +146,39 @@ The final-main ZIP digest is `aa2deeb6dffb68ca28f31db03953bcf4ef46225e2b776fecdc
 Required names are `Devquitect / quality`, `Devquitect / platform-smoke`, and
 `Devquitect / package`; the aggregate requires successful Linux/macOS/Windows variants. Earlier
 failed Windows attempts were blocked by these gates and are retained as diagnostic history.
-DN-006 CI-aware readiness, artifact consumption, and publication remain outside implemented scope.
+DN-006 adds the CI-aware readiness and artifact consumer described below; publication remains outside implemented scope.
+
+## DN-006 release readiness
+
+Protected [PR 5](https://github.com/3spGon/devquitect/pull/5) passed all six jobs in
+[PR run 37360725218](https://github.com/3spGon/devquitect/actions/runs/37360725218), then integrated
+as `c4b0bc1d961126612b27c194cab569a64c751024`. Independent
+[main CI 37361093919](https://github.com/3spGon/devquitect/actions/runs/37361093919), attempt 1,
+passed quality, Linux/macOS/Windows, aggregate and package for that exact source. Manual
+[readiness 37361468906](https://github.com/3spGon/devquitect/actions/runs/37361468906), attempt 1,
+returned canonical schema-v1 `pass` at `2026-10-05T19:10:43.157295+00:00` using that CI attempt.
+The workflow runs from main, checks out the full candidate SHA, verifies installed tooling,
+uses the committed lock and declares only `contents: read` and `actions: read`.
+
+Readiness authenticated all six CI artifact container digests and producer intervals, validated
+their schema-v1 indexes and actual payload hashes, then matched the downloaded canonical package
+to two fresh rebuilds. Source, workflow/tool commit, lock, snapshot and requested/committed/package
+version agree. Snapshot is `sha256:67a9177656aa136261d5aaa5935a0d89bd6a5155fe14d53ef8508e73622675aa`;
+package digest is `sha256:aa2deeb6dffb68ca28f31db03953bcf4ef46225e2b776fecdc51e7259a868ceb`.
+Readiness artifact `11367365423` has container digest
+`sha256:2154cee58e7ed45b01baa09b60487350fb996e0fe0b26d1e535ed08bd64072dd` and expires
+`2026-11-04T19:10:43Z`, exactly 30 days after creation. Its downloaded report, ZIP, manifest,
+proposal, schemas and file digests were independently inspected; container and package digests
+are distinct identities.
+
+The explicit compatibility baseline is immutable ancestor
+`86c7cd9f0fcecd1b4faebeb24fdeafcf558a91b9`, plugin `0.7.0`; candidate `0.8.0` has minor impact.
+Legacy mode retains its parent default and no-network behavior. Optional behavioral evidence is
+`not-run` here: no model was invoked. The unchanged schema-v1 proposal retains null `approved_by`
+and `approved_at`, with timestamp in the canonical report; a maintainer must separately decide
+whether to approve promotion. Delivery status and current local input evidence belong to
+[SLICE-DN-006](devquitect-next/slices/SLICE-DN-006.md). This context records the exact verified
+candidate rather than attributing its evidence to a later documentation commit.
 
 ## Technical landscape
 
@@ -181,9 +213,11 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 - Real lifecycle scenarios depend on the Codex App Server protocol and trusted
   authentication; adapter, hook, service, or same-thread lifecycle failures remain inconclusive.
 - Model-backed evidence is candidate-specific and retained in local reports rather than this source baseline; it is review-only and cannot change promotion eligibility.
-- CI artifacts expire after 30 days and are verification evidence, not public releases. DN-006
-  CI-aware readiness, installation automation, and publication remain outside DN-005.
-- The `0.4.0` candidate is not promoted until exact-commit evidence passes and a maintainer explicitly approves the resulting promotion proposal.
+- CI and readiness artifacts expire after 30 days and are verification evidence, not public releases.
+  Expired/missing evidence is rejected; fresh source or tool inputs require new exact-candidate CI
+  and readiness. Installation automation and publication remain outside this implementation.
+- The `0.8.0` proposal is unapproved. Readiness reports eligibility without granting promotion,
+  publication or installation authority; configuration/policy/infrastructure failures remain distinct.
 
 ## Authoritative references
 
