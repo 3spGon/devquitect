@@ -59,6 +59,52 @@ make behavioral checks inconclusive and exit `3`; they are never converted into 
 
 JSON output and atomic report files use the versioned canonical envelope in `schemas/report.schema.json`. Paths in records are normalized and repository-relative. Text output represents the same verdict and issue records without changing exit semantics.
 
+## Continuous verification and separate behavioral review
+
+The DN-005 implementation defines [.github/workflows/ci.yml](../.github/workflows/ci.yml)
+for every pull request and push to `main`. It checks out the event's exact tested SHA, uses
+Python 3.12, pinned actions and uv, and installs the locked environment. The pinned Codex CLI
+is used only for credential-free CLI capability checks; no model or login is used by normal CI.
+Git checkout disables automatic CRLF conversion so byte-sensitive case and snapshot identities
+remain stable on Windows. Local development continues to use `--source working-tree`.
+
+The required check names are `Devquitect / quality`, `Devquitect / platform-smoke`, and
+`Devquitect / package`. Platform variants append `(ubuntu-latest)`, `(macos-latest)`, and
+`(windows-latest)`. The aggregate always runs and requires success from each named variant;
+failure, cancellation, skip, or absence never qualifies. Quality runs the existing HEAD check,
+Ruff, and whitespace from PR head/base merge-base to tested HEAD, or push before/after. A first
+push compares with Git's empty tree. A new final `main` commit needs its own successful push run;
+PR integration/head/base identities cannot substitute for that candidate.
+
+Each job uploads its own SHA/attempt-specific evidence for 30 days, including failed-step
+diagnostics when available. Quality retains `check.json`; platform jobs retain actual outcomes
+and identity; the Linux package job retains ZIP, manifest, package report, and the schema-v1
+`ci-evidence.json`. The internal producer in `reporting.py` checks installed source/lock bytes,
+actual checkout SHA, two independent ZIP digests and deterministic manifests, and metadata.
+The index hashes exactly its three payload files; it does not hash itself. GitHub's observed
+job conclusions and artifact-container digests remain necessary provenance for DN-006.
+For reruns, rerun every job; do not mix artifacts from partial attempts. Expired/deleted
+evidence requires new matching CI.
+
+Remote acceptance is pending: read-only inspection of `3spGon/devquitect` on 2026-10-04 found
+Actions enabled, no effective `main` protection/rulesets, and 90-day retention support. A
+separately authorized maintainer action must require the three check names, PR integration,
+no force pushes, and no deletion. Enable `merge_group` only if merge queue is activated.
+Review workflow changes and obtain successful hosted PR and final-main runs on all three
+platforms before declaring this gate operational. See
+[DN-005 evidence](software-design/devquitect-next/slices/SLICE-DN-005.md).
+
+[behavioral.yml](../.github/workflows/behavioral.yml) is a separate optional manual workflow.
+It requires an explicit authorization reference and confirmation, a reviewed full SHA equal
+to the selected `main` workflow SHA, the `behavioral-review` environment, repository/environment
+variable `DEVQUITECT_BEHAVIORAL_ENABLED=true`, and its separately configured `OPENAI_API_KEY`.
+Configure maintainer review on that environment before use. Missing authorization/configuration
+records `not-run` with no observed runtime or reports. The supported command uses `api-key`,
+`gpt-5.6-luna`, and `high` effort; subscription-cache authentication is unavailable on CI.
+No dispatch or credential configuration is authorized by delivering these files. Keep its
+canonical reports as independent DN-004 review evidence; it writes no matrix/ledger rows and
+never substitutes for a failed deterministic check or becomes a required merge gate.
+
 ## Runtime isolation and evidence safety
 
 Every behavioral attempt uses a fresh temporary Git workspace, Codex conversation, `CODEX_HOME`, installed-skill root, and evidence namespace. The supported adapter records the detected Codex CLI version and requires `codex exec --ephemeral --json` with an explicit working directory, `read-only` or `workspace-write` sandbox, `--ignore-user-config`, and `--ignore-rules`. `danger-full-access` is never release-eligible.

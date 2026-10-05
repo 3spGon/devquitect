@@ -5,9 +5,9 @@ system: Devquitect
 scope: repository
 lifecycle: in-development
 context_status: current
-revision: 14
-last_updated: 2026-09-21
-baseline_reference: working-tree@evaluation-auth-governance-slice-eag-004
+revision: 15
+last_updated: 2026-10-04
+baseline_reference: working-tree@devquitect-next-dn005-local-verification
 ---
 
 # Devquitect system context
@@ -40,7 +40,7 @@ Inside the current system:
 
 Outside the current implemented baseline:
 
-- continuous integration;
+- operational hosted continuous integration and effective protected merge gates;
 - public plugin distribution;
 - automated release publication;
 - MCP servers, connectors, applications, or graphical interfaces.
@@ -51,7 +51,11 @@ Outside the current implemented baseline:
 - Codex loads and follows the skill instructions when a request explicitly or implicitly selects them.
 - Git records the source history and the `v0.1.0` preliminary release marker.
 
-No Git remote or CI provider is configured in the represented baseline.
+The configured Git remote is `git@github.com:3spGon/devquitect.git`. Read-only inspection on
+2026-10-04 confirmed GitHub Actions enabled and support for the requested 30-day artifact
+retention (configured/maximum: 90 days). No effective `main` protection or ruleset was present.
+DN-005's local workflow implementation still requires hosted acceptance and separate authority
+to commit/push the candidate and activate protection.
 
 ## Current capabilities
 
@@ -101,6 +105,37 @@ documentation and explicit-auth implementation together while retaining the prev
 check behavior. A forcibly killed parent can leave temporary material until bounded stale recovery
 or operator cleanup; the baseline makes no SIGKILL-proof deletion claim.
 
+## DN-005 local CI implementation and pending hosted acceptance
+
+The local implementation defines `ci.yml` for pull requests and final `main` pushes, with
+quality, three separately named platform jobs and an always-run aggregate, and canonical Linux
+packaging. Normal jobs have `contents: read`, pinned actions/uv/Codex CLI, Python 3.12 and the
+locked environment; they receive no model credentials. The existing HEAD credential-free check,
+Ruff, and event-specific introduced-whitespace checks remain the gate commands. PR whitespace
+uses head/base merge-base; first pushes use Git's empty tree. Checkout disables CRLF conversion
+to preserve committed bytes on Windows.
+
+Credential-free local contract tests exercise source/tool/lock identity checks, valid and invalid
+metadata, two real immutable package rebuilds, strict schema-v1 CI indexes and file digests,
+rejected differing rebuilds, command exit/missing-result handling, aggregate rejection of
+failed/cancelled/skipped/missing variants, and the separate manual behavioral preflight.
+Observed local checks and each acceptance criterion are recorded in
+[SLICE-DN-005](devquitect-next/slices/SLICE-DN-005.md); this is not a verified hosted slice.
+The distributed slice verifier, its YAML inventory semantics, dependencies, skill contracts,
+existing packaging version enforcement, and canonical report/promotion schemas are preserved.
+
+`behavioral.yml` is an optional manual API-key workflow requiring explicit authorization,
+configuration, and an exact reviewed `main` SHA. Missing authorization or configuration yields
+`not-run`; there has been no dispatch, model run, credential configuration, or matrix-row update
+in this delivery. Behavioral success cannot replace any deterministic gate.
+
+Hosted Linux/macOS/Windows Python 3.12 runs, clean PR/final-main source evidence, canonical Linux
+rebuild evidence, and protection requiring `Devquitect / quality`, `Devquitect / platform-smoke`,
+and `Devquitect / package` remain pending. Remote protection must prohibit force pushes/deletion
+and require PR integration. Local fixtures prove behavior/configuration, not successful hosted
+execution. DN-006 CI-aware readiness, artifact consumption, and publication remain outside the
+implemented scope.
+
 ## Technical landscape
 
 The maintained skills remain declarative Markdown and YAML. Repository quality tooling uses Python 3.12 with a `src/` package layout, setuptools build metadata, a `uv.lock` dependency lock, PyYAML, jsonschema, pytest, and Ruff. Implemented components own source selection, read-only snapshots, structural validation, isolated Codex execution, bounded App Server JSON-RPC lifecycle control, normalized observations, deterministic assertions, behavioral cases, stable/candidate comparison, deterministic packaging, release-eligibility policy, canonical reporting, and the `devquitect` plugin definition. Publication remains manual and outside the tooling.
@@ -127,13 +162,15 @@ Future initiatives must preserve the distinct responsibility boundaries among so
 
 ## Known limitations and context gaps
 
-- Contributor checks remain local because no hosted CI provider is configured.
+- Contributor checks have current local evidence; the new GitHub workflow definitions have not
+  yet been exercised on hosted runners or activated as effective protected merge gates.
 - Behavioral checks require an explicit trusted run with ChatGPT or API authentication; ordinary fast checks remain credential-free.
 - Compatibility across model or Codex runtime changes is not measured.
 - Real lifecycle scenarios depend on the Codex App Server protocol and trusted
   authentication; adapter, hook, service, or same-thread lifecycle failures remain inconclusive.
 - Model-backed evidence is candidate-specific and retained in local reports rather than this source baseline; it is review-only and cannot change promotion eligibility.
-- No marketplace entry, installation automation, hosted CI, or publication mechanism has been implemented.
+- Hosted CI acceptance and effective `main` protection are pending. DN-006 CI-aware readiness,
+  installation automation, and publication are outside the implemented DN-005 scope.
 - The `0.4.0` candidate is not promoted until exact-commit evidence passes and a maintainer explicitly approves the resulting promotion proposal.
 
 ## Authoritative references

@@ -1,0 +1,174 @@
+name: Devquitect
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Keep byte-sensitive case/snapshot digests identical to Git objects on Windows too.
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  quality:
+    name: Devquitect / quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: '0.12.10'
+          enable-cache: false
+      - run: uv sync --locked --all-groups
+      # The credential-free CLI contract only runs --version and exec --help.
+      - run: npm install --global @openai/codex@0.154.0
+      - name: Verify execution identity
+        run: uv run python -m devquitect_quality.reporting run --job identity -- uv run python -m devquitect_quality.reporting identity
+      - name: Structural validation and credential-free suite
+        run: uv run python -m devquitect_quality.reporting run --job check -- uv run devquitect check --source HEAD --report .devquitect-reports/check.json
+      - name: Ruff
+        if: ${{ !cancelled() }}
+        run: uv run python -m devquitect_quality.reporting run --job ruff -- uv run ruff check src tests
+      - name: Event-base whitespace
+        if: ${{ !cancelled() }}
+        run: uv run python -m devquitect_quality.reporting run --job whitespace -- uv run python -m devquitect_quality.reporting whitespace
+      - name: Record actual check outcomes
+        if: ${{ always() }}
+        run: uv run python -m devquitect_quality.reporting result --job quality --checks identity check ruff whitespace
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ always() }}
+        with:
+          name: quality-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: .devquitect-reports/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  platform-ubuntu:
+    name: Devquitect / platform-smoke (ubuntu-latest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps: &platform-steps
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: '0.12.10'
+          enable-cache: false
+      - run: uv sync --locked --all-groups
+      - run: npm install --global @openai/codex@0.154.0
+      - name: Verify execution identity
+        run: uv run python -m devquitect_quality.reporting run --job identity -- uv run python -m devquitect_quality.reporting identity
+      - name: Platform smoke
+        run: uv run python -m devquitect_quality.reporting run --job smoke -- uv run pytest tests/unit/test_compaction_recovery_hook.py tests/unit/test_packaging.py tests/contract
+      - name: Record actual check outcomes
+        if: ${{ always() }}
+        run: uv run python -m devquitect_quality.reporting result --job platform-smoke --checks identity smoke
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ always() }}
+        with:
+          name: platform-smoke-${{ runner.os }}-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: .devquitect-reports/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  platform-macos:
+    name: Devquitect / platform-smoke (macos-latest)
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps: *platform-steps
+
+  platform-windows:
+    name: Devquitect / platform-smoke (windows-latest)
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps: *platform-steps
+
+  platform-smoke:
+    name: Devquitect / platform-smoke
+    runs-on: ubuntu-latest
+    needs: [platform-ubuntu, platform-macos, platform-windows]
+    if: ${{ always() }}
+    timeout-minutes: 5
+    steps:
+      - name: Require every platform to succeed
+        env:
+          UBUNTU_RESULT: ${{ needs.platform-ubuntu.result }}
+          MACOS_RESULT: ${{ needs.platform-macos.result }}
+          WINDOWS_RESULT: ${{ needs.platform-windows.result }}
+        run: |
+          test "$UBUNTU_RESULT" = success
+          test "$MACOS_RESULT" = success
+          test "$WINDOWS_RESULT" = success
+
+  package:
+    name: Devquitect / package
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: '0.12.10'
+          enable-cache: false
+      - run: uv sync --locked --all-groups
+      - name: Verify execution identity
+        run: uv run python -m devquitect_quality.reporting run --job identity -- uv run python -m devquitect_quality.reporting identity
+      - name: Read committed plugin version
+        run: |
+          python -c 'import json, os; from pathlib import Path; v=json.loads(Path(".codex-plugin/plugin.json").read_text())["version"]; open(os.environ["GITHUB_ENV"], "a").write("PLUGIN_VERSION="+v+"\n")'
+      - name: First independent build
+        run: uv run python -m devquitect_quality.reporting run --job build-first -- uv run devquitect package --source "$GITHUB_SHA" --version "$PLUGIN_VERSION" --output dist/first --report dist/first/package.json
+      - name: Second independent build
+        run: uv run python -m devquitect_quality.reporting run --job build-second -- uv run devquitect package --source "$GITHUB_SHA" --version "$PLUGIN_VERSION" --output dist/second --report dist/second/package.json
+      - name: Verify rebuilds and produce strict CI index
+        run: uv run python -m devquitect_quality.reporting run --job index -- uv run python -m devquitect_quality.reporting package --first dist/first --second dist/second
+      - name: Record actual check outcomes
+        if: ${{ always() }}
+        run: uv run python -m devquitect_quality.reporting result --job package --checks identity build-first build-second index
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ always() }}
+        with:
+          name: package-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: dist/first/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ always() }}
+        with:
+          name: package-diagnostics-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: .devquitect-reports/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

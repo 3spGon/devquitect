@@ -3,19 +3,20 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 39
-last_updated: '2026-10-02T18:31:17Z'
+revision: 44
+last_updated: '2026-10-04T22:17:00-06:00'
 plan: 08-implementation-plan.md
-plan_revision: 2
+plan_revision: 3
 completion_scope: implementation-only
 authorized_slices:
 - SLICE-DN-001
 - SLICE-DN-002
 - SLICE-DN-003
 - SLICE-DN-004
-delivery_status: complete
-current_slice: null
-next_action: null
+- SLICE-DN-005
+delivery_status: active
+current_slice: SLICE-DN-005
+next_action: Commit and push the reviewed DN-005 candidate, create its PR, configure the authorized main protection, and verify the hosted PR and final-main attempts before close.
 pending_user_action: null
 required_context:
 - 02-requirements.md
@@ -26,6 +27,14 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
+  - On 2026-10-04 the user explicitly authorized candidate commit/push/PR, main protection, and integration only after required CI succeeds; no model testing or publication is authorized.
+  - Supported snapshot passed; supported check rejected exactly the five external criteria, with valid plan/tracker/fingerprints/check evidence after fixing two structured evidence references.
+  - Final repository credential-free check, Ruff and diff check passed after the evidence edit; no product failure remains unresolved locally.
+  - All six DN-005 local inventory checks passed at digest 07df8cc18cd67c8ff323d4a46bb3129167fbedd822c5572e8258a7ddde48f553; 87 smoke/contracts, six check integrations and 69 CI-specific contracts passed (overlapping counts).
+  - Recorded current criterion-by-criterion evidence, preserved verifier/plan/dependencies, and retained five pending hosted/protection criteria without claiming completion.
+  - Implemented DN-005 workflow definitions, strict CI evidence schema, and the producer in existing reporting.py ownership.
+  - Local CI contracts and the integrated credential-free check passed after correcting the schema-version marker and Ruff findings.
+  - Preserved the distributed verifier, its YAML contract, skill sources, dependencies, and DN-004 behavioral matrix.
   - Refreshed and closed DN-004 after the separately authorized comparison ledger append at digest 1f27d92b4177e4b66018b664ed28097d6d21e7579a074095c076279f7cc4d151.
   - Current focused tests, credential-free check, Ruff, and diff check passed; no skill source or case changed during the follow-up.
   - The user authorized v0.8.0 preparation and relevant supervised model comparisons
@@ -115,9 +124,17 @@ execution_frontier:
     AC-DN-005, AC-DN-006, and CHECK-DN-007 through CHECK-DN-009 passed.
   - Reran the required credential-free check, Ruff, and diff check after slice closure
     and the complete checkpoint update; all passed.
-  in_progress: null
+  in_progress:
+    action: Obtain actual hosted DN-005 acceptance and effective protected-main evidence under the newly granted external authority.
+    paths:
+    - .github/workflows/ci.yml
+    - .github/workflows/behavioral.yml
+    - docs/software-design/devquitect-next/slices/SLICE-DN-005.md
   do_not_repeat: []
-  pending_verification: []
+  pending_verification:
+  - Actual hosted PR and final-main attempts on Linux, macOS, and Windows Python 3.12.
+  - Canonical hosted Linux package/index/toolchain evidence for the exact final candidate.
+  - Effective main protection and successful PR integration under the user's 2026-10-04 external authorization.
 slices:
   SLICE-DN-001:
     status: verified
@@ -135,16 +152,22 @@ slices:
     status: verified
     acceptance: not-required
     evidence: slices/SLICE-DN-004.md
+  SLICE-DN-005:
+    status: implemented
+    acceptance: not-required
+    evidence: slices/SLICE-DN-005.md
 ---
 
 # Delivery checkpoint
 
 ## Current objective
 
-DN-004 is verified after the separately authorized v0.8.0 comparison follow-up. The authorized
-DN-001 through DN-004 implementation scope is complete. The compared skill snapshot is unchanged;
-only observed evidence was appended. DN-005 and DN-006 remain unauthorized. Local release preparation
-and promotion authority are recorded in `docs/releases/v0.8.0.md`.
+DN-005 is implemented locally but not verified under approved plan revision 3 on
+`codex/slice-dn-005-continuous-verification`. Preserve verified DN-001 through DN-004 and their
+historical evidence; DN-006 remains unauthorized. No model runs or publication are authorized.
+All local inventory checks passed. The user has now authorized commit/push/PR, main protection,
+and integration only after required CI succeeds. Hosted acceptance remains in progress; no slice
+close or complete transition is supported until actual evidence satisfies every criterion.
 
 ## Last completed work
 
@@ -168,9 +191,20 @@ and promotion authority are recorded in `docs/releases/v0.8.0.md`.
 
 `SLICE-DN-001`, `SLICE-DN-002`, and `SLICE-DN-003` retain their verified evidence. DN-004
 has current PASS evidence for both criteria and CHECK-DN-010 through CHECK-DN-012 in
-`slices/SLICE-DN-004.md`, accepted by the supported verifier. DN-005 and DN-006 remain unauthorized.
+`slices/SLICE-DN-004.md`, accepted by the supported verifier. Newly authorized DN-005 has PASS
+local checks and three local criteria; five hosted/protection criteria remain unestablished in
+`slices/SLICE-DN-005.md`. DN-006 remains unauthorized.
 
 ## Handoff notes
+
+- On 2026-10-04 the user authorized DN-005 and a new branch. Both definition gates and plan
+  revision 3 are approved. Revision 3 preserves DN-001 through DN-004's inventory and behavior;
+  reconcile only the new CI scope, retaining the verified dependency DN-004 and historical evidence.
+  Python 3.14.7 and PyYAML 6.0.3 are available for the unmodified verifier.
+- Read-only GitHub inspection found `main` unprotected (protection endpoint HTTP 404), no
+  repository/inherited rulesets, and artifact retention 90 days with maximum 90. Hosted execution
+  of a new exact candidate requires separate commit/push authority; remote protection activation
+  requires separate maintainer authorization. Local configuration/tests cannot satisfy those criteria.
 
 - The later user request authorized v0.8.0 preparation and supervised model comparisons. BC-DN-004-001
   records twelve cases in each of two independent supervisor configurations; the corrected row has
