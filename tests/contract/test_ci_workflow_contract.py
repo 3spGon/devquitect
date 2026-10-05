@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -32,6 +33,13 @@ WORKFLOW = ROOT / ".github/workflows/ci.yml"
 def workflow(path=WORKFLOW):
     # BaseLoader preserves GitHub's YAML 1.2 `on` key (SafeLoader uses YAML 1.1).
     return yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+
+
+def bash():
+    # Windows' system bash launches WSL; these contracts use the runner's Git Bash.
+    if sys.platform == "win32":
+        return str(Path(shutil.which("git")).resolve().parents[1] / "bin/bash.exe")
+    return "bash"
 
 
 def test_ci_triggers_jobs_locked_toolchain_and_read_only_permissions():
@@ -93,6 +101,11 @@ def test_ci_required_commands_and_independent_build_roots():
             "pytest tests/unit/test_compaction_recovery_hook.py "
             "tests/unit/test_packaging.py tests/contract"
         ) in smoke
+        native = next(s for s in jobs[f"platform-{os_name}"]["steps"]
+                      if s.get("name") == "Expose native Windows Codex executable")
+        assert native["if"] == "runner.os == 'Windows'" and native["shell"] == "pwsh"
+        assert "codex.exe" in native["run"] and "GITHUB_PATH" in native["run"]
+        assert "$nativeCodex.Count -ne 1" in native["run"]
     package = "\n".join(s.get("run", "") for s in jobs["package"]["steps"])
     assert package.count('devquitect package --source "$GITHUB_SHA"') == 2
     assert "--output dist/first" in package and "--output dist/second" in package
@@ -107,14 +120,14 @@ def test_aggregate_rejects_every_non_success_variant(bad, variant):
     assert job["needs"] == ["platform-ubuntu", "platform-macos", "platform-windows"]
     step = job["steps"][0]
     env = {**os.environ, **dict.fromkeys(step["env"], "success"), variant: bad}
-    result = subprocess.run(["bash", "-e", "-c", step["run"]], env=env, check=False)
+    result = subprocess.run([bash(), "-e", "-c", step["run"]], env=env, check=False)
     assert result.returncode != 0
 
 
 def test_aggregate_accepts_only_complete_success():
     step = workflow()["jobs"]["platform-smoke"]["steps"][0]
     assert subprocess.run(
-        ["bash", "-e", "-c", step["run"]],
+        [bash(), "-e", "-c", step["run"]],
         env={**os.environ, **dict.fromkeys(step["env"], "success")}, check=False,
     ).returncode == 0
 
@@ -349,7 +362,7 @@ def test_event_base_whitespace_positive_and_negative(tmp_path, event):
     git("config", "user.name", "CI fixture")
     git("config", "user.email", "ci@example.invalid")
     path = tmp_path / "file.txt"
-    path.write_text("clean\n")
+    path.write_text("clean\n", newline="\n")
     git("add", ".")
     git("commit", "-qm", "base")
     base = git("rev-parse", "HEAD")
@@ -359,7 +372,7 @@ def test_event_base_whitespace_positive_and_negative(tmp_path, event):
         payload = {"before": "0" * 40 if event == "first-push" else base}
     actual_event = "push" if event == "first-push" else event
     assert ci_whitespace(tmp_path, actual_event, payload) == 0
-    path.write_text("introduced whitespace \n")
+    path.write_text("introduced whitespace \n", newline="\n")
     git("add", ".")
     git("commit", "-qm", "bad whitespace")
     assert ci_whitespace(tmp_path, actual_event, payload) != 0
@@ -432,8 +445,8 @@ def test_behavioral_is_separate_manual_and_api_key_only():
 def test_behavioral_missing_configuration_is_an_explicit_non_run(tmp_path):
     step = workflow(ROOT / ".github/workflows/behavioral.yml")["jobs"]["review"]["steps"][0]
     env = {**os.environ, "AUTHORIZED": "false", "API_KEY": "", "ENABLED": "false",
-           "AUTHORIZATION_REFERENCE": "", "GITHUB_OUTPUT": str(tmp_path / "outputs")}
-    process = subprocess.run(["bash", "-e", "-c", step["run"]], cwd=tmp_path, env=env)
+           "AUTHORIZATION_REFERENCE": "", "GITHUB_OUTPUT": (tmp_path / "outputs").as_posix()}
+    process = subprocess.run([bash(), "-e", "-c", step["run"]], cwd=tmp_path, env=env)
     assert process.returncode == 0
     report = json.loads((tmp_path / ".devquitect-reports/not-run.json").read_text())
     assert report["verdict"] == "not-run"
@@ -452,8 +465,8 @@ def test_behavioral_preflight_requires_exact_reviewed_main_sha(tmp_path, source,
     env = {**os.environ, "AUTHORIZED": "true", "API_KEY": "fixture", "ENABLED": "true",
            "AUTHORIZATION_REFERENCE": "fixture-authorization", "REVIEWED_SOURCE": source,
            "GITHUB_REF": ref, "GITHUB_SHA": "a" * 40,
-           "GITHUB_OUTPUT": str(tmp_path / "outputs")}
-    process = subprocess.run(["bash", "-e", "-c", step["run"]], cwd=tmp_path, env=env)
+           "GITHUB_OUTPUT": (tmp_path / "outputs").as_posix()}
+    process = subprocess.run([bash(), "-e", "-c", step["run"]], cwd=tmp_path, env=env)
     assert process.returncode == exit_code
     if exit_code == 0:
         assert (tmp_path / "outputs").read_text().strip() == "ready=true"

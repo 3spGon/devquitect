@@ -82,6 +82,14 @@ jobs:
       - run: npm install --global @openai/codex@0.154.0
       - name: Verify execution identity
         run: uv run python -m devquitect_quality.reporting run --job identity -- uv run python -m devquitect_quality.reporting identity
+      - name: Expose native Windows Codex executable
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $codexPackage = Join-Path (npm root --global) '@openai/codex'
+          $nativeCodex = @(Get-ChildItem $codexPackage -Filter codex.exe -Recurse)
+          if ($nativeCodex.Count -ne 1) { throw 'Expected exactly one pinned native Codex executable' }
+          $nativeCodex[0].DirectoryName >> $env:GITHUB_PATH
       - name: Platform smoke
         run: uv run python -m devquitect_quality.reporting run --job smoke -- uv run pytest tests/unit/test_compaction_recovery_hook.py tests/unit/test_packaging.py tests/contract
       - name: Record actual check outcomes

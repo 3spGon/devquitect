@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 44
-last_updated: '2026-10-04T22:17:00-06:00'
+revision: 47
+last_updated: '2026-10-05T04:35:00+00:00'
 plan: 08-implementation-plan.md
 plan_revision: 3
 completion_scope: implementation-only
@@ -16,7 +16,7 @@ authorized_slices:
 - SLICE-DN-005
 delivery_status: active
 current_slice: SLICE-DN-005
-next_action: Commit and push the reviewed DN-005 candidate, create its PR, configure the authorized main protection, and verify the hosted PR and final-main attempts before close.
+next_action: Finish current local inventory checks and push the Windows portability correction to PR 3; verify every hosted job/artifact before protected integration and independent final-main verification.
 pending_user_action: null
 required_context:
 - 02-requirements.md
@@ -27,6 +27,13 @@ required_context:
 blockers: []
 execution_frontier:
   last_completed:
+  - Corrected Windows contracts to use Git Bash rather than WSL and LF fixture bytes, and exposed the pinned native Codex executable for Python; retained all 87 platform contracts and their negative assertions.
+  - After the correction, CHECK-DN-013/014/015/019 passed locally; CHECK-DN-020/023 are still running and hosted Windows acceptance is pending.
+  - Reconciled all four recovery candidates; devquitect-next v3/revision 45 is the sole active approved-plan-3 DN-005 session. The three other sessions are completed and remain unchanged.
+  - Classified PR run 37263102048 Windows failure as recoverable portability failures; quality/package/Linux/macOS succeeded, Windows and its aggregate failed, and protected main blocks integration.
+  - Committed DN-005 as 1129b10, incorporated current origin/main, pushed head b4880b53bc1b103d5db9520365612854d921008e, and opened/attached PR 3.
+  - Activated and read back strict quality/platform aggregate/package checks bound to GitHub Actions app 15368, required PR integration, enforced admins, and disabled force push/deletion on main.
+  - Historical in-flight observation of run 37263102048 is superseded by its completed Windows failure above; that attempt is diagnostic and does not satisfy hosted acceptance.
   - On 2026-10-04 the user explicitly authorized candidate commit/push/PR, main protection, and integration only after required CI succeeds; no model testing or publication is authorized.
   - Supported snapshot passed; supported check rejected exactly the five external criteria, with valid plan/tracker/fingerprints/check evidence after fixing two structured evidence references.
   - Final repository credential-free check, Ruff and diff check passed after the evidence edit; no product failure remains unresolved locally.
@@ -125,7 +132,7 @@ execution_frontier:
   - Reran the required credential-free check, Ruff, and diff check after slice closure
     and the complete checkpoint update; all passed.
   in_progress:
-    action: Obtain actual hosted DN-005 acceptance and effective protected-main evidence under the newly granted external authority.
+    action: Finish local inventory verification and verify the corrected PR attempt on all hosted platforms.
     paths:
     - .github/workflows/ci.yml
     - .github/workflows/behavioral.yml
@@ -196,6 +203,12 @@ local checks and three local criteria; five hosted/protection criteria remain un
 `slices/SLICE-DN-005.md`. DN-006 remains unauthorized.
 
 ## Handoff notes
+
+- Authorized external execution: PR https://github.com/3spGon/devquitect/pull/3; candidate head
+  `b4880b53bc1b103d5db9520365612854d921008e`; tested integration SHA
+  `b777d9ebcfebb27e81bb847498fe29a59f2e4308`; CI run `37263102048`, attempt `1`.
+  Effective protection activation succeeded; required checks use GitHub Actions app `15368`.
+  Quality/package/Ubuntu succeeded; do not infer macOS/Windows or final-main results from them.
 
 - On 2026-10-04 the user authorized DN-005 and a new branch. Both definition gates and plan
   revision 3 are approved. Revision 3 preserves DN-001 through DN-004's inventory and behavior;
