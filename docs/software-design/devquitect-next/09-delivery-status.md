@@ -3,8 +3,8 @@ schema_version: 3
 skill: project-plan-execution
 project: Devquitect Next
 session: devquitect-next
-revision: 53
-last_updated: '2026-10-05T04:55:00+00:00'
+revision: 59
+last_updated: '2026-10-05T19:03:34+00:00'
 plan: 08-implementation-plan.md
 plan_revision: 3
 completion_scope: implementation-only
@@ -14,19 +14,31 @@ authorized_slices:
 - SLICE-DN-003
 - SLICE-DN-004
 - SLICE-DN-005
-delivery_status: complete
-current_slice: null
-next_action: null
+- SLICE-DN-006
+delivery_status: in-progress
+current_slice: SLICE-DN-006
+next_action: Commit and push the reviewed DN-006 candidate, open its PR, observe required protected CI before integration, then dispatch exact final-main readiness.
 pending_user_action: null
 required_context:
 - 02-requirements.md
 - 04-architecture.md
+- 05-data-model.md
+- 06-api-contracts.md
 - 07-decisions.md
 - 08-implementation-plan.md
 - prompt-change-ledger.md
 blockers: []
 execution_frontier:
   last_completed:
+  - Reconciled all four recovery candidates; only devquitect-next revision 58 is active. The human user explicitly authorized commit, push, PR, protected integration after CI and manual readiness on 2026-10-05; no publication, promotion approval or model testing is authorized.
+  - Rejected empty behavioral reports and missing observations that claim executed runtime; the positive fixtures now contain simulated model/effort observations. All five inventory checks pass at final digest 2268c65104da1de7fea7b90d6cca70a421e1d6b28d873f55219b6b79ca367cd3, including 140 focused and 41 transport cases.
+  - Refreshed every structured check timestamp/fingerprint and preserved the four unverified hosted criteria. Supported check reports exactly AC-DN-011/016/017/018, with valid current plan/tracker/evidence and no stale inputs.
+  - All five exact DN-006 inventory commands passed at stable digest a438e9580f11eca66ea36feb0cda18e7196e8b9a95c7d9f0933e59fedb142800; 139 focused and 41 transport tests passed with no model execution.
+  - Supported snapshot passed; supported check rejected only the four deliberately unverified hosted criteria AC-DN-011/016/017/018. Plan/tracker/evidence/checks/fingerprints are valid; no local implementation failure remains.
+  - Compared the cumulative change with all eight approved DN-006 scope points. Preserved plan, inventory, verifier, schemas, skills, lock, plugin version, prompt ledgers and previous evidence. System Context refresh remains dependent on the actual new hosted candidate.
+  - Implemented DN-006 manual read-only workflow, bounded GitHub adapter, shared package/provenance policy, explicit previous-release compatibility and separate behavioral rows.
+  - Local inventory passed; repeating current checks after final malformed-metadata guards with exact timestamps and supported input fingerprints.
+  - Read-only existing-main replay passed for source 80bfa04b1d26c08d87ad5c421928c5a088ec4ffa, run 37265160752 attempt 1; matched canonical ZIP digest aa2deeb6dffb68ca28f31db03953bcf4ef46225e2b776fecdc51e7259a868ceb and emitted three private outputs with null approval fields.
   - Independent final-main run 37265160752 attempt 1 passed all six jobs for exact source 80bfa04b1d26c08d87ad5c421928c5a088ec4ffa; all six unexpired 30-day artifacts, strict indexes and payload/container identities are recorded in current DN-005 evidence.
   - Refreshed all eight criteria and six check observations at digest 43f6f2c2b6020b0c92812c9d701417b24902b57e384a82224b9babc677f9b465; unchanged supported snapshot/check/close returned PASS with no issues, closing DN-005 at revision 52.
   - Completed only authorized DN-001 through DN-005. DN-006 remains outside scope; no model run, publication or promotion was performed by DN-005.
@@ -190,9 +202,11 @@ execution_frontier:
     AC-DN-005, AC-DN-006, and CHECK-DN-007 through CHECK-DN-009 passed.
   - Reran the required credential-free check, Ruff, and diff check after slice closure
     and the complete checkpoint update; all passed.
-  in_progress: null
+  in_progress: Authorized protected candidate delivery and hosted readiness.
   do_not_repeat: []
-  pending_verification: []
+  pending_verification:
+  - Observe final-main CI and manual hosted readiness for the exact newly reviewed candidate; AC-DN-011/016/017/018 remain unverified.
+  - Refresh System Context from the verified DN-006 candidate after hosted acceptance; do not replace its DN-005 baseline with local replay evidence.
 slices:
   SLICE-DN-001:
     status: verified
@@ -214,18 +228,29 @@ slices:
     status: verified
     acceptance: not-required
     evidence: slices/SLICE-DN-005.md
+  SLICE-DN-006:
+    status: implemented
+    acceptance: not-required
+    evidence: slices/SLICE-DN-006.md
 ---
 
 # Delivery checkpoint
 
 ## Current objective
 
-DN-005 is implemented and verified under approved plan revision 3 on
-`codex/slice-dn-005-continuous-verification`. All eight criteria and six inventory checks pass;
-the unchanged supported snapshot/check/close accepted the current evidence without issues.
-PRs 3 and 4 integrated only after protected CI passed. Independent final-main run 37265160752
-verified exact source `80bfa04b1d26c08d87ad5c421928c5a088ec4ffa`. Authorized DN-001 through
-DN-005 are verified; DN-006 remains unauthorized. DN-005 performed no model run or publication.
+On 2026-10-05 the user explicitly authorized DN-006 and a new branch. Plan revision 3,
+approved definition gates and verified DN-005 were reconciled against the clean checkout.
+Implement only DN-006, preserve historical evidence, run credential-free checks and obtain
+real hosted readiness evidence before closure. The subsequent explicit authorization covers commit/push/PR, protected integration after CI
+and manual readiness; publication remains unauthorized. Python 3.14.7 and PyYAML 6.0.3 are available.
+
+DN-006 code is functional locally on `codex/slice-dn-006-release-readiness`; all five inventory
+commands pass at the final input fingerprint, including 140 focused and 41 transport tests.
+Its hosted workflow is absent from the remote repository and the new implementation
+is uncommitted. Existing-main replay is diagnostic evidence of real API consumption, not
+hosted acceptance of DN-006. The supported verifier will retain unverified hosted criteria.
+DN-001 through DN-005 retain their historical verified evidence; no model call or publication
+is authorized or performed by this task.
 
 ## Last completed work
 
@@ -257,11 +282,20 @@ DN-005 are verified; DN-006 remains unauthorized. DN-005 performed no model run 
 has current PASS evidence for both criteria and CHECK-DN-010 through CHECK-DN-012 in
 `slices/SLICE-DN-004.md`, accepted by the supported verifier. DN-005 has current PASS evidence
 for all eight criteria and CHECK-DN-013/014/015/019/020/023 in `slices/SLICE-DN-005.md`, including
-exact PR/final-main jobs, artifact/tool identities and effective protection. DN-006 remains
-unauthorized. The final closure checkpoint/detail are local delivery metadata; implementation
+exact PR/final-main jobs, artifact/tool identities and effective protection. DN-006 is now
+authorized and implemented locally, with hosted verification outstanding in its own detail.
+The DN-005 closure checkpoint/detail are local delivery metadata; implementation
 and the actual-evidence System Context are integrated on main through PRs 3 and 4.
 
 ## Handoff notes
+
+- DN-006 external delivery is now explicitly authorized. The supported check returns exit 1 only for
+  AC-DN-011/016/017/018, whose real new-candidate hosted evidence is absent. Do not close or
+  relabel those observations as PASS from fixtures or historical-main replay. After authority,
+  execute the protected candidate path, retain its unapproved readiness proposal, refresh the
+  affected System Context using that source, repeat current checks and use supported check/close.
+  The new workflow requests contents/actions read and 30-day retention, which current repository
+  policy supports (90-day maximum). No new external mutation or behavioral run occurred here.
 
 - Protected PRs https://github.com/3spGon/devquitect/pull/3 and
   https://github.com/3spGon/devquitect/pull/4 are merged. Latest PR integration

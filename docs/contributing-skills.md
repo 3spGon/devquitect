@@ -243,5 +243,49 @@ evaluation, and comparison reports for promotion eligibility, and emits `devquit
 `approved_at` fields remain null: the file is a proposal until a maintainer explicitly approves
 promotion. Neither `package` nor `release-check` installs, tags, pushes, publishes, or deploys.
 
+### Exact-candidate CI readiness
+
+The new manual `release-readiness.yml` consumes a complete successful `push` on `main` from
+`.github/workflows/ci.yml`. Dispatch it from `main` with `candidate_sha`, `version`, `ci_run_id`,
+`ci_run_attempt`, and `previous_release_sha`. It checks out that exact candidate and installs its
+locked quality tooling. The workflow has only `contents: read` and `actions: read`; both workflows
+request 30-day retention. An expired artifact requires new matching CI, including all jobs.
+The DN-006 local implementation has fixture and existing-main API replay evidence; its own
+hosted exact-candidate dispatch still requires delivery authorization and acceptance evidence.
+
+The additive CLI interface is:
+
+```text
+uv run devquitect release-check \
+  --source <full-candidate-sha> --version <committed-version> \
+  --repository <owner/repo> --ci-run-id <run-id> --ci-run-attempt <attempt> \
+  --previous-release <full-prior-release-sha> \
+  --evidence <fresh-empty-directory> --output <nonexisting-directory> \
+  --report <diagnostic-report-outside-evidence-and-output>
+```
+
+Supply the three CI selectors together and read-only `GH_TOKEN` through the environment. The
+repository must match the checkout's origin. The policy validates the authenticated attempt,
+all six mandatory job conclusions, unique producer-bound unexpired artifacts, container SHA-256,
+safe bounded ZIP members, file hashes, committed version, source snapshot, and exact equality
+with two independent package rebuilds. A JSON file declaring CI success cannot replace API
+observations. ZIP, manifest, and unapproved proposal become visible together only after success;
+failures emit a canonical diagnostic report with no eligible output. Exit codes are `0` eligible,
+`1` policy rejection, `2` invalid configuration, and `3` infrastructure unavailable.
+
+`--previous-release` selects a readable strict Git ancestor with a lower committed plugin version,
+supporting fixes after the version-bump commit. Local callers may also select it; omission retains
+immediate-parent compatibility and populated local evidence, with no network access.
+
+Optional `--behavioral-evidence <separate-directory>` consumes `rows.json` only in CI mode. Its
+`rows` list contains `model_id`, `host`, `runtime`, `reasoning_effort`, `suite_revision`,
+`repetitions`, `authorization`, `verdict`, and `reports`. Each report reference has a safe relative
+`path` and raw SHA-256 `sha256`; reports must be canonical evaluations or comparisons for the
+exact candidate commit/snapshot. Reports and declared model/effort/verdict must agree; undeclared,
+missing, malformed, or altered files are rejected. Preserve each row independently. An unexecuted
+`not-run` or infrastructure `inconclusive` row has no reports or observed host/runtime/effort;
+absent evidence records `not-run`. Behavioral failures remain supplementary and cannot override
+a deterministic gate. Readiness invokes no models and does not alter either prompt-change ledger.
+
 Rollback selects a previously recorded immutable package and its promotion record. Never replace a
 published package, rewrite release history, or bypass the same evidence review for a successor.
